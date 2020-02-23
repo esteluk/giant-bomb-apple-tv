@@ -1,0 +1,28 @@
+name: Bomb TV
+options:
+  bundleIdPrefix: uk.co.nathanwong
+
+targets:
+  Bomb TV:
+    type: application
+    platform: tvOS
+    deploymentTarget: 13.0
+    sources: [Bomb TV]
+
+    configFiles: 
+      Debug: Bomb TV/Configs/debug.xcconfig
+      Release: Bomb TV/Configs/release.xcconfig
+
+  UnitTests:
+    type: bundle.unit-test
+    platform: tvOS
+    sources: [Bomb TVTests]
+    dependencies:
+      - target: Bomb TV
+
+  UITests:
+    type: bundle.ui-testing
+    platform: tvOS
+    sources: [Bomb TVUITests]
+    dependencies:
+      - target: Bomb TV
