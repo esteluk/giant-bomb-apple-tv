@@ -1,0 +1,591 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D8EE6CBF240326D6003EEE77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE6CBE240326D6003EEE77 /* AppDelegate.swift */; };
+		D8EE6CC1240326D6003EEE77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE6CC0240326D6003EEE77 /* ViewController.swift */; };
+		D8EE6CC4240326D6003EEE77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8EE6CC2240326D6003EEE77 /* Main.storyboard */; };
+		D8EE6CC6240326D8003EEE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8EE6CC5240326D8003EEE77 /* Assets.xcassets */; };
+		D8EE6CC9240326D8003EEE77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8EE6CC7240326D8003EEE77 /* LaunchScreen.storyboard */; };
+		D8EE6CD4240326D9003EEE77 /* Bomb_TVTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE6CD3240326D9003EEE77 /* Bomb_TVTests.swift */; };
+		D8EE6CDF240326D9003EEE77 /* Bomb_TVUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE6CDE240326D9003EEE77 /* Bomb_TVUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D8EE6CD0240326D9003EEE77 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8EE6CB3240326D6003EEE77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8EE6CBA240326D6003EEE77;
+			remoteInfo = "Bomb TV";
+		};
+		D8EE6CDB240326D9003EEE77 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8EE6CB3240326D6003EEE77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8EE6CBA240326D6003EEE77;
+			remoteInfo = "Bomb TV";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D8EE6CBB240326D6003EEE77 /* Bomb TV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bomb TV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8EE6CBE240326D6003EEE77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D8EE6CC0240326D6003EEE77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D8EE6CC3240326D6003EEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D8EE6CC5240326D8003EEE77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8EE6CC8240326D8003EEE77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D8EE6CCA240326D8003EEE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8EE6CCF240326D9003EEE77 /* Bomb TVTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bomb TVTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8EE6CD3240326D9003EEE77 /* Bomb_TVTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bomb_TVTests.swift; sourceTree = "<group>"; };
+		D8EE6CD5240326D9003EEE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8EE6CDA240326D9003EEE77 /* Bomb TVUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bomb TVUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8EE6CDE240326D9003EEE77 /* Bomb_TVUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bomb_TVUITests.swift; sourceTree = "<group>"; };
+		D8EE6CE0240326D9003EEE77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D8EE6CB8240326D6003EEE77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EE6CCC240326D9003EEE77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EE6CD7240326D9003EEE77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D8EE6CB2240326D6003EEE77 = {
+			isa = PBXGroup;
+			children = (
+				D8EE6CBD240326D6003EEE77 /* Bomb TV */,
+				D8EE6CD2240326D9003EEE77 /* Bomb TVTests */,
+				D8EE6CDD240326D9003EEE77 /* Bomb TVUITests */,
+				D8EE6CBC240326D6003EEE77 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D8EE6CBC240326D6003EEE77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D8EE6CBB240326D6003EEE77 /* Bomb TV.app */,
+				D8EE6CCF240326D9003EEE77 /* Bomb TVTests.xctest */,
+				D8EE6CDA240326D9003EEE77 /* Bomb TVUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D8EE6CBD240326D6003EEE77 /* Bomb TV */ = {
+			isa = PBXGroup;
+			children = (
+				D8EE6CBE240326D6003EEE77 /* AppDelegate.swift */,
+				D8EE6CC0240326D6003EEE77 /* ViewController.swift */,
+				D8EE6CC2240326D6003EEE77 /* Main.storyboard */,
+				D8EE6CC5240326D8003EEE77 /* Assets.xcassets */,
+				D8EE6CC7240326D8003EEE77 /* LaunchScreen.storyboard */,
+				D8EE6CCA240326D8003EEE77 /* Info.plist */,
+			);
+			path = "Bomb TV";
+			sourceTree = "<group>";
+		};
+		D8EE6CD2240326D9003EEE77 /* Bomb TVTests */ = {
+			isa = PBXGroup;
+			children = (
+				D8EE6CD3240326D9003EEE77 /* Bomb_TVTests.swift */,
+				D8EE6CD5240326D9003EEE77 /* Info.plist */,
+			);
+			path = "Bomb TVTests";
+			sourceTree = "<group>";
+		};
+		D8EE6CDD240326D9003EEE77 /* Bomb TVUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D8EE6CDE240326D9003EEE77 /* Bomb_TVUITests.swift */,
+				D8EE6CE0240326D9003EEE77 /* Info.plist */,
+			);
+			path = "Bomb TVUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D8EE6CBA240326D6003EEE77 /* Bomb TV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8EE6CE3240326D9003EEE77 /* Build configuration list for PBXNativeTarget "Bomb TV" */;
+			buildPhases = (
+				D8EE6CB7240326D6003EEE77 /* Sources */,
+				D8EE6CB8240326D6003EEE77 /* Frameworks */,
+				D8EE6CB9240326D6003EEE77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bomb TV";
+			productName = "Bomb TV";
+			productReference = D8EE6CBB240326D6003EEE77 /* Bomb TV.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D8EE6CCE240326D9003EEE77 /* Bomb TVTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8EE6CE6240326D9003EEE77 /* Build configuration list for PBXNativeTarget "Bomb TVTests" */;
+			buildPhases = (
+				D8EE6CCB240326D9003EEE77 /* Sources */,
+				D8EE6CCC240326D9003EEE77 /* Frameworks */,
+				D8EE6CCD240326D9003EEE77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8EE6CD1240326D9003EEE77 /* PBXTargetDependency */,
+			);
+			name = "Bomb TVTests";
+			productName = "Bomb TVTests";
+			productReference = D8EE6CCF240326D9003EEE77 /* Bomb TVTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D8EE6CD9240326D9003EEE77 /* Bomb TVUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8EE6CE9240326D9003EEE77 /* Build configuration list for PBXNativeTarget "Bomb TVUITests" */;
+			buildPhases = (
+				D8EE6CD6240326D9003EEE77 /* Sources */,
+				D8EE6CD7240326D9003EEE77 /* Frameworks */,
+				D8EE6CD8240326D9003EEE77 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8EE6CDC240326D9003EEE77 /* PBXTargetDependency */,
+			);
+			name = "Bomb TVUITests";
+			productName = "Bomb TVUITests";
+			productReference = D8EE6CDA240326D9003EEE77 /* Bomb TVUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D8EE6CB3240326D6003EEE77 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Nathan Wong";
+				TargetAttributes = {
+					D8EE6CBA240326D6003EEE77 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					D8EE6CCE240326D9003EEE77 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = D8EE6CBA240326D6003EEE77;
+					};
+					D8EE6CD9240326D9003EEE77 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = D8EE6CBA240326D6003EEE77;
+					};
+				};
+			};
+			buildConfigurationList = D8EE6CB6240326D6003EEE77 /* Build configuration list for PBXProject "Bomb TV" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D8EE6CB2240326D6003EEE77;
+			productRefGroup = D8EE6CBC240326D6003EEE77 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D8EE6CBA240326D6003EEE77 /* Bomb TV */,
+				D8EE6CCE240326D9003EEE77 /* Bomb TVTests */,
+				D8EE6CD9240326D9003EEE77 /* Bomb TVUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D8EE6CB9240326D6003EEE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8EE6CC9240326D8003EEE77 /* LaunchScreen.storyboard in Resources */,
+				D8EE6CC6240326D8003EEE77 /* Assets.xcassets in Resources */,
+				D8EE6CC4240326D6003EEE77 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EE6CCD240326D9003EEE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EE6CD8240326D9003EEE77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D8EE6CB7240326D6003EEE77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8EE6CC1240326D6003EEE77 /* ViewController.swift in Sources */,
+				D8EE6CBF240326D6003EEE77 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EE6CCB240326D9003EEE77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8EE6CD4240326D9003EEE77 /* Bomb_TVTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EE6CD6240326D9003EEE77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8EE6CDF240326D9003EEE77 /* Bomb_TVUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D8EE6CD1240326D9003EEE77 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8EE6CBA240326D6003EEE77 /* Bomb TV */;
+			targetProxy = D8EE6CD0240326D9003EEE77 /* PBXContainerItemProxy */;
+		};
+		D8EE6CDC240326D9003EEE77 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8EE6CBA240326D6003EEE77 /* Bomb TV */;
+			targetProxy = D8EE6CDB240326D9003EEE77 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D8EE6CC2240326D6003EEE77 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8EE6CC3240326D6003EEE77 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D8EE6CC7240326D8003EEE77 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8EE6CC8240326D8003EEE77 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D8EE6CE1240326D9003EEE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		D8EE6CE2240326D9003EEE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = appletvos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D8EE6CE4240326D9003EEE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 95X8VY6TB2;
+				INFOPLIST_FILE = "Bomb TV/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.nathanwong.Bomb-TV";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		D8EE6CE5240326D9003EEE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 95X8VY6TB2;
+				INFOPLIST_FILE = "Bomb TV/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.nathanwong.Bomb-TV";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		D8EE6CE7240326D9003EEE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 95X8VY6TB2;
+				INFOPLIST_FILE = "Bomb TVTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.nathanwong.Bomb-TVTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bomb TV.app/Bomb TV";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Debug;
+		};
+		D8EE6CE8240326D9003EEE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 95X8VY6TB2;
+				INFOPLIST_FILE = "Bomb TVTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.nathanwong.Bomb-TVTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bomb TV.app/Bomb TV";
+				TVOS_DEPLOYMENT_TARGET = 13.2;
+			};
+			name = Release;
+		};
+		D8EE6CEA240326D9003EEE77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 95X8VY6TB2;
+				INFOPLIST_FILE = "Bomb TVUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.nathanwong.Bomb-TVUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "Bomb TV";
+			};
+			name = Debug;
+		};
+		D8EE6CEB240326D9003EEE77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 95X8VY6TB2;
+				INFOPLIST_FILE = "Bomb TVUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.nathanwong.Bomb-TVUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "Bomb TV";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D8EE6CB6240326D6003EEE77 /* Build configuration list for PBXProject "Bomb TV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8EE6CE1240326D9003EEE77 /* Debug */,
+				D8EE6CE2240326D9003EEE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8EE6CE3240326D9003EEE77 /* Build configuration list for PBXNativeTarget "Bomb TV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8EE6CE4240326D9003EEE77 /* Debug */,
+				D8EE6CE5240326D9003EEE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8EE6CE6240326D9003EEE77 /* Build configuration list for PBXNativeTarget "Bomb TVTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8EE6CE7240326D9003EEE77 /* Debug */,
+				D8EE6CE8240326D9003EEE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8EE6CE9240326D9003EEE77 /* Build configuration list for PBXNativeTarget "Bomb TVUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8EE6CEA240326D9003EEE77 /* Debug */,
+				D8EE6CEB240326D9003EEE77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D8EE6CB3240326D6003EEE77 /* Project object */;
+}
