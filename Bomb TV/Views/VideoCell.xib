@@ -4,35 +4,36 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="TVUIKit controls" minToolsVersion="10.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="Rz2-K0-ksD" customClass="VideoCell" customModule="Bomb_TV" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="592" height="364"/>
+            <rect key="frame" x="0.0" y="0.0" width="588" height="1067"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="592" height="364"/>
+                <rect key="frame" x="0.0" y="0.0" width="588" height="1067"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RUe-ea-g1b">
-                        <rect key="frame" x="0.0" y="0.0" width="592" height="364"/>
-                    </imageView>
+                    <tvPosterView contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZO4-xx-C5y">
+                        <rect key="frame" x="0.0" y="0.0" width="588" height="1067"/>
+                    </tvPosterView>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="RUe-ea-g1b" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="GhH-96-hgX"/>
-                <constraint firstItem="RUe-ea-g1b" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="GkS-ic-gVI"/>
-                <constraint firstAttribute="bottom" secondItem="RUe-ea-g1b" secondAttribute="bottom" id="S0p-QX-4tT"/>
-                <constraint firstAttribute="trailing" secondItem="RUe-ea-g1b" secondAttribute="trailing" id="tEY-qY-hUP"/>
+                <constraint firstAttribute="bottom" secondItem="ZO4-xx-C5y" secondAttribute="bottom" id="8bj-Hj-Oy7"/>
+                <constraint firstItem="ZO4-xx-C5y" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="LQx-dW-wn3"/>
+                <constraint firstItem="ZO4-xx-C5y" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="PYg-Xs-3k2"/>
+                <constraint firstAttribute="trailing" secondItem="ZO4-xx-C5y" secondAttribute="trailing" id="xdo-sX-Bt3"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="7PP-Ag-gPX"/>
-            <size key="customSize" width="592" height="364"/>
+            <size key="customSize" width="588" height="1067"/>
             <connections>
-                <outlet property="thumbnailView" destination="RUe-ea-g1b" id="s6U-SQ-061"/>
+                <outlet property="posterView" destination="ZO4-xx-C5y" id="hfb-NR-MhH"/>
             </connections>
-            <point key="canvasLocation" x="91" y="187"/>
+            <point key="canvasLocation" x="89" y="300.5"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -27,6 +27,7 @@ targets:
     dependencies:
       - target: BombAPI
       - package: Nuke
+      - sdk: TVUIKit.framework
 
   BombAPI:
     type: framework.static

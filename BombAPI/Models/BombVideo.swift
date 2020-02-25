@@ -1,10 +1,10 @@
 import Foundation
 
 public struct BombVideo {
-    let name: String
+    public let name: String
     let id: Int
     let duration: TimeInterval
-    public let images: BombVideoImages
+    public let images: Images
     public let resumePoint: TimeInterval?
     public let publishedOn: Date
     let videoDescription: String
@@ -27,7 +27,7 @@ extension BombVideo: Decodable, Hashable {
         name = try container.decode(String.self, forKey: .name)
         id = try container.decode(Int.self, forKey: .id)
         duration = try container.decode(TimeInterval.self, forKey: .duration)
-        images = try container.decode(BombVideoImages.self, forKey: .images)
+        images = try container.decode(Images.self, forKey: .images)
         if let savedTime = try container.decodeIfPresent(String.self, forKey: .resumePoint) {
             resumePoint = floor(Double(savedTime) ?? 0)
         } else {

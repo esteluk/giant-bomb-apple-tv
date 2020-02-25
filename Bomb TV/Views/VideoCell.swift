@@ -1,10 +1,11 @@
 import BombAPI
 import Nuke
+import TVUIKit
 import UIKit
 
 class VideoCell: UICollectionViewCell {
 
-    @IBOutlet private var thumbnailView: UIImageView!
+    @IBOutlet private var posterView: TVPosterView!
 
     var video: BombVideo? {
         didSet {
@@ -12,7 +13,9 @@ class VideoCell: UICollectionViewCell {
                 prepareForReuse()
                 return
             }
-            Nuke.loadImage(with: video.images.small, into: thumbnailView)
+            Nuke.loadImage(with: video.images.small.fixed, into: posterView.imageView)
+            posterView.title = video.name
+            posterView.subtitle = nil
         }
     }
 

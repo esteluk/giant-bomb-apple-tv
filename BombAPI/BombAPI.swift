@@ -8,19 +8,32 @@ public class BombAPI {
     }
 
     private let baseUrl = URL(string: "https://www.giantbomb.com/api/")!
+    private lazy var decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(DateFormatter.defaultBombFormatter)
+        return decoder
+    }()
+    private let session: URLSession
 
-    public init() {}
+    public init(session: URLSession = URLSession.shared) {
+        self.session = session
+    }
 
     public func recentVideos() -> Promise<[BombVideo]> {
-        let session = URLSession.shared
-
         let request = buildRequest(for: "videos")
         return firstly {
             session.dataTask(.promise, with: request).validate()
         }.map { response -> [BombVideo] in
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .formatted(DateFormatter.defaultBombFormatter)
-            return try decoder.decode(VideosResponse.self, from: response.data).results
+            try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }
+    }
+
+    public func getShows() -> Promise<[Show]> {
+        let request = buildRequest(for: "video_shows")
+        return firstly {
+            session.dataTask(.promise, with: request).validate()
+        }.map { response -> [Show] in
+            try self.decoder.decode(WrappedResponse.self, from: response.data).results
         }
     }
 
@@ -31,6 +44,28 @@ public class BombAPI {
             URLQueryItem(name: "format", value: "json")
         ]
         return URLRequest(url: components.url(relativeTo: baseUrl)!)
+    }
+}
+
+public struct Show: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case images = "image"
+        case isActive = "active"
+        case latestVideos = "latest"
+        case showDescription = "deck"
+        case title
+    }
+
+    let id: Int
+    let images: Images
+    let isActive: Bool
+    private let latestVideos: [BombVideo]
+    let showDescription: String
+    let title: String
+
+    var latestVideo: BombVideo? {
+        return latestVideos.first
     }
 }
 

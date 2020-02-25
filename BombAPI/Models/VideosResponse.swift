@@ -1,3 +1,3 @@
-struct VideosResponse: Decodable {
-    let results: [BombVideo]
+struct WrappedResponse<T: Decodable>: Decodable {
+    let results: [T]
 }
