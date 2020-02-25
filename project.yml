@@ -2,6 +2,17 @@ name: Bomb TV
 options:
   bundleIdPrefix: uk.co.nathanwong
 
+packages:
+  Nuke:
+    url: https://github.com/kean/Nuke.git
+    from: 8.4.0
+  PromiseKit:
+    url: https://github.com/mxcl/PromiseKit
+    from: 6.13.0
+  PMKFoundation:
+    url: https://github.com/PromiseKit/Foundation.git
+    from: 3.3.4
+
 targets:
   Bomb TV:
     type: application
@@ -12,6 +23,21 @@ targets:
     configFiles: 
       Debug: Bomb TV/Configs/debug.xcconfig
       Release: Bomb TV/Configs/release.xcconfig
+
+    dependencies:
+      - target: BombAPI
+      - package: Nuke
+
+  BombAPI:
+    type: framework.static
+    platform: tvOS
+    sources: [BombAPI]
+    configFiles:
+      Debug: BombAPI/Configs/debug.xcconfig
+      Release: BombAPI/Configs/release.xcconfig
+    dependencies:
+      - package: PromiseKit
+      - package: PMKFoundation
 
   UnitTests:
     type: bundle.unit-test
