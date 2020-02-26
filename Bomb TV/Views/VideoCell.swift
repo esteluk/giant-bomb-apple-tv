@@ -7,14 +7,22 @@ class VideoCell: UICollectionViewCell {
 
     @IBOutlet private var posterView: TVPosterView!
 
-    var video: BombVideo? {
+    var video: HomeScreenItem? {
         didSet {
             guard let video = video else {
                 prepareForReuse()
                 return
             }
-            Nuke.loadImage(with: video.images.small.fixed, into: posterView.imageView)
-            posterView.title = video.name
+
+            switch video {
+            case .show(let show):
+                Nuke.loadImage(with: show.images.medium.fixed, into: posterView.imageView)
+                posterView.title = show.title
+            case .video(let video):
+                Nuke.loadImage(with: video.images.super.fixed, into: posterView.imageView)
+                posterView.title = video.name
+            }
+
             posterView.subtitle = nil
         }
     }

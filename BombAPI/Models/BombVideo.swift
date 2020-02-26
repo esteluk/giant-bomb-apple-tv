@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 
 public struct BombVideo {
@@ -7,8 +8,8 @@ public struct BombVideo {
     public let images: Images
     public let resumePoint: TimeInterval?
     public let publishedOn: Date
-    let videoDescription: String
-    let videoUrls: BombVideoUrls
+    public let videoDescription: String
+    public let videoUrls: VideoUrls
 }
 
 extension BombVideo: Decodable, Hashable {
@@ -36,6 +37,30 @@ extension BombVideo: Decodable, Hashable {
 
         publishedOn = try container.decode(Date.self, forKey: .publishedOn)
         videoDescription = try container.decode(String.self, forKey: .videoDescription)
-        videoUrls = try BombVideoUrls(from: decoder)
+        videoUrls = try VideoUrls(from: decoder)
+    }
+
+    var isAvailable: Bool {
+        return videoUrls.isUrlAvailable
     }
 }
+
+public extension BombVideo {
+    var externalMetadata: [AVMetadataItem] {
+        let title = AVMutableMetadataItem(identifier: .commonIdentifierTitle, value: name)
+        let description = AVMutableMetadataItem(identifier: .commonIdentifierDescription, value: videoDescription)
+
+        return [title, description]
+    }
+}
+
+private extension AVMutableMetadataItem {
+    convenience init(identifier: AVMetadataIdentifier, value: String) {
+        self.init()
+        self.keySpace = .common
+        self.identifier = identifier
+        self.locale = .current
+        self.value = value as (NSCopying & NSObjectProtocol)?
+    }
+}
+

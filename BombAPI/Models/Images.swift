@@ -5,11 +5,13 @@ public struct Images: Decodable, Hashable {
         case small = "small_url"
         case medium = "screen_url"
         case original = "original_url"
+        case `super` = "super_url"
     }
 
     public let small: URL
     public let medium: URL
     public let original: URL
+    public let `super`: URL
 }
 
 // Should be only temporary

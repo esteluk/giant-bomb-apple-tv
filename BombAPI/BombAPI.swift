@@ -25,6 +25,8 @@ public class BombAPI {
             session.dataTask(.promise, with: request).validate()
         }.map { response -> [BombVideo] in
             try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }.filterValues{
+            $0.isAvailable
         }
     }
 
@@ -47,7 +49,7 @@ public class BombAPI {
     }
 }
 
-public struct Show: Decodable {
+public struct Show: Decodable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id
         case images = "image"
@@ -58,14 +60,14 @@ public struct Show: Decodable {
     }
 
     let id: Int
-    let images: Images
+    public let images: Images
     let isActive: Bool
-    private let latestVideos: [BombVideo]
-    let showDescription: String
-    let title: String
+    private let latestVideos: [BombVideo]?
+    public let showDescription: String
+    public let title: String
 
     var latestVideo: BombVideo? {
-        return latestVideos.first
+        return latestVideos?.first
     }
 }
 
