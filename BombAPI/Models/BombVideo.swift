@@ -13,7 +13,7 @@ public struct BombVideo {
 }
 
 extension BombVideo: Decodable, Hashable {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case name = "name"
         case id = "id"
         case duration = "length_seconds"
@@ -21,7 +21,12 @@ extension BombVideo: Decodable, Hashable {
         case resumePoint = "saved_time"
         case publishedOn = "publish_date"
         case videoDescription = "deck"
+        case lowUrl = "low_url"
+        case medUrl = "med_url"
+        case highUrl = "high_url"
     }
+
+    static var fields = CodingKeys.allCases.map { $0.rawValue }.joined(separator: ",")
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

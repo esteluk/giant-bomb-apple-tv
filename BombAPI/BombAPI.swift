@@ -24,7 +24,10 @@ public class BombAPI {
     }
 
     public func getShows() -> Promise<[Show]> {
-        let request = buildRequest(for: "video_shows")
+        let queryItems = [
+            URLQueryItem(name: "field_list", value: Show.fields)
+        ]
+        let request = buildRequest(for: "video_shows", queryItems: queryItems)
         return firstly {
             session.dataTask(.promise, with: request).validate()
         }.map { response -> [Show] in
@@ -33,7 +36,10 @@ public class BombAPI {
     }
 
     public func recentVideos() -> Promise<[BombVideo]> {
-        let request = buildRequest(for: "videos")
+        let queryItems = [
+            URLQueryItem(name: "field_list", value: BombVideo.fields)
+        ]
+        let request = buildRequest(for: "videos", queryItems: queryItems)
         return firstly {
             session.dataTask(.promise, with: request).validate()
         }.map { response -> [BombVideo] in

@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Show: Decodable, Hashable {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case id
         case images = "image"
         case isActive = "active"
@@ -9,6 +9,8 @@ public struct Show: Decodable, Hashable {
         case showDescription = "deck"
         case title
     }
+
+    static var fields = CodingKeys.allCases.map { $0.rawValue }.joined(separator: ",")
 
     let id: Int
     public let images: Images

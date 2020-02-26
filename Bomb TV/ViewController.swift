@@ -186,6 +186,7 @@ extension ViewController: AVPlayerViewControllerDelegate {
             CMTimeGetSeconds(currentTime) > Constants.minimumPlayTimeBeforeSaving else { return }
 
         viewModel.updatePlayedTime(video: currentlyPlaying, duration: currentTime)
+        self.currentlyPlaying = nil
     }
 }
 
