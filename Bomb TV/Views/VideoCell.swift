@@ -29,6 +29,9 @@ class VideoCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        posterView.title = nil
+        posterView.subtitle = nil
+        posterView.image = nil
     }
 }
 

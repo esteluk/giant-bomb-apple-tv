@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="588" height="1067"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <tvPosterView contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZO4-xx-C5y">
+                    <tvPosterView contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" title="Title" translatesAutoresizingMaskIntoConstraints="NO" id="ZO4-xx-C5y">
                         <rect key="frame" x="0.0" y="0.0" width="588" height="1067"/>
                     </tvPosterView>
                 </subviews>

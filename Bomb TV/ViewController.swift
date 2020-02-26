@@ -4,6 +4,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private enum Constants {
+        static let minimumPlayTimeBeforeSaving: Float64 = 15.0
+    }
+
     @IBOutlet private var collectionView: UICollectionView!
 
     lazy var dataSource: UICollectionViewDiffableDataSource<Section, HomeScreenItem> = {
@@ -33,7 +37,9 @@ class ViewController: UIViewController {
         return dataSource
     }()
 
-    var sections: [Section] = []
+    private var currentlyPlaying: BombVideo?
+    private var sections: [Section] = []
+    private let viewModel = HomeViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +52,6 @@ class ViewController: UIViewController {
         collectionView.delegate = self
         collectionView.collectionViewLayout = createLayout()
 
-        let viewModel = HomeViewModel()
         viewModel.fetchData().done { results in
             var snapshot = NSDiffableDataSourceSnapshot<Section, HomeScreenItem>()
             for result in results {
@@ -121,7 +126,8 @@ extension ViewController: UICollectionViewDelegate {
     private func promptToResume(video: BombVideo) -> Bool {
         guard let resumePoint = video.resumePoint else { return false }
         let alert = UIAlertController(title: "Resume playback",
-                                           message: "", preferredStyle: .alert)
+                                      message: "Do you want to resume from where you left off or start from the beginning of this video?",
+                                      preferredStyle: .alert)
 
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
@@ -150,7 +156,9 @@ extension ViewController: UICollectionViewDelegate {
             playerItem.seek(to: CMTime(seconds: resumePoint, preferredTimescale: 1), completionHandler: nil)
         }
 
+        controller.delegate = self
         controller.player = AVPlayer(playerItem: playerItem)
+        currentlyPlaying = video
 
         present(controller, animated: true, completion: {
             controller.player?.playImmediately(atRate: 1.0)
@@ -168,6 +176,16 @@ extension ViewController: UICollectionViewDelegate {
             artworkData.value = data as NSCopying & NSObjectProtocol
             player.externalMetadata.append(artworkData)
         }
+    }
+}
+
+extension ViewController: AVPlayerViewControllerDelegate {
+    func playerViewControllerWillBeginDismissalTransition(_ playerViewController: AVPlayerViewController) {
+        guard let currentlyPlaying = currentlyPlaying,
+            let currentTime = playerViewController.player?.currentItem?.currentTime(),
+            CMTimeGetSeconds(currentTime) > Constants.minimumPlayTimeBeforeSaving else { return }
+
+        viewModel.updatePlayedTime(video: currentlyPlaying, duration: currentTime)
     }
 }
 

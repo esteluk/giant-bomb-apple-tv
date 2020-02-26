@@ -2,6 +2,10 @@ import Foundation
 import PromiseKit
 import PMKFoundation
 
+public enum BombAPIError: Error {
+    case noLiveVideos
+}
+
 public class BombAPI {
     public static func setAPIKey(_ key: String) {
         CredentialProvider.credential = key
@@ -19,6 +23,15 @@ public class BombAPI {
         self.session = session
     }
 
+    public func getShows() -> Promise<[Show]> {
+        let request = buildRequest(for: "video_shows")
+        return firstly {
+            session.dataTask(.promise, with: request).validate()
+        }.map { response -> [Show] in
+            try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }
+    }
+
     public func recentVideos() -> Promise<[BombVideo]> {
         let request = buildRequest(for: "videos")
         return firstly {
@@ -30,45 +43,37 @@ public class BombAPI {
         }
     }
 
-    public func getShows() -> Promise<[Show]> {
-        let request = buildRequest(for: "video_shows")
+    public func liveVideo() -> Promise<LiveVideo> {
+        let request = buildRequest(for: "video/current-live")
         return firstly {
             session.dataTask(.promise, with: request).validate()
-        }.map { response -> [Show] in
-            try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }.map { response -> LiveVideo in
+            let response = try self.decoder.decode(LiveVideoResponse.self, from: response.data)
+            guard let video = response.video else {
+                throw BombAPIError.noLiveVideos
+            }
+            return video
         }
     }
 
-    private func buildRequest(for resource: String) -> URLRequest {
+    @discardableResult
+    public func saveTime(video: BombVideo, position: Int) -> Promise<Void> {
+        let queryItems = [
+            URLQueryItem(name: "video_id", value: String(video.id)),
+            URLQueryItem(name: "time_to_save", value: String(position))
+        ]
+        let request = buildRequest(for: "video/save-time", queryItems: queryItems)
+
+        return session.dataTask(.promise, with: request).validate().asVoid()
+    }
+
+    private func buildRequest(for resource: String, queryItems: [URLQueryItem] = []) -> URLRequest {
         var components = URLComponents(url: URL(string: resource)!, resolvingAgainstBaseURL: true)!
         components.queryItems = [
             URLQueryItem(name: "api_key", value: CredentialProvider.credential),
             URLQueryItem(name: "format", value: "json")
         ]
+        components.queryItems?.append(contentsOf: queryItems)
         return URLRequest(url: components.url(relativeTo: baseUrl)!)
     }
 }
-
-public struct Show: Decodable, Hashable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case images = "image"
-        case isActive = "active"
-        case latestVideos = "latest"
-        case showDescription = "deck"
-        case title
-    }
-
-    let id: Int
-    public let images: Images
-    let isActive: Bool
-    private let latestVideos: [BombVideo]?
-    public let showDescription: String
-    public let title: String
-
-    var latestVideo: BombVideo? {
-        return latestVideos?.first
-    }
-}
-
-
