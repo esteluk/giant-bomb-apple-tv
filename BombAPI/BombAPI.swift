@@ -62,6 +62,16 @@ public class BombAPI {
         }
     }
 
+    public func getAuthenticationToken(appName: String, code: String) -> Promise<AuthenticationResponse> {
+        let request = "https://giantbomb.com/app/\(appName)/get-result?regCode=\(code)&format=json"
+        let url = URL(string: request)!
+        return firstly {
+            session.dataTask(.promise, with: url).validate()
+        }.map { response -> AuthenticationResponse in
+            try self.decoder.decode(AuthenticationResponse.self, from: response.data)
+        }
+    }
+
     @discardableResult
     public func saveTime(video: BombVideo, position: Int) -> Promise<Void> {
         let queryItems = [

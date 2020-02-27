@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15705" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rRq-V8-sQS">
+    <device id="appleTV" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Authentication View Controller-->
+        <scene sceneID="Brl-6Y-Mol">
+            <objects>
+                <viewController storyboardIdentifier="authentication" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rRq-V8-sQS" customClass="AuthenticationViewController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mdm-we-XSx"/>
+                        <viewControllerLayoutGuide type="bottom" id="h5l-gi-poy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zKM-lP-dLy">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="XkU-7r-BFg">
+                                <rect key="frame" x="660" y="358.5" width="600" height="363"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in on your web browser" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXY-Qa-AV5">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open https://www.giantbomb.com/app/bombtv/ and enter your code" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yP8-8J-nc4">
+                                        <rect key="frame" x="0.0" y="66" width="600" height="71"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bFF-OV-wRu">
+                                        <rect key="frame" x="0.0" y="157" width="600" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="iKX-NP-WIc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="rRq-V8-sQS" id="0NQ-4I-nsB"/>
+                                        </connections>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygU-Ww-r3C">
+                                        <rect key="frame" x="0.0" y="277" width="600" height="86"/>
+                                        <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                        <state key="normal" title="Done"/>
+                                        <connections>
+                                            <action selector="doneAction:" destination="rRq-V8-sQS" eventType="primaryActionTriggered" id="Aku-Xx-OAN"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="600" id="PN8-bS-GKT"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="XkU-7r-BFg" firstAttribute="centerY" secondItem="zKM-lP-dLy" secondAttribute="centerY" id="D1C-IH-Tnb"/>
+                            <constraint firstItem="XkU-7r-BFg" firstAttribute="centerX" secondItem="zKM-lP-dLy" secondAttribute="centerX" id="b3z-ZH-YMC"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BcD-Ez-A65"/>
+                    </view>
+                    <connections>
+                        <outlet property="codeTextField" destination="bFF-OV-wRu" id="wTi-uY-tk3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0DA-W5-RtZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="746" y="-117"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ZqK-M5-deQ">
+            <objects>
+                <viewController storyboardIdentifier="firstLaunch" useStoryboardIdentifierAsRestorationIdentifier="YES" id="y6N-8J-Sjm" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dph-XT-awJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="zpd-4y-Llh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BCi-y3-o05">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OOW-fc-FbK">
+                                <rect key="frame" x="864" y="514" width="192" height="86"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="n8J-0k-VtR"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pVP-16-T0u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1606" y="-117"/>
+        </scene>
+    </scenes>
+</document>

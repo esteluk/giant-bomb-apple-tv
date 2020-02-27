@@ -27,6 +27,11 @@ class VideoCell: UICollectionViewCell {
         }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        posterView.imageView.contentMode = .scaleAspectFill
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         posterView.title = nil
