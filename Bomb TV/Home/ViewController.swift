@@ -87,11 +87,11 @@ class ViewController: UIViewController {
 
             switch dataSection {
             case .latest:
-                groupSize = NSCollectionLayoutSize(widthDimension: .absolute(400),
-                                                   heightDimension: .absolute(300))
+                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
+                                                   heightDimension: .fractionalWidth(0.16))
             case .shows:
-                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.4),
-                                                   heightDimension: .fractionalWidth(0.3))
+                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33),
+                                                   heightDimension: .fractionalWidth(0.22))
             default: fatalError()
             }
 
@@ -101,8 +101,8 @@ class ViewController: UIViewController {
 
             let section = NSCollectionLayoutSection(group: group)
 
-            section.interGroupSpacing = 80
-            section.orthogonalScrollingBehavior = .groupPaging
+            section.interGroupSpacing = 0
+            section.orthogonalScrollingBehavior = .continuous
 
             let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(132)),
                                                                      elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)

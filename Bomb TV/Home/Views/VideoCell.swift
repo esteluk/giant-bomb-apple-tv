@@ -7,6 +7,8 @@ class VideoCell: UICollectionViewCell {
 
     @IBOutlet private var posterView: TVPosterView!
 
+    private var imageTask: ImageTask?
+
     var video: HomeScreenItem? {
         didSet {
             guard let video = video else {
@@ -14,14 +16,25 @@ class VideoCell: UICollectionViewCell {
                 return
             }
 
+            let url: URL
+
             switch video {
             case .show(let show):
-                Nuke.loadImage(with: show.images.medium.fixed, into: posterView.imageView)
+                url = show.images.medium.fixed
                 posterView.title = show.title
             case .video(let video):
-                Nuke.loadImage(with: video.images.super.fixed, into: posterView.imageView)
+                url = video.images.super.fixed
                 posterView.title = video.name
             }
+
+            imageTask = ImagePipeline.shared.loadImage(with: url, completion: { result in
+                switch result {
+                case .success(let response):
+                    self.posterView.image = response.image
+                case .failure(let error):
+                    print("Failed to load image with error \(error.localizedDescription)")
+                }
+            })
 
             posterView.subtitle = nil
         }
@@ -29,7 +42,12 @@ class VideoCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        posterView.footerView?.showsOnlyWhenAncestorFocused = true
         posterView.imageView.contentMode = .scaleAspectFill
+
+        NSLayoutConstraint.activate([
+            posterView.imageView.widthAnchor.constraint(equalTo: posterView.imageView.heightAnchor, multiplier: 16/9)
+        ])
     }
 
     override func prepareForReuse() {
@@ -37,6 +55,7 @@ class VideoCell: UICollectionViewCell {
         posterView.title = nil
         posterView.subtitle = nil
         posterView.image = nil
+        imageTask?.cancel()
     }
 }
 
