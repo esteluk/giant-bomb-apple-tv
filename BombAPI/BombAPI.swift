@@ -35,10 +35,16 @@ public class BombAPI {
         }
     }
 
-    public func recentVideos() -> Promise<[BombVideo]> {
-        let queryItems = [
+    public func recentVideos(filter: VideoFilter? = nil, offset: Int = 0) -> Promise<[BombVideo]> {
+        var queryItems = [
+            URLQueryItem(name: "offset", value: String(offset)),
             URLQueryItem(name: "field_list", value: BombVideo.fields)
         ]
+
+        if let filter = filter {
+            queryItems.append(filter.queryItem)
+        }
+
         let request = buildRequest(for: "videos", queryItems: queryItems)
         return firstly {
             session.dataTask(.promise, with: request).validate()
@@ -91,5 +97,17 @@ public class BombAPI {
         ]
         components.queryItems?.append(contentsOf: queryItems)
         return URLRequest(url: components.url(relativeTo: baseUrl)!)
+    }
+}
+
+public enum VideoFilter {
+    case show(Show)
+
+    var queryItem: URLQueryItem {
+        switch self {
+        case .show(let show):
+            return URLQueryItem(name: "filter", value: "video_show:\(show.id)")
+        }
+
     }
 }

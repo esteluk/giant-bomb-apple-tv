@@ -1,7 +1,7 @@
 import BombAPI
 import UIKit
 
-class RootCoordinator: Coordinator {
+class RootCoordinator: NavigationCoordinator {
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
 
@@ -13,36 +13,46 @@ class RootCoordinator: Coordinator {
     func start() {
         let store = AuthenticationStore()
 
-        let storyboard: UIStoryboard
-        let viewController: UIViewController
         if let token = store.registrationToken {
             BombAPI.setAPIKey(token)
-            storyboard = UIStoryboard(name: "Main", bundle: nil)
-            viewController = storyboard.instantiateInitialViewController()!
+            successfulLogin()
         } else {
-            storyboard = UIStoryboard(name: "Authentication", bundle: nil)
-            let authController = storyboard.instantiateInitialViewController() as? AuthenticationViewController
-            authController?.coordinator = self
-            viewController = authController!
+            startFirstLaunch()
         }
-
-        navigationController.pushViewController(viewController, animated: false)
     }
 
     func successfulLogin() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let viewController = storyboard.instantiateInitialViewController() else {
-            preconditionFailure()
-        }
+        let tabController = TabBarController(coordinator: self)
+        navigationController.setViewControllers([tabController], animated: true)
+    }
 
-        navigationController.setViewControllers([viewController], animated: true)
+    private func startFirstLaunch() {
+        let authController = StoryboardScene.Authentication.initialScene.instantiate()
+        authController.coordinator = self
+        navigationController.setViewControllers([authController], animated: true)
     }
 
 }
 
-protocol Coordinator {
+protocol Coordinator: class {
+    func start()
+}
+
+extension NavigationCoordinator {
+    func childDidFinish(_ child: Coordinator) {
+        for (index, coordinator) in childCoordinators.enumerated() {
+            if coordinator === child {
+                childCoordinators.remove(at: index)
+                break
+            }
+        }
+    }
+}
+
+protocol NavigationCoordinator: Coordinator {
     var childCoordinators: [Coordinator] { get set }
     var navigationController: UINavigationController { get set }
-
-    func start()
+}
+protocol DestinationCoordinator: Coordinator {
+    var rootController: UIViewController { get set }
 }

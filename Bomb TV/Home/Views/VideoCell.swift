@@ -9,6 +9,12 @@ class VideoCell: UICollectionViewCell {
 
     private var imageTask: ImageTask?
 
+    var alwaysShowsTitles: Bool = false {
+        didSet {
+            posterView.footerView?.showsOnlyWhenAncestorFocused = !alwaysShowsTitles
+        }
+    }
+
     var video: HomeScreenItem? {
         didSet {
             guard let video = video else {

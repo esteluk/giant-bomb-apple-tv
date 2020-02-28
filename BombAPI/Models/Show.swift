@@ -19,7 +19,7 @@ public struct Show: Decodable, Hashable {
     public let showDescription: String
     public let title: String
 
-    var latestVideo: BombVideo? {
+    public var latestVideo: BombVideo? {
         return latestVideos?.first
     }
 }

@@ -1,0 +1,5 @@
+ib:
+  inputs: Bomb TV/
+  outputs:
+    templateName: scenes-swift4
+    output: Bomb TV/Generated/Storyboards.swift

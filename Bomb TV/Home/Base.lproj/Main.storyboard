@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15705" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ykk-ep-lDl">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15705" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -10,7 +10,7 @@
         <!--Watch now-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Watch now" id="BYZ-38-t0r" customClass="ViewController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Home" title="Watch now" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -46,13 +46,14 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tabBarItem title="Watch now" id="79h-Bw-rh2"/>
             </objects>
             <point key="canvasLocation" x="-554" y="-536"/>
         </scene>
         <!--Shows-->
         <scene sceneID="OnF-jY-RCJ">
             <objects>
-                <viewController title="Shows" id="LCd-vu-9bu" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Shows" title="Shows" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LCd-vu-9bu" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZCH-Pr-akt"/>
                         <viewControllerLayoutGuide type="bottom" id="beD-VT-nkt"/>
@@ -65,26 +66,9 @@
                     <tabBarItem key="tabBarItem" title="Shows" id="T6p-rA-myz"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEL-NP-aOA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tabBarItem title="Shows" id="C03-iS-psS"/>
             </objects>
             <point key="canvasLocation" x="-554" y="1103"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="lar-4e-kLq">
-            <objects>
-                <tabBarController id="ykk-ep-lDl" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nfQ-YX-RQF">
-                        <rect key="frame" x="0.0" y="0.0" width="1920" height="0.0"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="BGe-od-ndP"/>
-                        <segue destination="LCd-vu-9bu" kind="relationship" relationship="viewControllers" id="7Sw-WE-rHg"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IJG-ZE-onH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2912" y="69"/>
         </scene>
     </scenes>
 </document>

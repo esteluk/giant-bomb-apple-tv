@@ -13,8 +13,4 @@ class HomeViewModel {
             api.getShows().map { Section.shows($0) }
         ])
     }
-
-    func updatePlayedTime(video: BombVideo, duration: CMTime) {
-        api.saveTime(video: video, position: Int(floor(CMTimeGetSeconds(duration))))
-    }
 }
