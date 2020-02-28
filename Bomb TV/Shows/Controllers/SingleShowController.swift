@@ -7,6 +7,7 @@ class SingleShowController: UIViewController {
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var showImageView: UIImageView!
+    @IBOutlet private var bottomBackgroundArea: UIVisualEffectView!
     @IBOutlet private var showsCollectionView: UICollectionView!
 
     private lazy var dataSource: UICollectionViewDiffableDataSource<ShowSection, BombVideo> = {
@@ -33,7 +34,7 @@ class SingleShowController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        showsCollectionView.isHidden = true
+        bottomBackgroundArea.isHidden = true
         showsCollectionView.dataSource = dataSource
         showsCollectionView.delegate = self
         showsCollectionView.register(UINib(nibName: "VideoCell", bundle: nil),
@@ -51,7 +52,7 @@ class SingleShowController: UIViewController {
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
             self.dataSource.apply(snapshot, animatingDifferences: true)
-            self.showsCollectionView.isHidden = false
+            self.bottomBackgroundArea.isHidden = false
             self.showsCollectionView.setNeedsFocusUpdate()
         }.catch { error in
             print(error.localizedDescription)
