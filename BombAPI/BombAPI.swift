@@ -55,6 +55,21 @@ public class BombAPI {
         }
     }
 
+    public func search(query: String, page: Int = 1) -> Promise<WrappedResponse<BombVideo>> {
+        let queryItems = [
+            URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "query", value: query),
+            URLQueryItem(name: "resources", value: "video")
+        ]
+
+        let request = buildRequest(for: "search", queryItems: queryItems)
+        return firstly {
+            session.dataTask(.promise, with: request).validate()
+        }.map { response in
+            try self.decoder.decode(WrappedResponse.self, from: response.data)
+        }
+    }
+
     public func liveVideo() -> Promise<LiveVideo> {
         let request = buildRequest(for: "video/current-live")
         return firstly {

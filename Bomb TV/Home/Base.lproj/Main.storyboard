@@ -68,7 +68,47 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEL-NP-aOA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarItem title="Shows" id="C03-iS-psS"/>
             </objects>
-            <point key="canvasLocation" x="-554" y="1103"/>
+            <point key="canvasLocation" x="-554" y="1033"/>
+        </scene>
+        <!--Search Results Controller-->
+        <scene sceneID="9vR-g4-PGJ">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e5x-TC-AY0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="search" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DU9-2a-wyw" customClass="SearchResultsController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6t2-He-h6v"/>
+                        <viewControllerLayoutGuide type="bottom" id="EYK-Iq-WOz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VcV-Zg-ftF">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q15-Zw-wGY">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="xBm-jf-Ard">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="q15-Zw-wGY" firstAttribute="top" secondItem="VcV-Zg-ftF" secondAttribute="top" id="hp4-do-IiD"/>
+                            <constraint firstItem="q15-Zw-wGY" firstAttribute="leading" secondItem="VcV-Zg-ftF" secondAttribute="leading" id="sbp-8g-Dby"/>
+                            <constraint firstAttribute="trailing" secondItem="q15-Zw-wGY" secondAttribute="trailing" id="u5j-Pk-Bor"/>
+                            <constraint firstAttribute="bottom" secondItem="q15-Zw-wGY" secondAttribute="bottom" id="yxa-kE-Sd5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="m3y-ni-a1d"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="q15-Zw-wGY" id="Gkd-oP-Rwk"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-554" y="2591"/>
         </scene>
     </scenes>
 </document>

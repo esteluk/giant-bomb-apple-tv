@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="8o8-Qj-98Z">
-                                <rect key="frame" x="90" y="68" width="830" height="101"/>
+                                <rect key="frame" x="90" y="60" width="830" height="101"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mass Alex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m6k-2d-L9U">
                                         <rect key="frame" x="0.0" y="0.0" width="830" height="46"/>
@@ -52,13 +52,13 @@
                                 <cells/>
                             </collectionView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mWK-ht-ZdR">
-                                <rect key="frame" x="1000" y="68" width="830" height="467"/>
+                                <rect key="frame" x="1000" y="60" width="830" height="467"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="mWK-ht-ZdR" secondAttribute="height" multiplier="16:9" id="OHl-ik-zSd"/>
                                 </constraints>
                             </imageView>
                             <tvCaptionButtonView contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" motionDirection="vertical" contentImage="play.fill" catalog="system" title="Start playing" translatesAutoresizingMaskIntoConstraints="NO" id="LxY-DB-iCe">
-                                <rect key="frame" x="90" y="413" width="156" height="122"/>
+                                <rect key="frame" x="90" y="405" width="156" height="122"/>
                                 <connections>
                                     <action selector="playLatestAction:" destination="kCX-8G-ThL" eventType="primaryActionTriggered" id="grr-uI-XIq"/>
                                 </connections>
@@ -66,7 +66,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="LxY-DB-iCe" firstAttribute="bottom" secondItem="mWK-ht-ZdR" secondAttribute="bottom" id="CAv-IT-XPa"/>
-                            <constraint firstItem="8o8-Qj-98Z" firstAttribute="top" secondItem="1PC-rT-Jp0" secondAttribute="bottom" constant="8" symbolic="YES" id="FZ4-3D-KPd"/>
+                            <constraint firstItem="8o8-Qj-98Z" firstAttribute="top" secondItem="f4I-K7-5PD" secondAttribute="top" constant="8" symbolic="YES" id="FZ4-3D-KPd"/>
                             <constraint firstAttribute="bottom" secondItem="siL-qr-qAX" secondAttribute="bottom" id="G5T-XP-F3f"/>
                             <constraint firstItem="LxY-DB-iCe" firstAttribute="leading" secondItem="f4I-K7-5PD" secondAttribute="leading" id="K2E-aV-TB9"/>
                             <constraint firstItem="8o8-Qj-98Z" firstAttribute="leading" secondItem="f4I-K7-5PD" secondAttribute="leading" id="U1G-aj-J8L"/>
@@ -75,7 +75,7 @@
                             <constraint firstItem="f4I-K7-5PD" firstAttribute="trailing" secondItem="mWK-ht-ZdR" secondAttribute="trailing" id="cAU-3g-3wX"/>
                             <constraint firstItem="8o8-Qj-98Z" firstAttribute="width" secondItem="mWK-ht-ZdR" secondAttribute="width" id="nBa-wc-LLH"/>
                             <constraint firstItem="mWK-ht-ZdR" firstAttribute="leading" secondItem="8o8-Qj-98Z" secondAttribute="trailing" constant="80" id="toE-s3-trg"/>
-                            <constraint firstItem="mWK-ht-ZdR" firstAttribute="top" secondItem="1PC-rT-Jp0" secondAttribute="bottom" constant="8" symbolic="YES" id="uuX-oO-ygo"/>
+                            <constraint firstItem="mWK-ht-ZdR" firstAttribute="top" secondItem="f4I-K7-5PD" secondAttribute="top" constant="8" symbolic="YES" id="uuX-oO-ygo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="f4I-K7-5PD"/>
                     </view>

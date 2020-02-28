@@ -50,6 +50,7 @@ class VideoCell: UICollectionViewCell {
         super.awakeFromNib()
         posterView.footerView?.showsOnlyWhenAncestorFocused = true
         posterView.imageView.contentMode = .scaleAspectFill
+        posterView.contentViewInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
 
         NSLayoutConstraint.activate([
             posterView.imageView.widthAnchor.constraint(equalTo: posterView.imageView.heightAnchor, multiplier: 16/9)

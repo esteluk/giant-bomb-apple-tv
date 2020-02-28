@@ -5,6 +5,7 @@ class TabBarController: UITabBarController {
 
     let homeCoordinator = HomeCoordinator(navigationController: UINavigationController())
     let showsCoordinator = ShowsTabCoordinator(navigationController: UINavigationController())
+    let searchCoordinator = SearchCoordinator(navigationController: UINavigationController())
 
     init(coordinator: RootCoordinator) {
         self.coordinator = coordinator
@@ -20,7 +21,12 @@ class TabBarController: UITabBarController {
 
         homeCoordinator.start()
         showsCoordinator.start()
+        searchCoordinator.start()
 
-        viewControllers = [homeCoordinator.navigationController, showsCoordinator.navigationController]
+        viewControllers = [
+            homeCoordinator.navigationController,
+            showsCoordinator.navigationController,
+            searchCoordinator.navigationController
+        ]
     }
 }
