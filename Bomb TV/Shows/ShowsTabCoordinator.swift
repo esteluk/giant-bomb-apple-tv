@@ -7,6 +7,7 @@ class ShowsTabCoordinator: NavigationCoordinator {
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        self.navigationController.isNavigationBarHidden = true
     }
 
     func start() {

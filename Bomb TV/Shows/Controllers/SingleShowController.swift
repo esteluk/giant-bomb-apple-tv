@@ -79,7 +79,7 @@ extension SingleShowController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-private enum ShowSection {
+enum ShowSection {
     case videos
 }
 

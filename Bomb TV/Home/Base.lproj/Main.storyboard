@@ -53,7 +53,7 @@
         <!--Shows-->
         <scene sceneID="OnF-jY-RCJ">
             <objects>
-                <viewController storyboardIdentifier="Shows" title="Shows" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LCd-vu-9bu" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Shows" title="Shows" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LCd-vu-9bu" customClass="ShowsCollectionController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZCH-Pr-akt"/>
                         <viewControllerLayoutGuide type="bottom" id="beD-VT-nkt"/>
@@ -61,9 +61,74 @@
                     <view key="view" contentMode="scaleToFill" id="q4h-xa-JKP">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="86t-sw-uIq">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            </imageView>
+                            <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yR4-gS-hcg">
+                                <rect key="frame" x="1000" y="60" width="830" height="1020"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="fEr-1P-K3Y">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="J0S-Z4-SpR">
+                                <rect key="frame" x="90" y="60" width="830" height="1020"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShowListCell" textLabel="elA-cr-FlH" detailTextLabel="xPq-Eb-BB5" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="Baw-rv-Ac2">
+                                        <rect key="frame" x="0.0" y="66" width="830" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Baw-rv-Ac2" id="wkP-pT-P5H">
+                                            <rect key="frame" x="0.0" y="0.0" width="830" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="elA-cr-FlH">
+                                                    <rect key="frame" x="20" y="4" width="71" height="46"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xPq-Eb-BB5">
+                                                    <rect key="frame" x="20" y="50" width="125" height="46"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="86t-sw-uIq" secondAttribute="bottom" id="2bH-Xe-xcD"/>
+                            <constraint firstItem="J0S-Z4-SpR" firstAttribute="bottom" secondItem="q4h-xa-JKP" secondAttribute="bottom" id="7tf-xq-jzs"/>
+                            <constraint firstAttribute="bottom" secondItem="yR4-gS-hcg" secondAttribute="bottom" id="8Oy-Yj-cWu"/>
+                            <constraint firstItem="J0S-Z4-SpR" firstAttribute="width" secondItem="yR4-gS-hcg" secondAttribute="width" id="8th-pw-v34"/>
+                            <constraint firstItem="yR4-gS-hcg" firstAttribute="leading" secondItem="J0S-Z4-SpR" secondAttribute="trailing" constant="80" id="9Y2-ns-W8A"/>
+                            <constraint firstItem="91C-n6-3hA" firstAttribute="trailing" secondItem="yR4-gS-hcg" secondAttribute="trailing" id="Qx2-bs-YCP"/>
+                            <constraint firstAttribute="trailing" secondItem="86t-sw-uIq" secondAttribute="trailing" id="VRk-dm-dcp"/>
+                            <constraint firstItem="J0S-Z4-SpR" firstAttribute="top" secondItem="91C-n6-3hA" secondAttribute="top" id="ewJ-gI-nuZ"/>
+                            <constraint firstItem="86t-sw-uIq" firstAttribute="leading" secondItem="q4h-xa-JKP" secondAttribute="leading" id="fts-ag-OHE"/>
+                            <constraint firstItem="yR4-gS-hcg" firstAttribute="top" secondItem="91C-n6-3hA" secondAttribute="top" id="hcU-cL-5vl"/>
+                            <constraint firstItem="86t-sw-uIq" firstAttribute="top" secondItem="q4h-xa-JKP" secondAttribute="top" id="qHH-Xm-tvH"/>
+                            <constraint firstItem="J0S-Z4-SpR" firstAttribute="leading" secondItem="91C-n6-3hA" secondAttribute="leading" id="tcb-od-64K"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="91C-n6-3hA"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Shows" id="T6p-rA-myz"/>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="86t-sw-uIq" id="bKU-x2-amo"/>
+                        <outlet property="showDetailsCollectionView" destination="yR4-gS-hcg" id="KLW-cO-sGg"/>
+                        <outlet property="showSelectionTableView" destination="J0S-Z4-SpR" id="xaR-GW-6Dw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hEL-NP-aOA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <tabBarItem title="Shows" id="C03-iS-psS"/>
