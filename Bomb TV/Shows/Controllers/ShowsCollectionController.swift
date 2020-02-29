@@ -8,6 +8,8 @@ class ShowsCollectionController: UIViewController {
     @IBOutlet private var showSelectionTableView: UITableView!
     @IBOutlet private var showDetailsCollectionView: UICollectionView!
 
+    weak var coordinator: ShowsTabCoordinator?
+
     private lazy var showSelectionDataSource: UITableViewDiffableDataSource<ShowsListSection, Show> = {
         return UITableViewDiffableDataSource<ShowsListSection, Show>(tableView: self.showSelectionTableView)
         { (tableView, indexPath, show) -> UITableViewCell? in
@@ -45,31 +47,28 @@ class ShowsCollectionController: UIViewController {
 
         firstly {
             viewModel.fetchShowList()
-        }.done { results in
+        }.map { results -> Show? in
             var snapshot = NSDiffableDataSourceSnapshot<ShowsListSection, Show>()
-            snapshot.appendSections([.show])
-            snapshot.appendItems(results)
+            let active = results.filter { $0.isActive }
+            snapshot.appendSections([.active])
+            snapshot.appendItems(active)
+
+            let inactive = results.filter { !$0.isActive }
+            snapshot.appendSections([.inactive])
+            snapshot.appendItems(inactive)
+
             self.showSelectionDataSource.apply(snapshot, animatingDifferences: true)
             self.showSelectionTableView.setNeedsFocusUpdate()
+            return results.first
+        }.done { show in
+            guard let show = show else { return }
+            self.loadVideos(for: show)
         }.catch { error in
             print(error.localizedDescription)
         }
     }
-}
 
-extension ShowsCollectionController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width / 2, height: collectionView.frame.size.width / 2.5)
-    }
-}
-
-extension ShowsCollectionController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
-        print("focus")
-
-        guard let indexPath = context.nextFocusedIndexPath,
-            let show = showSelectionDataSource.itemIdentifier(for: indexPath) else { return }
-
+    private func loadVideos(for show: Show) {
         firstly {
             viewModel.fetchVideos(for: show)
         }.done { results in
@@ -83,34 +82,33 @@ extension ShowsCollectionController: UITableViewDelegate {
     }
 }
 
+extension ShowsCollectionController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let video = showDataSource.itemIdentifier(for: indexPath) else { return }
+        coordinator?.playVideo(video: video)
+    }
+}
+
+extension ShowsCollectionController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.size.width / 2, height: collectionView.frame.size.width / 2.5)
+    }
+}
+
+extension ShowsCollectionController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        guard let indexPath = context.nextFocusedIndexPath,
+            let show = showSelectionDataSource.itemIdentifier(for: indexPath) else { return }
+
+        loadVideos(for: show)
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
 enum ShowsListSection {
-    case show
-}
-
-class ShowsCollectionViewModel {
-    private let api = BombAPI()
-    private var pendingShowRequest: Show?
-
-    func fetchShowList() -> Promise<[Show]> {
-        return api.getShows()
-    }
-
-    func fetchVideos(for show: Show) -> Promise<[BombVideo]> {
-        let waitAtLeast = after(seconds: 0.3)
-        let filter = VideoFilter.show(show)
-        pendingShowRequest = show
-
-        return firstly {
-            waitAtLeast
-        }.then { () -> Promise<[BombVideo]> in
-            guard show == self.pendingShowRequest else {
-                throw ShowsError.superceded
-            }
-            return self.api.recentVideos(filter: filter)
-        }
-    }
-}
-
-enum ShowsError: Error {
-    case superceded
+    case active
+    case inactive
 }

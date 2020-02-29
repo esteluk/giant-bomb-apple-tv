@@ -14,12 +14,18 @@ public struct Show: Decodable, Hashable {
 
     let id: Int
     public let images: Images
-    let isActive: Bool
+    public let isActive: Bool
     private let latestVideos: [BombVideo]?
     public let showDescription: String
     public let title: String
 
     public var latestVideo: BombVideo? {
         return latestVideos?.first
+    }
+}
+
+extension Show: Comparable {
+    public static func < (lhs: Show, rhs: Show) -> Bool {
+        return lhs.title < rhs.title
     }
 }
