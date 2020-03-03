@@ -49,17 +49,17 @@ class ShowsCollectionController: UIViewController {
             viewModel.fetchShowList()
         }.map { results -> Show? in
             var snapshot = NSDiffableDataSourceSnapshot<ShowsListSection, Show>()
-            let active = results.filter { $0.isActive }
+            let primary = results.filter { $0.isVisibleInNav && $0.isActive }
             snapshot.appendSections([.active])
-            snapshot.appendItems(active)
+            snapshot.appendItems(primary)
 
-            let inactive = results.filter { !$0.isActive }
+            let inactive = results.filter { !($0.isVisibleInNav && $0.isActive) }
             snapshot.appendSections([.inactive])
             snapshot.appendItems(inactive)
 
             self.showSelectionDataSource.apply(snapshot, animatingDifferences: true)
             self.showSelectionTableView.setNeedsFocusUpdate()
-            return results.first
+            return primary.first
         }.done { show in
             guard let show = show else { return }
             self.loadVideos(for: show)

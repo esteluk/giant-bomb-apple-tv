@@ -1,9 +1,9 @@
 import Foundation
 
 public struct LiveVideo: Decodable, Hashable {
-    let title: String
-    let image: String // Possibly a Images object
-    let stream: URL
+    public let title: String
+    public let image: String // Possibly a Images object
+    public let stream: URL
 }
 
 struct LiveVideoResponse: Decodable {

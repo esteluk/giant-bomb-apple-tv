@@ -7,8 +7,8 @@ class ViewController: UIViewController {
 
     @IBOutlet private var collectionView: UICollectionView!
 
-    lazy var dataSource: UICollectionViewDiffableDataSource<Section, HomeScreenItem> = {
-        let dataSource = UICollectionViewDiffableDataSource<Section, HomeScreenItem>(collectionView: self.collectionView)
+    lazy var dataSource: UICollectionViewDiffableDataSource<HomeSection, HomeScreenItem> = {
+        let dataSource = UICollectionViewDiffableDataSource<HomeSection, HomeScreenItem>(collectionView: self.collectionView)
             { (collectionView: UICollectionView, indexPath: IndexPath, item: HomeScreenItem) -> UICollectionViewCell? in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
                     preconditionFailure()
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         return dataSource
     }()
 
-    private var sections: [Section] = []
+    private var sections: [HomeSection] = []
     private let viewModel = HomeViewModel()
 
     override func viewDidLoad() {
@@ -47,12 +47,17 @@ class ViewController: UIViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         collectionView.collectionViewLayout = createLayout()
+        collectionView.contentInset = .zero
+        collectionView.contentInsetAdjustmentBehavior = .never
 
         viewModel.fetchData().done { results in
-            var snapshot = NSDiffableDataSourceSnapshot<Section, HomeScreenItem>()
+            var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeScreenItem>()
             for result in results {
                 guard case let .fulfilled(value) = result else { continue }
                 switch value {
+                case .highlight(let highlights):
+                    snapshot.appendSections([value])
+                    snapshot.appendItems(highlights.map { .highlight($0) })
                 case .latest(let latestVideos):
                     snapshot.appendSections([value])
                     snapshot.appendItems(latestVideos.map { .video($0) })
@@ -74,7 +79,7 @@ class ViewController: UIViewController {
 
     private func createLayout() -> UICollectionViewLayout {
 
-        return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             let dataSection = self.sections[sectionIndex]
 
             let groupSize: NSCollectionLayoutSize
@@ -82,9 +87,12 @@ class ViewController: UIViewController {
                                                   heightDimension: .fractionalHeight(1.0))
 
             switch dataSection {
+            case .highlight:
+                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45),
+                                                   heightDimension: .fractionalWidth(0.3))
             case .latest:
                 groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
-                                                   heightDimension: .fractionalWidth(0.16))
+                                                   heightDimension: .estimated(300))
             case .shows:
                 groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33),
                                                    heightDimension: .fractionalWidth(0.22))
@@ -100,28 +108,61 @@ class ViewController: UIViewController {
             section.interGroupSpacing = 0
             section.orthogonalScrollingBehavior = .continuous
 
-            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(132)),
-                                                                     elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-            header.pinToVisibleBounds = false
-            section.boundarySupplementaryItems = [header]
+            let insets = self.view.safeAreaInsets
+
+            switch sectionIndex {
+            case 0:
+                let highlightBackground = NSCollectionLayoutDecorationItem.background(elementKind: "highlightBackground")
+                highlightBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -insets.left, bottom: 0, trailing: 0)
+                section.decorationItems = [highlightBackground]
+                section.supplementariesFollowContentInsets = false
+                section.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: 0, bottom: 0, trailing: 0)
+            case self.sections.endIndex-1:
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: insets.bottom, trailing: 0)
+            default:
+                section.contentInsets = .zero
+            }
+
+            if dataSection.hasHeader {
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                                                                            heightDimension: .estimated(132)),
+                                                                         elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                header.pinToVisibleBounds = false
+                section.boundarySupplementaryItems = [header]
+            }
             return section
         }
+        layout.register(HighlightSectionBackground.self, forDecorationViewOfKind: "highlightBackground")
+        return layout
+    }
+}
+
+class HighlightSectionBackground: UICollectionReusableView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .systemGray
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
+
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
+        case .highlight(let highlightItem):
+            switch highlightItem {
+            case .liveStream(let liveVideo):
+                coordinator?.play(liveVideo: liveVideo)
+            case .resumeWatching(let video):
+                coordinator?.playVideo(video: video, launchDirectly: true)
+            }
         case .show(let show):
             coordinator?.launchShow(show: show)
         case .video(let video):
             coordinator?.playVideo(video: video)
         }
     }
-}
-
-enum HomeScreenItem: Hashable {
-    case video(BombVideo)
-    case show(Show)
 }

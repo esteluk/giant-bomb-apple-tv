@@ -55,7 +55,16 @@ public class BombAPI {
         }
     }
 
-    public func search(query: String, page: Int = 1) -> Promise<WrappedResponse<BombVideo>> {
+    public func video(for id: Int) -> Promise<BombVideo> {
+        let request = buildRequest(for: "video/\(String(id))")
+        return firstly {
+            session.dataTask(.promise, with: request).validate()
+        }.map { response in
+            try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }
+    }
+
+    public func search(query: String, page: Int = 1) -> Promise<WrappedResponse<[BombVideo]>> {
         let queryItems = [
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "query", value: query),
@@ -102,6 +111,23 @@ public class BombAPI {
         let request = buildRequest(for: "video/save-time", queryItems: queryItems)
 
         return session.dataTask(.promise, with: request).validate().asVoid()
+    }
+
+    public func getRecentlyWatched(limit: Int = 2) -> Promise<[BombVideo]> {
+        let request = buildRequest(for: "video/get-all-saved-times")
+
+        return firstly {
+            session.dataTask(.promise, with: request).validate()
+        }.map { response -> SavedTimesResponse in
+            try self.decoder.decode(SavedTimesResponse.self, from: response.data)
+        }.map {
+            $0.savedTimes
+        }.sortedValues()
+        .map {
+            $0.prefix(limit)
+        }.thenMap { savedTime -> Promise<BombVideo> in
+            self.video(for: savedTime.videoId)
+        }
     }
 
     private func buildRequest(for resource: String, queryItems: [URLQueryItem] = []) -> URLRequest {

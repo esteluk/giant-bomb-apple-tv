@@ -7,5 +7,5 @@ public struct WrappedResponse<T: Decodable>: Decodable {
 
     public let numberOfTotalResults: Int
     public let pageSize: Int
-    public let results: [T]
+    public let results: T
 }

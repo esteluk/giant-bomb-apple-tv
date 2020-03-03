@@ -2,18 +2,19 @@ import AVKit
 import BombAPI
 import UIKit
 
-
 class VideoCoordinator: NSObject, DestinationCoordinator {
 
     private enum Constants {
         static let minimumPlayTimeBeforeSaving: Float64 = 15.0
     }
 
+    private let launchDirectly: Bool
     private let video: BombVideo
     var coordinator: NavigationCoordinator?
     var rootController: UIViewController
 
-    init(video: BombVideo, presentingController: UIViewController) {
+    init(video: BombVideo, launchDirectly: Bool, presentingController: UIViewController) {
+        self.launchDirectly = launchDirectly
         self.rootController = presentingController
         self.video = video
     }
@@ -25,7 +26,8 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
     }
 
     private func promptToResume(video: BombVideo) -> Bool {
-        guard let resumePoint = video.resumePoint else { return false }
+        guard launchDirectly == false,
+            let resumePoint = video.resumePoint else { return false }
         let alert = UIAlertController(title: "Resume playback",
                                       message: "Do you want to resume from where you left off or start from the beginning of this video?",
                                       preferredStyle: .alert)
@@ -51,7 +53,7 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
         let controller = AVPlayerViewController()
         let playerItem = AVPlayerItem(url: video.videoUrls.highQuality!)
         playerItem.externalMetadata = video.externalMetadata
-        loadImage(from: video, onto: playerItem)
+        VideoCoordinator.loadImage(from: video.images.small.fixed, onto: playerItem)
 
         if resumeFromPrevious, let resumePoint = video.resumePoint {
             playerItem.seek(to: CMTime(seconds: resumePoint, preferredTimescale: 1), completionHandler: nil)
@@ -65,10 +67,10 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
         })
     }
 
-    private func loadImage(from video: BombVideo, onto player: AVPlayerItem) {
+    fileprivate static func loadImage(from url: URL, onto player: AVPlayerItem) {
         let queue = DispatchQueue(label: "videoImage", qos: .background)
         queue.async {
-            guard let data = try? Data(contentsOf: video.images.small.fixed) else { return }
+            guard let data = try? Data(contentsOf: url) else { return }
             let artworkData = AVMutableMetadataItem()
             artworkData.keySpace = .common
             artworkData.identifier = .commonIdentifierArtwork
@@ -95,11 +97,46 @@ extension VideoCoordinator: AVPlayerViewControllerDelegate {
     }
 }
 
+class LiveVideoCoordinator: NSObject, DestinationCoordinator {
+
+    private let video: LiveVideo
+    var coordinator: NavigationCoordinator?
+    var rootController: UIViewController
+
+    init(liveVideo: LiveVideo, coordinator: NavigationCoordinator, presentingController: UIViewController) {
+        self.coordinator = coordinator
+        self.video = liveVideo
+        self.rootController = presentingController
+    }
+
+    func start() {
+        let controller = AVPlayerViewController()
+        let playerItem = AVPlayerItem(url: video.stream)
+        VideoCoordinator.loadImage(from: URL(string: video.image)!, onto: playerItem)
+
+        controller.player = AVPlayer(playerItem: playerItem)
+
+        rootController.present(controller, animated: true, completion: {
+            controller.player?.playImmediately(atRate: 1.0)
+        })
+    }
+}
+
 protocol VideoPresenting: NavigationCoordinator {}
 
 extension VideoPresenting {
-    func playVideo(video: BombVideo) {
-        let coordinator = VideoCoordinator(video: video, presentingController: navigationController)
+    func play(liveVideo: LiveVideo) {
+        let coordinator = LiveVideoCoordinator(liveVideo: liveVideo,
+                                               coordinator: self,
+                                               presentingController: navigationController)
+        coordinator.start()
+        childCoordinators.append(coordinator)
+    }
+
+    func playVideo(video: BombVideo, launchDirectly: Bool = false) {
+        let coordinator = VideoCoordinator(video: video,
+                                           launchDirectly: launchDirectly,
+                                           presentingController: navigationController)
         coordinator.coordinator = self
         coordinator.start()
         childCoordinators.append(coordinator)

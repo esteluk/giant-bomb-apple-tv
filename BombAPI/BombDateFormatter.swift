@@ -7,4 +7,11 @@ extension DateFormatter {
         formatter.timeZone = TimeZone(identifier: "America/Los_Angeles")!
         return formatter
     }
+
+    static var savedDateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd-HH-mm-ss"
+        formatter.timeZone = TimeZone(identifier: "America/Los_Angeles")!
+        return formatter
+    }
 }

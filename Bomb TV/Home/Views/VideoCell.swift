@@ -22,24 +22,11 @@ class VideoCell: UICollectionViewCell {
                 return
             }
 
-            let url: URL
+            let url = video.previewImage
+            posterView.title = video.title
 
-            switch video {
-            case .show(let show):
-                url = show.images.medium.fixed
-                posterView.title = show.title
-            case .video(let video):
-                url = video.images.super.fixed
-                posterView.title = video.name
-            }
-
-            imageTask = ImagePipeline.shared.loadImage(with: url, completion: { result in
-                switch result {
-                case .success(let response):
-                    self.posterView.image = response.image
-                case .failure(let error):
-                    print("Failed to load image with error \(error.localizedDescription)")
-                }
+            imageTask = retryableImageLoad(for: url, completion: { image in
+                self.posterView.image = image
             })
 
             posterView.subtitle = nil
@@ -63,6 +50,25 @@ class VideoCell: UICollectionViewCell {
         posterView.subtitle = nil
         posterView.image = nil
         imageTask?.cancel()
+    }
+
+    private func retryableImageLoad(for url: URL, completion: @escaping ((UIImage) -> Void)) -> ImageTask {
+        return ImagePipeline.shared.loadImage(with: url, completion: { result in
+            switch result {
+            case .success(let response):
+                completion(response.image)
+            case .failure(_):
+                // Attempt to fix image load failure
+                self.imageTask = ImagePipeline.shared.loadImage(with: url.fixed, completion: { result in
+                    switch result {
+                    case .success(let response):
+                        completion(response.image)
+                    case .failure(let error):
+                        print("Failed to load image with error \(error.localizedDescription)")
+                    }
+                })
+            }
+        })
     }
 }
 

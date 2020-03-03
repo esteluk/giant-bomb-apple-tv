@@ -88,7 +88,7 @@ class SearchViewModel {
     private var isMakingRequest: Bool = false
     private var page: Int = 1
     private var query: String?
-    private var searchResponse: WrappedResponse<BombVideo>?
+    private var searchResponse: WrappedResponse<[BombVideo]>?
     private var videos = [BombVideo]()
 
     func isLastIndexPath(_ indexPath: IndexPath) -> Bool {

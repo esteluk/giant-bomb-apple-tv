@@ -3,7 +3,7 @@ import UIKit
 class SectionHeaderText: UICollectionReusableView {
     @IBOutlet private var titleLabel: UILabel!
 
-    var section: Section? {
+    var section: HomeSection? {
         didSet {
             guard let section = section else {
                 prepareForReuse()

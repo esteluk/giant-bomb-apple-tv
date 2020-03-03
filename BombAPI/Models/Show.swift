@@ -5,6 +5,7 @@ public struct Show: Decodable, Hashable {
         case id
         case images = "image"
         case isActive = "active"
+        case isVisibleInNav = "display_nav"
         case latestVideos = "latest"
         case showDescription = "deck"
         case title
@@ -12,9 +13,11 @@ public struct Show: Decodable, Hashable {
 
     static var fields = CodingKeys.allCases.map { $0.rawValue }.joined(separator: ",")
 
+
     let id: Int
     public let images: Images
     public let isActive: Bool
+    public let isVisibleInNav: Bool
     private let latestVideos: [BombVideo]?
     public let showDescription: String
     public let title: String
