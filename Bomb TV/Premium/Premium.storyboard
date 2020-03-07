@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15705" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7JX-IN-t5B">
+    <device id="appleTV" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Premium-->
+        <scene sceneID="N6d-xL-poc">
+            <objects>
+                <viewController title="Premium" id="7JX-IN-t5B" customClass="PremiumViewController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2nh-y4-7Gp"/>
+                        <viewControllerLayoutGuide type="bottom" id="YDb-zL-yun"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="L9w-9F-d3o">
+                        <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="always" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PA7-mM-pjC">
+                                <rect key="frame" x="90" y="0.0" width="1740" height="1080"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="bAq-18-L1I">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="mTs-Cr-5kE">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6sc-0b-dy3">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="PA7-mM-pjC" secondAttribute="bottom" id="4xm-I0-jlF"/>
+                            <constraint firstItem="bVs-SB-1MW" firstAttribute="trailing" secondItem="PA7-mM-pjC" secondAttribute="trailing" id="BPK-lS-9Uh"/>
+                            <constraint firstItem="PA7-mM-pjC" firstAttribute="leading" secondItem="bVs-SB-1MW" secondAttribute="leading" id="Fhh-Oi-DYT"/>
+                            <constraint firstItem="PA7-mM-pjC" firstAttribute="top" secondItem="L9w-9F-d3o" secondAttribute="top" id="nKK-ZK-rh2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bVs-SB-1MW"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Premium" id="4C8-35-XJr"/>
+                    <simulatedTabBarMetrics key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="collectionView" destination="PA7-mM-pjC" id="AkM-Ic-Jg2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fau-dW-FEO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="96" y="206"/>
+        </scene>
+    </scenes>
+</document>

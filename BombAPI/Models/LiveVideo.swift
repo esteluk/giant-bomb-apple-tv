@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 
 public struct LiveVideo: Decodable, Hashable {
@@ -27,6 +28,15 @@ public struct LiveVideo: Decodable, Hashable {
         stream = try container.decode(URL.self, forKey: .stream)
     }
 }
+
+public extension LiveVideo {
+    var externalMetadata: [AVMetadataItem] {
+        let title = AVMutableMetadataItem(identifier: .commonIdentifierTitle, value: self.title)
+
+        return [title]
+    }
+}
+
 
 struct LiveVideoResponse: Decodable {
     let video: LiveVideo?

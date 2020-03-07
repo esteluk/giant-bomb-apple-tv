@@ -112,6 +112,7 @@ class LiveVideoCoordinator: NSObject, DestinationCoordinator {
     func start() {
         let controller = AVPlayerViewController()
         let playerItem = AVPlayerItem(url: video.stream)
+        playerItem.externalMetadata = video.externalMetadata
         VideoCoordinator.loadImage(from: video.image, onto: playerItem)
 
         controller.player = AVPlayer(playerItem: playerItem)

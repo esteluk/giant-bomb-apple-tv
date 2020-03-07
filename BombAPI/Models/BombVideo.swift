@@ -59,7 +59,7 @@ public extension BombVideo {
     }
 }
 
-private extension AVMutableMetadataItem {
+extension AVMutableMetadataItem {
     convenience init(identifier: AVMetadataIdentifier, value: String) {
         self.init()
         self.keySpace = .common
