@@ -10,18 +10,33 @@ class ViewController: UIViewController {
     lazy var dataSource: UICollectionViewDiffableDataSource<HomeSection, HomeScreenItem> = {
         let dataSource = UICollectionViewDiffableDataSource<HomeSection, HomeScreenItem>(collectionView: self.collectionView)
             { (collectionView: UICollectionView, indexPath: IndexPath, item: HomeScreenItem) -> UICollectionViewCell? in
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
-                    preconditionFailure()
-                }
 
-                cell.video = item
-                return cell
+                switch item {
+                case .highlight(let highlight):
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HighlightCell.reuseIdentifier, for: indexPath) as? HighlightCell else {
+                        preconditionFailure()
+                    }
+
+                    cell.item = highlight
+                    return cell
+                default:
+                    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
+                        preconditionFailure()
+                    }
+
+                    cell.video = item
+                    return cell
+                }
         }
 
         dataSource.supplementaryViewProvider = {
             (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
             if kind == UICollectionView.elementKindSectionHeader {
-                guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderText", for: indexPath) as? SectionHeaderText else { return nil }
+                guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                                 withReuseIdentifier: "SectionHeaderText",
+                                                                                 for: indexPath) as? SectionHeaderText else {
+                    return nil
+                }
 
                 let section = self.sections[indexPath.section]
                 view.section = section
@@ -42,8 +57,11 @@ class ViewController: UIViewController {
 
         collectionView.register(UINib(nibName: "VideoCell", bundle: nil),
                                 forCellWithReuseIdentifier: VideoCell.reuseIdentifier)
+        collectionView.register(UINib(nibName: "HighlightCell", bundle: nil),
+                                forCellWithReuseIdentifier: HighlightCell.reuseIdentifier)
         collectionView.register(UINib(nibName: "SectionHeaderText", bundle: nil),
-                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderText")
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: "SectionHeaderText")
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         collectionView.collectionViewLayout = createLayout()
@@ -88,8 +106,7 @@ class ViewController: UIViewController {
 
             switch dataSection {
             case .highlight:
-                groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45),
-                                                   heightDimension: .fractionalWidth(0.3))
+                return self.layoutForHighlightSection()
             case .latest:
                 groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
                                                    heightDimension: .estimated(300))
@@ -111,12 +128,6 @@ class ViewController: UIViewController {
             let insets = self.view.safeAreaInsets
 
             switch sectionIndex {
-            case 0:
-                let highlightBackground = NSCollectionLayoutDecorationItem.background(elementKind: "highlightBackground")
-                highlightBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -insets.left, bottom: 0, trailing: 0)
-                section.decorationItems = [highlightBackground]
-                section.supplementariesFollowContentInsets = false
-                section.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: 0, bottom: 0, trailing: 0)
             case self.sections.endIndex-1:
                 section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: insets.bottom, trailing: 0)
             default:
@@ -134,6 +145,35 @@ class ViewController: UIViewController {
         }
         layout.register(HighlightSectionBackground.self, forDecorationViewOfKind: "highlightBackground")
         return layout
+    }
+
+    private func layoutForHighlightSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .fractionalHeight(1.0))
+        let largeItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .fractionalHeight(1.0))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(1200),
+                                               heightDimension: .fractionalWidth(0.3))
+
+        let smallItem = NSCollectionLayoutItem(layoutSize: itemSize)
+        let largeItem = NSCollectionLayoutItem(layoutSize: largeItemSize)
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [smallItem, largeItem])
+
+        let section = NSCollectionLayoutSection(group: group)
+
+        section.interGroupSpacing = 0
+        section.orthogonalScrollingBehavior = .continuous
+
+        let insets = self.view.safeAreaInsets
+
+        let highlightBackground = NSCollectionLayoutDecorationItem.background(elementKind: "highlightBackground")
+        highlightBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -insets.left, bottom: 0, trailing: 0)
+        section.decorationItems = [highlightBackground]
+        section.supplementariesFollowContentInsets = false
+        section.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: 0, bottom: 0, trailing: 0)
+
+        return section
     }
 }
 

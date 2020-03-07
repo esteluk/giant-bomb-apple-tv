@@ -13,9 +13,9 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
     var previewImage: URL {
         switch self {
         case .liveStream(let video):
-            return URL(string: video.image)!
+            return video.image
         case .resumeWatching(let video):
-            return video.images.medium
+            return video.images.super
         }
     }
 

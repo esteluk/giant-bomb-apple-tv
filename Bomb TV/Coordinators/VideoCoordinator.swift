@@ -112,7 +112,7 @@ class LiveVideoCoordinator: NSObject, DestinationCoordinator {
     func start() {
         let controller = AVPlayerViewController()
         let playerItem = AVPlayerItem(url: video.stream)
-        VideoCoordinator.loadImage(from: URL(string: video.image)!, onto: playerItem)
+        VideoCoordinator.loadImage(from: video.image, onto: playerItem)
 
         controller.player = AVPlayer(playerItem: playerItem)
 
