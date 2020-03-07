@@ -1,0 +1,8 @@
+app_identifier("uk.co.nathanwong.giantbomb.tv") # The bundle identifier of your app
+apple_id("nathan@nathanwong.co.uk") # Your Apple email address
+
+itc_team_id("702911") # App Store Connect Team ID
+team_id("95X8VY6TB2") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

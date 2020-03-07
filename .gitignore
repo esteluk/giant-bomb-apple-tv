@@ -34,6 +34,7 @@ Pods
 # too big... blah
 *.orig
 
+gc_keys.json
 fastlane/report.xml
 fastlane/test_output
 

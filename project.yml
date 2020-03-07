@@ -1,6 +1,6 @@
 name: Bomb TV
 options:
-  bundleIdPrefix: uk.co.nathanwong
+  bundleIdPrefix: uk.co.nathanwong.giantbomb
 
 packages:
   Nuke:
@@ -20,6 +20,9 @@ targets:
     deploymentTarget: 13.0
     sources: [Bomb TV]
 
+    attributes:
+      ProvisioningStyle: Manual
+
     configFiles: 
       Debug: Bomb TV/Configs/debug.xcconfig
       Release: Bomb TV/Configs/release.xcconfig
@@ -28,6 +31,10 @@ targets:
       - target: BombAPI
       - sdk: TVUIKit.framework
       - package: Nuke
+
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: uk.co.nathanwong.giantbomb.tv
 
   BombAPI:
     type: framework.static
@@ -38,9 +45,9 @@ targets:
       Release: BombAPI/Configs/release.xcconfig
     dependencies:
       - package: PromiseKit
-        embed: true
+        embed: false
       - package: PMKFoundation
-        embed: true
+        embed: false
 
   UnitTests:
     type: bundle.unit-test
