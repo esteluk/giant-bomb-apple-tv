@@ -26,8 +26,8 @@ targets:
 
     dependencies:
       - target: BombAPI
-      - package: Nuke
       - sdk: TVUIKit.framework
+      - package: Nuke
 
   BombAPI:
     type: framework.static
@@ -38,7 +38,9 @@ targets:
       Release: BombAPI/Configs/release.xcconfig
     dependencies:
       - package: PromiseKit
+        embed: true
       - package: PMKFoundation
+        embed: true
 
   UnitTests:
     type: bundle.unit-test
