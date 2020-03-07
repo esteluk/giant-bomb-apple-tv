@@ -140,18 +140,3 @@ public class BombAPI {
         return URLRequest(url: components.url(relativeTo: baseUrl)!)
     }
 }
-
-public enum VideoFilter {
-    case premium
-    case show(Show)
-
-    var queryItem: URLQueryItem {
-        switch self {
-        case .premium:
-            return URLQueryItem(name: "filter", value: "premium:true")
-        case .show(let show):
-            return URLQueryItem(name: "filter", value: "video_show:\(show.id)")
-        }
-
-    }
-}

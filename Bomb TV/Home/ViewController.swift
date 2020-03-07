@@ -76,9 +76,9 @@ class ViewController: UIViewController {
                 case .highlight(let highlights):
                     snapshot.appendSections([value])
                     snapshot.appendItems(highlights.map { .highlight($0) })
-                case .latest(let latestVideos):
+                case .videoRow(_, let videos):
                     snapshot.appendSections([value])
-                    snapshot.appendItems(latestVideos.map { .video($0) })
+                    snapshot.appendItems(videos.map { .video($0) })
                 case .shows(let shows):
                     snapshot.appendSections([value])
                     snapshot.appendItems(shows.map { .show($0) })
@@ -107,7 +107,7 @@ class ViewController: UIViewController {
             switch dataSection {
             case .highlight:
                 return self.layoutForHighlightSection()
-            case .latest:
+            case .videoRow:
                 groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
                                                    heightDimension: .estimated(300))
             case .shows:

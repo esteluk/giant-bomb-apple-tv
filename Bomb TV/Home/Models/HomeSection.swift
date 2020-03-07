@@ -60,16 +60,16 @@ enum HomeScreenItem: Hashable, CellInformationProviding {
 enum HomeSection: Hashable, Equatable {
 
     case highlight([HighlightItem])
-    case latest([BombVideo])
     case shows([Show])
+    case videoRow(String, [BombVideo])
     case inProgress
 
     var title: String {
         switch self {
         case .highlight:
             return "Highlights"
-        case .latest:
-            return "Latest"
+        case .videoRow(let title, _):
+            return title
         case .shows:
             return "Shows"
         case .inProgress:
@@ -86,7 +86,8 @@ enum HomeSection: Hashable, Equatable {
 
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .latest(let videos):
+        case .videoRow(let title, let videos):
+            hasher.combine(title)
             hasher.combine(videos)
         case .shows(let shows):
             hasher.combine(shows)
@@ -101,7 +102,7 @@ enum HomeSection: Hashable, Equatable {
         switch (lhs, rhs) {
         case (.highlight, .highlight): return true
         case (.inProgress, .inProgress): return true
-        case (.latest(let a), .latest(let b)): return a == b
+        case (.videoRow(let aT, let aV), .videoRow(let bT, let bV)): return aT == bT && aV == bV
         case (.shows(let a), .shows(let b)): return a == b
         default:
             return false

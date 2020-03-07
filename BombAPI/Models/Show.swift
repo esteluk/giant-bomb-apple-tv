@@ -13,7 +13,6 @@ public struct Show: Decodable, Hashable {
 
     static var fields = CodingKeys.allCases.map { $0.rawValue }.joined(separator: ",")
 
-
     let id: Int
     public let images: Images
     public let isActive: Bool
