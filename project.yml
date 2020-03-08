@@ -29,8 +29,14 @@ targets:
 
     dependencies:
       - target: BombAPI
+        embed: false
       - sdk: TVUIKit.framework
       - package: Nuke
+
+    scheme:
+      testTargets:
+        - UnitTests
+        - UITests
 
     settings:
       base:
