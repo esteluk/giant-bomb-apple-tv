@@ -62,6 +62,13 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
         controller.delegate = self
         controller.player = AVPlayer(playerItem: playerItem)
 
+        let secondsTimescale = CMTimeScale(NSEC_PER_SEC)
+        let updateInterval = CMTime(seconds: 60, preferredTimescale: secondsTimescale)
+
+        controller.player?.addPeriodicTimeObserver(forInterval: updateInterval, queue: .main, using: { time in
+            self.updatePlayedTime(duration: time)
+        })
+
         rootController.present(controller, animated: true, completion: {
             controller.player?.playImmediately(atRate: 1.0)
         })
