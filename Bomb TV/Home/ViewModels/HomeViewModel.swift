@@ -24,12 +24,13 @@ class HomeViewModel {
 
     private func getTenYearsAgoVideos() -> Promise<[BombVideo]> {
         let calendar = Calendar.current
-        guard let tenYearsAgo = calendar.date(byAdding: .year, value: -10, to: Date()),
-            let startOfWeek = calendar.date(bySetting: .weekday, value: 1, of: tenYearsAgo),
-            let endOfWeek = calendar.date(bySetting: .weekday, value: 7, of: tenYearsAgo) else {
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
+        guard let weekDate = calendar.date(from: components),
+            let tenYearsAgo = calendar.date(byAdding: .year, value: -10, to: weekDate),
+            let endOfWeek = calendar.date(byAdding: .day, value: 6, to: tenYearsAgo) else {
                 return Promise(error: HomeViewModelError.invalidDate)
         }
-        let filter = VideoFilter.date(start: startOfWeek, end: endOfWeek)
+        let filter = VideoFilter.date(start: tenYearsAgo, end: endOfWeek)
         return api.recentVideos(filter: filter)
     }
 

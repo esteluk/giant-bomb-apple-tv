@@ -10,12 +10,28 @@ class AuthenticationViewController: UIViewController {
 
     private let viewModel = AuthenticationViewModel()
 
+    private lazy var activity: NSUserActivity = {
+        let activity = NSUserActivity(activityType: "uk.co.nathanwong.giantbomb.tv.webpage")
+        activity.title = "Launch Giant Bomb"
+        activity.webpageURL = URL(string: "https://giantbomb.com/app/bombtv")
+        activity.isEligibleForHandoff = true
+        return activity
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        activity.becomeCurrent()
+    }
+
     @IBAction private func doneAction(_ sender: Any) {
         firstly {
             viewModel.getRegistrationToken(code: codeTextField.text)
+        }.ensure {
+            self.activity.invalidate()
         }.done {
             self.coordinator?.successfulLogin()
-        }.catch { error in
+        }.catch { error in  
             self.showAlert(for: error)
         }
     }

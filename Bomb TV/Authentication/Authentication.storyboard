@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="TVUIKit controls" minToolsVersion="10.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,34 +20,58 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="XkU-7r-BFg">
-                                <rect key="frame" x="660" y="358.5" width="600" height="363"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="XkU-7r-BFg">
+                                <rect key="frame" x="560" y="281" width="800" height="518"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in on your web browser" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXY-Qa-AV5">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open https://www.giantbomb.com/app/bombtv/ and enter your code" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yP8-8J-nc4">
-                                        <rect key="frame" x="0.0" y="66" width="600" height="71"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <tvCardView contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SlN-LD-HSQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="800" height="300"/>
+                                        <tvCardContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rce-Df-kj3">
+                                            <rect key="frame" x="23" y="23" width="754" height="254"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gbC-6e-XQd">
+                                                    <rect key="frame" x="20" y="20" width="714" height="161"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Log in on the web" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXY-Qa-AV5">
+                                                            <rect key="frame" x="0.0" y="0.0" width="714" height="46"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yP8-8J-nc4">
+                                                            <rect key="frame" x="0.0" y="54" width="714" height="107"/>
+                                                            <string key="text">Launch and login to
+https://www.giantbomb.com/app/bombtv/
+and enter your code here!</string>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="gbC-6e-XQd" secondAttribute="trailing" constant="20" symbolic="YES" id="9hn-y8-hnj"/>
+                                                <constraint firstItem="gbC-6e-XQd" firstAttribute="top" secondItem="rce-Df-kj3" secondAttribute="top" constant="20" symbolic="YES" id="XfA-7D-Wy6"/>
+                                                <constraint firstItem="gbC-6e-XQd" firstAttribute="leading" secondItem="rce-Df-kj3" secondAttribute="leading" constant="20" symbolic="YES" id="jLx-dY-Y5h"/>
+                                            </constraints>
+                                        </tvCardContentView>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="300" id="pBc-2S-g9i"/>
+                                        </constraints>
+                                    </tvCardView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bFF-OV-wRu">
-                                        <rect key="frame" x="0.0" y="157" width="600" height="100"/>
+                                        <rect key="frame" x="0.0" y="316" width="800" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="iKX-NP-WIc"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" textContentType="one-time-code"/>
                                         <connections>
                                             <outlet property="delegate" destination="rRq-V8-sQS" id="0NQ-4I-nsB"/>
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygU-Ww-r3C">
-                                        <rect key="frame" x="0.0" y="277" width="600" height="86"/>
+                                        <rect key="frame" x="0.0" y="432" width="800" height="86"/>
                                         <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                         <state key="normal" title="Done"/>
                                         <connections>
@@ -55,7 +80,7 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="PN8-bS-GKT"/>
+                                    <constraint firstAttribute="width" constant="800" id="PN8-bS-GKT"/>
                                 </constraints>
                             </stackView>
                         </subviews>
