@@ -20,6 +20,11 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
     }
 
     func start() {
+        if launchDirectly {
+            play(video: video, resumeFromPrevious: true)
+            return
+        }
+
         if promptToResume(video: video) == false {
             play(video: video)
         }
