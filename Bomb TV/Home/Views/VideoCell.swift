@@ -3,11 +3,11 @@ import Nuke
 import TVUIKit
 import UIKit
 
-class VideoCell: UICollectionViewCell {
+class VideoCell: UICollectionViewCell, PosterImageLoading {
 
     @IBOutlet private var posterView: TVPosterView!
 
-    private var imageTask: ImageTask?
+    var imageTask: ImageTask?
 
     var alwaysShowsTitles: Bool = false {
         didSet {
@@ -24,12 +24,14 @@ class VideoCell: UICollectionViewCell {
 
             let url = video.previewImage
             posterView.title = video.title
+            posterView.subtitle = nil
 
+            guard imageTask?.request.urlRequest.url != url else { return }
+            imageTask?.cancel()
             imageTask = retryableImageLoad(for: url, completion: { image in
                 self.posterView.image = image
             })
 
-            posterView.subtitle = nil
         }
     }
 
@@ -51,8 +53,14 @@ class VideoCell: UICollectionViewCell {
         posterView.image = nil
         imageTask?.cancel()
     }
+}
 
-    private func retryableImageLoad(for url: URL, completion: @escaping ((UIImage) -> Void)) -> ImageTask {
+protocol PosterImageLoading: class {
+    var imageTask: ImageTask? { get set }
+}
+
+extension PosterImageLoading {
+    func retryableImageLoad(for url: URL, completion: @escaping ((UIImage) -> Void)) -> ImageTask {
         return ImagePipeline.shared.loadImage(with: url, completion: { result in
             switch result {
             case .success(let response):

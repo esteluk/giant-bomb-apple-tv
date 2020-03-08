@@ -4,6 +4,7 @@ import UIKit
 class ViewController: UIViewController {
 
     weak var coordinator: HomeCoordinator?
+    private weak var highlightBackground: HighlightSectionBackground?
 
     @IBOutlet private var collectionView: UICollectionView!
 
@@ -143,22 +144,19 @@ class ViewController: UIViewController {
             }
             return section
         }
-        layout.register(HighlightSectionBackground.self, forDecorationViewOfKind: "highlightBackground")
+        layout.register(HighlightSectionBackground.self, forDecorationViewOfKind: HighlightSectionBackground.kind)
         return layout
     }
 
     private func layoutForHighlightSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .fractionalHeight(1.0))
-        let largeItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                   heightDimension: .fractionalHeight(1.0))
-        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(1200),
-                                               heightDimension: .fractionalWidth(0.3))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3),
+                                               heightDimension: .fractionalWidth(0.3 * (9/16)))
 
         let smallItem = NSCollectionLayoutItem(layoutSize: itemSize)
-        let largeItem = NSCollectionLayoutItem(layoutSize: largeItemSize)
 
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [smallItem, largeItem])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [smallItem])
 
         let section = NSCollectionLayoutSection(group: group)
 
@@ -166,29 +164,51 @@ class ViewController: UIViewController {
         section.orthogonalScrollingBehavior = .continuous
 
         let insets = self.view.safeAreaInsets
+        let topMargin: CGFloat = 240
 
         let highlightBackground = NSCollectionLayoutDecorationItem.background(elementKind: "highlightBackground")
-        highlightBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -insets.left, bottom: 0, trailing: 0)
+        highlightBackground.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: -insets.left, bottom: 0, trailing: insets.left)
         section.decorationItems = [highlightBackground]
         section.supplementariesFollowContentInsets = false
-        section.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: 0, bottom: 0, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: insets.top + topMargin, leading: 0, bottom: 50, trailing: 0)
 
         return section
     }
 }
 
-class HighlightSectionBackground: UICollectionReusableView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .systemGray
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplaySupplementaryView view: UICollectionReusableView,
+                        forElementKind elementKind: String,
+                        at indexPath: IndexPath) {
+        // Unsure if there's a better way to do this
+        switch elementKind {
+        case HighlightSectionBackground.kind:
+            highlightBackground = view as? HighlightSectionBackground
+            highlightBackground?.highlightItem = viewModel.defaultHighlightItem
+        default:
+            break
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        didUpdateFocusIn context: UICollectionViewFocusUpdateContext,
+                        with coordinator: UIFocusAnimationCoordinator) {
+        guard let nextIndexPath = context.nextFocusedIndexPath,
+            let nextItem = dataSource.itemIdentifier(for: nextIndexPath) else {
+                highlightBackground?.isItemFocused = false
+                return
+        }
+
+        switch nextItem {
+        case .highlight(let highlightItem):
+            highlightBackground?.highlightItem = highlightItem
+            highlightBackground?.isItemFocused = true
+        default:
+            highlightBackground?.isItemFocused = false
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {

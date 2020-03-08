@@ -5,6 +5,7 @@ import PromiseKit
 
 class HomeViewModel {
 
+    var defaultHighlightItem: HighlightItem?
     private let api = BombAPI()
 
     func fetchData() -> Guarantee<[Result<HomeSection>]>{
@@ -37,9 +38,11 @@ class HomeViewModel {
     private func buildHighlightSection() -> Promise<[HighlightItem]> {
         return when(fulfilled: [
             getLiveVideoItem(),
-            api.getRecentlyWatched(limit: 3).mapValues { HighlightItem.resumeWatching($0) }
+            api.getRecentlyWatched(limit: 5).mapValues { HighlightItem.resumeWatching($0) }
         ]).map { parts in
             return Array(parts.joined())
+        }.get { array in
+            self.defaultHighlightItem = array.first
         }
     }
 

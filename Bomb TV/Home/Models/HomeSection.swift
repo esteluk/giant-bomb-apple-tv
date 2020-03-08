@@ -19,6 +19,15 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
         }
     }
 
+    var prompt: String {
+        switch self {
+        case .liveStream(let video):
+            return "Live now: \(video.title)"
+        case .resumeWatching(let video):
+            return "Continue watching \(video.name)"
+        }
+    }
+
     var title: String {
         switch self {
         case .liveStream(let video):

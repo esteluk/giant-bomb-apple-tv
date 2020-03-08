@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="TVUIKit controls" minToolsVersion="10.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,32 +16,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="600" height="670"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YsK-Ii-iSi">
+                    <tvPosterView contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ufT-aw-KWG">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="670"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="600" id="sBv-pz-fSW"/>
-                            <constraint firstAttribute="height" constant="670" id="uEr-VJ-N8u"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="uEr-VJ-N8u"/>
-                            </mask>
-                        </variation>
-                    </imageView>
+                    </tvPosterView>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="YsK-Ii-iSi" secondAttribute="bottom" id="6ma-dx-7fR"/>
-                <constraint firstAttribute="trailing" secondItem="YsK-Ii-iSi" secondAttribute="trailing" id="B69-0D-hzh"/>
-                <constraint firstItem="YsK-Ii-iSi" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="X5N-6E-Ses"/>
-                <constraint firstItem="YsK-Ii-iSi" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="lql-H6-nkA"/>
+                <constraint firstItem="ufT-aw-KWG" firstAttribute="top" secondItem="Rz2-K0-ksD" secondAttribute="top" id="QyF-Rn-Xgu"/>
+                <constraint firstItem="ufT-aw-KWG" firstAttribute="leading" secondItem="Rz2-K0-ksD" secondAttribute="leading" id="WxK-uN-Pch"/>
+                <constraint firstAttribute="trailing" secondItem="ufT-aw-KWG" secondAttribute="trailing" id="lUv-k3-OF4"/>
+                <constraint firstAttribute="bottom" secondItem="ufT-aw-KWG" secondAttribute="bottom" id="xh4-Tl-CBC"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="7PP-Ag-gPX"/>
             <size key="customSize" width="2230" height="670"/>
             <connections>
-                <outlet property="imageHeightAnchor" destination="uEr-VJ-N8u" id="xjs-8b-4Uc"/>
-                <outlet property="imageWidthAnchor" destination="sBv-pz-fSW" id="CKc-GV-Tej"/>
-                <outlet property="mainImageView" destination="YsK-Ii-iSi" id="hpU-Fd-Rw1"/>
+                <outlet property="posterView" destination="ufT-aw-KWG" id="5G8-Id-svG"/>
             </connections>
             <point key="canvasLocation" x="1159" y="9"/>
         </collectionViewCell>
