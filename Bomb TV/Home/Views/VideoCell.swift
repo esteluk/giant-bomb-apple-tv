@@ -7,6 +7,8 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
 
     @IBOutlet private var posterView: TVPosterView!
 
+    private let progressView = UIProgressView(progressViewStyle: .default)
+
     var imageTask: ImageTask?
 
     var alwaysShowsTitles: Bool = false {
@@ -32,6 +34,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
                 self.posterView.image = image
             })
 
+            progressView.progress = video.progress ?? 0.0
         }
     }
 
@@ -44,6 +47,16 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
         NSLayoutConstraint.activate([
             posterView.imageView.widthAnchor.constraint(equalTo: posterView.imageView.heightAnchor, multiplier: 16/9)
         ])
+
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        posterView.contentView.insertSubview(progressView, aboveSubview: posterView.imageView)
+        progressView.isHidden = true
+
+        NSLayoutConstraint.activate([
+            progressView.leadingAnchor.constraint(equalTo: posterView.imageView.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: posterView.imageView.trailingAnchor),
+            progressView.bottomAnchor.constraint(equalTo: posterView.imageView.bottomAnchor),
+        ])
     }
 
     override func prepareForReuse() {
@@ -52,6 +65,15 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
         posterView.subtitle = nil
         posterView.image = nil
         imageTask?.cancel()
+        progressView.isHidden = true
+    }
+
+    override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
+        if context.nextFocusedView == self && progressView.progress > 0 {
+            progressView.isHidden = false
+        } else {
+            progressView.isHidden = true
+        }
     }
 }
 

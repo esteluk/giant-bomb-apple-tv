@@ -10,6 +10,11 @@ public struct BombVideo {
     public let publishedOn: Date
     public let videoDescription: String
     public let videoUrls: VideoUrls
+
+    public var progress: Float? {
+        guard let resumePoint = resumePoint else { return nil }
+        return Float(resumePoint) / Float(duration)
+    }
 }
 
 extension BombVideo: Decodable, Hashable {

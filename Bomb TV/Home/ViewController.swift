@@ -110,7 +110,7 @@ class ViewController: UIViewController {
                 return self.layoutForHighlightSection()
             case .videoRow:
                 groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
-                                                   heightDimension: .estimated(300))
+                                                   heightDimension: .estimated(270))
             case .shows:
                 groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33),
                                                    heightDimension: .fractionalWidth(0.22))

@@ -10,6 +10,13 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
     case liveStream(LiveVideo)
     case resumeWatching(BombVideo)
 
+    var progress: Float? {
+        switch self {
+        case .liveStream: return nil
+        case .resumeWatching(let video): return video.progress
+        }
+    }
+
     var previewImage: URL {
         switch self {
         case .liveStream(let video):
@@ -51,6 +58,14 @@ enum HomeScreenItem: Hashable, CellInformationProviding {
             return show.images.super
         case .video(let video):
             return video.images.medium
+        }
+    }
+
+    var progress: Float? {
+        switch self {
+        case .highlight(let highlight): return highlight.progress
+        case .video(let video): return video.progress
+        default: return nil
         }
     }
 
