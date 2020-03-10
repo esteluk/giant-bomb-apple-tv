@@ -56,7 +56,8 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
 
     private func play(video: BombVideo, resumeFromPrevious: Bool = false) {
         let controller = AVPlayerViewController()
-        let playerItem = AVPlayerItem(url: video.videoUrls.highQuality!)
+        let quality = SettingsBundleHelper().selectedVideoQuality
+        let playerItem = AVPlayerItem(url: video.videoUrls.url(for: quality)!)
         playerItem.externalMetadata = video.externalMetadata
         VideoCoordinator.loadImage(from: video.images.small.fixed, onto: playerItem)
 
@@ -153,5 +154,34 @@ extension VideoPresenting {
         coordinator.coordinator = self
         coordinator.start()
         childCoordinators.append(coordinator)
+    }
+}
+
+class SettingsBundleHelper {
+    enum Keys {
+        static let videoQuality = "video_quality"
+    }
+
+    enum VideoQualityOptions: String {
+        case low
+        case high
+        case hd
+    }
+
+    var selectedVideoQuality: VideoQualityOptions {
+        let defaults = UserDefaults.standard
+        guard let value = defaults.string(forKey: Keys.videoQuality),
+            let quality = VideoQualityOptions(rawValue: value) else { return .hd }
+        return  quality
+    }
+}
+
+extension VideoUrls {
+    func url(for quality: SettingsBundleHelper.VideoQualityOptions) -> URL? {
+        switch quality {
+        case .low: return lowQuality
+        case .high: return mediumQuality
+        case .hd: return highQuality
+        }
     }
 }
