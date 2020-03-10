@@ -10,11 +10,6 @@ public struct BombVideo {
     public let publishedOn: Date
     public let videoDescription: String
     public let videoUrls: VideoUrls
-
-    public var progress: Float? {
-        guard let resumePoint = resumePoint else { return nil }
-        return Float(resumePoint) / Float(duration)
-    }
 }
 
 extension BombVideo: Decodable, Hashable {
@@ -52,6 +47,16 @@ extension BombVideo: Decodable, Hashable {
 
     var isAvailable: Bool {
         return videoUrls.isUrlAvailable
+    }
+
+    public var isResumable: Bool {
+        guard let resumePoint = resumePoint else { return false }
+        return resumePoint > 0 && resumePoint < duration - 10
+    }
+
+    public var progress: Float? {
+        guard isResumable, let resumePoint = resumePoint else { return nil }
+        return Float(resumePoint) / Float(duration)
     }
 }
 

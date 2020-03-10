@@ -113,6 +113,15 @@ public class BombAPI {
         return session.dataTask(.promise, with: request).validate().asVoid()
     }
 
+    @discardableResult
+    public func markWatched(video: BombVideo) -> Promise<Void> {
+        let queryItems = [
+            URLQueryItem(name: "video_id", value: String(video.id))
+        ]
+        let request = buildRequest(for: "video/mark-watched", queryItems: queryItems)
+        return session.dataTask(.promise, with: request).validate().asVoid()
+    }
+
     public func getRecentlyWatched(limit: Int = 2) -> Promise<[BombVideo]> {
         let request = buildRequest(for: "video/get-all-saved-times")
 
@@ -127,6 +136,8 @@ public class BombAPI {
             $0.prefix(limit)
         }.thenMap { savedTime -> Promise<BombVideo> in
             self.video(for: savedTime.videoId)
+        }.filterValues {
+            $0.isResumable
         }
     }
 
