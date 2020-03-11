@@ -1,10 +1,13 @@
 {
   "layers" : [
     {
-      "filename" : "Front.imagestacklayer"
+      "filename" : "Play.imagestacklayer"
     },
     {
-      "filename" : "Middle.imagestacklayer"
+      "filename" : "Shine.imagestacklayer"
+    },
+    {
+      "filename" : "Bomb.imagestacklayer"
     },
     {
       "filename" : "Back.imagestacklayer"
