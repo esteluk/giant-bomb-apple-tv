@@ -12,7 +12,11 @@ class HomeViewModel {
         return when(resolved: [
             buildHighlightSection().map { HomeSection.highlight($0) },
             api.recentVideos().map { HomeSection.videoRow("Latest", $0) },
-            api.getShows().map { HomeSection.shows($0) },
+            api.getShows().filterValues { $0.isActive && $0.isVisibleInNav }.map { shows -> [Show] in
+                return shows.sorted { (lhs, rhs) -> Bool in
+                    lhs.position < rhs.position
+                }
+            }.map { HomeSection.shows($0) },
             getQuickLooks().map { HomeSection.videoRow("Quick Looks", $0) },
             getTenYearsAgoVideos().map { HomeSection.videoRow("Ten years ago…", $0) }
         ])

@@ -7,6 +7,7 @@ public struct Show: Decodable, Hashable {
         case isActive = "active"
         case isVisibleInNav = "display_nav"
         case latestVideos = "latest"
+        case position
         case showDescription = "deck"
         case title
     }
@@ -18,6 +19,7 @@ public struct Show: Decodable, Hashable {
     public let isActive: Bool
     public let isVisibleInNav: Bool
     private let latestVideos: [BombVideo]?
+    public let position: Int
     public let showDescription: String
     public let title: String
 
