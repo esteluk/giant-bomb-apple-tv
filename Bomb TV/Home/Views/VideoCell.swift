@@ -28,8 +28,6 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
             posterView.title = video.title
             posterView.subtitle = nil
 
-            guard imageTask?.request.urlRequest.url != url else { return }
-            imageTask?.cancel()
             imageTask = retryableImageLoad(for: url, completion: { image in
                 self.posterView.image = image
             })
