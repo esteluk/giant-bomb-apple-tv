@@ -7,6 +7,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
 
     @IBOutlet private var posterView: TVPosterView!
 
+    private let durationView = VideoDurationView(frame: .zero)
     private let progressView = UIProgressView(progressViewStyle: .default)
 
     var imageTask: ImageTask?
@@ -33,6 +34,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
             })
 
             progressView.progress = video.progress ?? 0.0
+            durationView.video = video.video
         }
     }
 
@@ -47,13 +49,18 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
         ])
 
         progressView.translatesAutoresizingMaskIntoConstraints = false
+        durationView.translatesAutoresizingMaskIntoConstraints = false
+
         posterView.contentView.insertSubview(progressView, aboveSubview: posterView.imageView)
+        posterView.contentView.insertSubview(durationView, aboveSubview: posterView.imageView)
         progressView.isHidden = true
 
         NSLayoutConstraint.activate([
             progressView.leadingAnchor.constraint(equalTo: posterView.imageView.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: posterView.imageView.trailingAnchor),
             progressView.bottomAnchor.constraint(equalTo: posterView.imageView.bottomAnchor),
+            durationView.trailingAnchor.constraint(equalTo: posterView.imageView.trailingAnchor, constant: -8),
+            durationView.topAnchor.constraint(equalTo: posterView.imageView.topAnchor, constant: 8)
         ])
     }
 
@@ -71,6 +78,21 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
             progressView.isHidden = false
         } else {
             progressView.isHidden = true
+        }
+
+        if context.nextFocusedView == self {
+            coordinator.addCoordinatedFocusingAnimations({ context in
+                self.durationView.transform = CGAffineTransform.identity
+                    .scaledBy(x: 1.25, y: 1.25).translatedBy(x: 20, y: -12)
+            }, completion: {
+                // Nothing
+            })
+        } else if context.previouslyFocusedView == self {
+            coordinator.addCoordinatedUnfocusingAnimations({ context in
+                self.durationView.transform = CGAffineTransform.identity
+            }, completion: {
+                // Nothing
+            })
         }
     }
 }

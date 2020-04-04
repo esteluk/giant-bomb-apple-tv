@@ -4,9 +4,10 @@ import Foundation
 public struct BombVideo {
     public let name: String
     let id: Int
-    let duration: TimeInterval
+    public let duration: TimeInterval
     public let images: Images
     public let resumePoint: TimeInterval?
+    public let premium: Bool
     public let publishedOn: Date
     public let videoDescription: String
     public let videoUrls: VideoUrls
@@ -14,12 +15,13 @@ public struct BombVideo {
 
 extension BombVideo: Decodable, Hashable {
     enum CodingKeys: String, CodingKey, CaseIterable {
-        case name = "name"
-        case id = "id"
+        case name
+        case id
         case duration = "length_seconds"
         case images = "image"
-        case resumePoint = "saved_time"
+        case premium
         case publishedOn = "publish_date"
+        case resumePoint = "saved_time"
         case videoDescription = "deck"
         case lowUrl = "low_url"
         case medUrl = "med_url"
@@ -40,6 +42,7 @@ extension BombVideo: Decodable, Hashable {
             resumePoint = nil
         }
 
+        premium = try container.decode(Bool.self, forKey: .premium)
         publishedOn = try container.decode(Date.self, forKey: .publishedOn)
         videoDescription = try container.decode(String.self, forKey: .videoDescription)
         videoUrls = try VideoUrls(from: decoder)

@@ -43,6 +43,15 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
             return video.name
         }
     }
+
+    var video: BombVideo? {
+        switch self {
+        case .liveStream:
+            return nil
+        case .resumeWatching(let video):
+            return video
+        }
+    }
 }
 
 enum HomeScreenItem: Hashable, CellInformationProviding {
@@ -77,6 +86,17 @@ enum HomeScreenItem: Hashable, CellInformationProviding {
             return show.title
         case .video(let video):
             return video.name
+        }
+    }
+
+    var video: BombVideo? {
+        switch self {
+        case .highlight(let highlightItem):
+            return highlightItem.video
+        case .show:
+            return nil
+        case .video(let video):
+            return video
         }
     }
 }
