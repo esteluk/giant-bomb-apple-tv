@@ -38,7 +38,7 @@ enum AuthenticationError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .isIncorrectLength:
-            return "Link codes should be six characters long"
+            return "Link codes should consist of six characters."
         case .unknownError:
             return "It wasn't possible to log you in right now. Please try again later."
         }

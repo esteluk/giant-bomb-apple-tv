@@ -13,7 +13,6 @@ class ExcitingBackgroundView: UIView {
     private var initialContentOffsets: [Int] = [10000, 500, 200, 20000, 700]
     private var targetContentOffsets: [Int] = [100, 15000, 25000, 5000, 10000]
 
-
     private let images: [String] = [
         "beastcast",
         "beasters",
@@ -69,11 +68,21 @@ class ExcitingBackgroundView: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stack)
 
+        let overlay = UIView()
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        overlay.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
+        addSubview(overlay)
+
         NSLayoutConstraint.activate([
             stack.topAnchor.constraint(equalTo: topAnchor, constant: -108),
             stack.leadingAnchor.constraint(equalTo: leadingAnchor),
             stack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 108)
+            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 108),
+
+            overlay.topAnchor.constraint(equalTo: topAnchor),
+            overlay.trailingAnchor.constraint(equalTo: trailingAnchor),
+            overlay.bottomAnchor.constraint(equalTo: bottomAnchor),
+            overlay.leadingAnchor.constraint(equalTo: leadingAnchor)
         ])
 
         stack.alignment = .fill

@@ -35,24 +35,24 @@
                                             <subviews>
                                                 <tvCardView contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="SlN-LD-HSQ">
                                                     <rect key="frame" x="0.0" y="0.0" width="800" height="300"/>
-                                                    <tvCardContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rce-Df-kj3">
+                                                    <tvCardContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rce-Df-kj3">
                                                         <rect key="frame" x="23" y="23" width="754" height="254"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gbC-6e-XQd">
-                                                                <rect key="frame" x="20" y="20" width="714" height="161"/>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gbC-6e-XQd">
+                                                                <rect key="frame" x="20" y="20" width="714" height="169"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Log in on the web" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXY-Qa-AV5">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Log in to your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXY-Qa-AV5">
                                                                         <rect key="frame" x="0.0" y="0.0" width="714" height="46"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yP8-8J-nc4">
-                                                                        <rect key="frame" x="0.0" y="54" width="714" height="107"/>
-                                                                        <string key="text">Launch and login to
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yP8-8J-nc4">
+                                                                        <rect key="frame" x="0.0" y="62" width="714" height="107"/>
+                                                                        <string key="text">Launch
 https://www.giantbomb.com/app/bombtv/
-and enter your code here!</string>
+and enter your code here</string>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
