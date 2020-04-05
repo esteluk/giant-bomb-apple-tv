@@ -6,8 +6,10 @@ class AuthenticationViewController: UIViewController {
 
     weak var coordinator: RootCoordinator?
     
+    @IBOutlet private var backgroundView: ExcitingBackgroundView!
     @IBOutlet private var codeTextField: UITextField!
-
+    @IBOutlet private var doneButton: UIButton!
+    
     private let viewModel = AuthenticationViewModel()
 
     private lazy var activity: NSUserActivity = {
@@ -18,10 +20,19 @@ class AuthenticationViewController: UIViewController {
         return activity
     }()
 
+    override var preferredFocusEnvironments: [UIFocusEnvironment] {
+        return [codeTextField, doneButton]
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         activity.becomeCurrent()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        backgroundView.startAnimations()
     }
 
     @IBAction private func doneAction(_ sender: Any) {
@@ -51,48 +62,5 @@ extension AuthenticationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         doneAction(textField)
         return true
-    }
-}
-
-class AuthenticationViewModel {
-
-    private enum Constants {
-        static let appName = "bombtv"
-    }
-
-    func getRegistrationToken(code: String?) -> Promise<Void> {
-        firstly { () -> Promise<AuthenticationResponse> in
-            try validate(code: code)
-            return BombAPI().getAuthenticationToken(appName: Constants.appName, code: code!)
-        }.done { response in
-            guard response.isSuccessful,
-                let token = response.token else {
-                throw AuthenticationError.unknownError
-            }
-            let store = AuthenticationStore()
-            store.save(response: response)
-            BombAPI.setAPIKey(token)
-        }
-    }
-
-    func validate(code: String?) throws {
-        guard let code = code,
-            code.count == 6 else {
-            throw AuthenticationError.isIncorrectLength
-        }
-    }
-}
-
-enum AuthenticationError: Error, LocalizedError {
-    case isIncorrectLength
-    case unknownError
-
-    var errorDescription: String? {
-        switch self {
-        case .isIncorrectLength:
-            return "Link codes should be six characters long"
-        case .unknownError:
-            return "It wasn't possible to log you in right now. Please try again later."
-        }
     }
 }
