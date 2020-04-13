@@ -7,6 +7,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
 
     @IBOutlet private var posterView: TVPosterView!
 
+    private let completedImage = UIImageView(frame: .zero)
     private let durationView = VideoDurationView(frame: .zero)
     private let progressView = UIProgressView(progressViewStyle: .default)
 
@@ -33,6 +34,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
                 self.posterView.image = image
             })
 
+            completedImage.isHidden = !(video.video?.isCompleted ?? false)
             progressView.progress = video.progress ?? 0.0
             durationView.video = video.video
         }
@@ -62,6 +64,17 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
             durationView.trailingAnchor.constraint(equalTo: posterView.imageView.trailingAnchor, constant: -8),
             durationView.topAnchor.constraint(equalTo: posterView.imageView.topAnchor, constant: 8)
         ])
+
+        completedImage.translatesAutoresizingMaskIntoConstraints = false
+        completedImage.image = UIImage(systemName: "checkmark.circle.fill")
+        posterView.contentView.insertSubview(completedImage, aboveSubview: posterView.imageView)
+
+        NSLayoutConstraint.activate([
+            completedImage.leadingAnchor.constraint(equalTo: posterView.imageView.leadingAnchor, constant: 8),
+            completedImage.topAnchor.constraint(equalTo: posterView.imageView.topAnchor, constant: 8),
+            completedImage.bottomAnchor.constraint(equalTo: durationView.bottomAnchor),
+            completedImage.widthAnchor.constraint(equalTo: completedImage.heightAnchor)
+        ])
     }
 
     override func prepareForReuse() {
@@ -71,6 +84,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
         posterView.image = nil
         imageTask?.cancel()
         progressView.isHidden = true
+        completedImage.isHidden = true
     }
 
     override func didUpdateFocus(in context: UIFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
@@ -82,6 +96,8 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
 
         if context.nextFocusedView == self {
             coordinator.addCoordinatedFocusingAnimations({ context in
+                self.completedImage.transform = CGAffineTransform.identity
+                    .scaledBy(x: 1.25, y: 1.25).translatedBy(x: -20, y: -12)
                 self.durationView.transform = CGAffineTransform.identity
                     .scaledBy(x: 1.25, y: 1.25).translatedBy(x: 20, y: -12)
             }, completion: {
@@ -89,7 +105,8 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
             })
         } else if context.previouslyFocusedView == self {
             coordinator.addCoordinatedUnfocusingAnimations({ context in
-                self.durationView.transform = CGAffineTransform.identity
+                self.completedImage.transform = .identity
+                self.durationView.transform = .identity
             }, completion: {
                 // Nothing
             })

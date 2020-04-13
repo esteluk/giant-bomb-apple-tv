@@ -52,6 +52,11 @@ extension BombVideo: Decodable, Hashable {
         return videoUrls.isUrlAvailable
     }
 
+    public var isCompleted: Bool {
+        guard let resumePoint = resumePoint else { return false }
+        return resumePoint > duration - 10
+    }
+
     public var isResumable: Bool {
         guard let resumePoint = resumePoint else { return false }
         return resumePoint > 0 && resumePoint < duration - 10
