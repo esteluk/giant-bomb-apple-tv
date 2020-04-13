@@ -143,8 +143,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q15-Zw-wGY">
-                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q15-Zw-wGY">
+                                <rect key="frame" x="90" y="0.0" width="1740" height="1080"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="xBm-jf-Ard">
                                     <size key="itemSize" width="50" height="50"/>
@@ -157,8 +157,8 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="q15-Zw-wGY" firstAttribute="top" secondItem="VcV-Zg-ftF" secondAttribute="top" id="hp4-do-IiD"/>
-                            <constraint firstItem="q15-Zw-wGY" firstAttribute="leading" secondItem="VcV-Zg-ftF" secondAttribute="leading" id="sbp-8g-Dby"/>
-                            <constraint firstAttribute="trailing" secondItem="q15-Zw-wGY" secondAttribute="trailing" id="u5j-Pk-Bor"/>
+                            <constraint firstItem="q15-Zw-wGY" firstAttribute="leading" secondItem="m3y-ni-a1d" secondAttribute="leading" id="sbp-8g-Dby"/>
+                            <constraint firstItem="m3y-ni-a1d" firstAttribute="trailing" secondItem="q15-Zw-wGY" secondAttribute="trailing" id="u5j-Pk-Bor"/>
                             <constraint firstAttribute="bottom" secondItem="q15-Zw-wGY" secondAttribute="bottom" id="yxa-kE-Sd5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="m3y-ni-a1d"/>
