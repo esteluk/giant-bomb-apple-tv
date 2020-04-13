@@ -12,6 +12,7 @@ public class BombAPI {
     }
 
     private let baseUrl = URL(string: "https://www.giantbomb.com/api/")!
+    private let cache = LocalCache()
     private lazy var decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(DateFormatter.defaultBombFormatter)
@@ -59,17 +60,10 @@ public class BombAPI {
             session.dataTask(.promise, with: request).validate()
         }.map { response -> [BombVideo] in
             try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }.get { videos in
+            videos.forEach { self.cache.storeVideo($0) }
         }.filterValues{
             $0.isAvailable
-        }
-    }
-
-    public func video(for id: Int) -> Promise<BombVideo> {
-        let request = buildRequest(for: "video/\(String(id))")
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response in
-            try self.decoder.decode(WrappedResponse.self, from: response.data).results
         }
     }
 
@@ -142,11 +136,32 @@ public class BombAPI {
             $0.savedTimes
         }.sortedValues()
         .map {
-            $0.prefix(limit)
+            $0.prefix(limit*2)
         }.thenMap { savedTime -> Promise<BombVideo> in
             self.video(for: savedTime.videoId)
         }.filterValues {
             $0.isResumable
+        }.map {
+            Array($0.prefix(limit))
+        }
+    }
+
+    private func video(for id: Int) -> Promise<BombVideo> {
+        if let video = cache.requestVideo(for: id) {
+            return Promise.value(video)
+        }
+
+        return requestVideo(for: id)
+    }
+
+    private func requestVideo(for id: Int) -> Promise<BombVideo> {
+        let request = buildRequest(for: "video/\(String(id))")
+        return firstly {
+            session.dataTask(.promise, with: request).validate()
+        }.map { response in
+            try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }.get { video in
+            self.cache.storeVideo(video)
         }
     }
 
