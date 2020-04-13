@@ -106,6 +106,10 @@ class ExcitingBackgroundView: UIView {
         }
     }
 
+    func stopAnimations() {
+        scrollLink?.invalidate()
+    }
+
     @objc private func animateScrolls() {
         let ratio = TimeInterval(abs(animationStartTime.timeIntervalSinceNow)) / animationDuration
 

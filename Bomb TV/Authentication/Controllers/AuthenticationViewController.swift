@@ -35,6 +35,11 @@ class AuthenticationViewController: UIViewController {
         backgroundView.startAnimations()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        backgroundView.stopAnimations()
+        super.viewDidDisappear(animated)
+    }
+
     @IBAction private func doneAction(_ sender: Any) {
         firstly {
             viewModel.getRegistrationToken(code: codeTextField.text)
