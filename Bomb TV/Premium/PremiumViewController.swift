@@ -63,7 +63,7 @@ class PremiumViewModel {
 
     func fetchData() -> Promise<[BombVideo]> {
         let filter = VideoFilter.premium
-        return api.recentVideos(filter: filter)
+        return api.videos(filter: filter)
     }
 }
 

@@ -11,7 +11,7 @@ class HomeViewModel {
     func fetchData() -> Guarantee<[Result<HomeSection>]>{
         return when(resolved: [
             buildHighlightSection().map { HomeSection.highlight($0) },
-            api.recentVideos().map { HomeSection.videoRow("Latest", $0) },
+            api.videos().map { HomeSection.videoRow("Latest", $0) },
             api.getShows().filterValues { $0.isActive && $0.isVisibleInNav }.map { shows -> [Show] in
                 return shows.sorted { (lhs, rhs) -> Bool in
                     lhs.position < rhs.position
@@ -24,7 +24,7 @@ class HomeViewModel {
 
     private func getQuickLooks() -> Promise<[BombVideo]> {
         let filter = VideoFilter.keyShow(.quickLooks)
-        return api.recentVideos(filter: filter)
+        return api.videos(filter: filter)
     }
 
     private func getTenYearsAgoVideos() -> Promise<[BombVideo]> {
@@ -36,7 +36,7 @@ class HomeViewModel {
                 return Promise(error: HomeViewModelError.invalidDate)
         }
         let filter = VideoFilter.date(start: tenYearsAgo, end: endOfWeek)
-        return api.recentVideos(filter: filter)
+        return api.videos(filter: filter)
     }
 
     private func buildHighlightSection() -> Promise<[HighlightItem]> {

@@ -20,7 +20,7 @@ class ShowsCollectionViewModel {
             guard show == self.currentlySelectedShow else {
                 throw ShowsError.superceded
             }
-            return self.api.recentVideos(filter: filter)
+            return self.api.videos(filter: filter)
         }
     }
 }

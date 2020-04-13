@@ -93,6 +93,6 @@ class SingleShowViewModel {
 
     func fetchData() -> Promise<[BombVideo]> {
         let filter = VideoFilter.show(show)
-        return api.recentVideos(filter: filter)
+        return api.videos(filter: filter)
     }
 }

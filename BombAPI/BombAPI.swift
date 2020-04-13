@@ -23,6 +23,9 @@ public class BombAPI {
         self.session = session
     }
 
+    /// Gets an array of all the Show objects that are available within the API. Examples of "Show" objects
+    /// are "Quick Looks", "Unprofessional Fridays" or "Mass Alex"
+    /// - Returns: A promise for an array of Shows
     public func getShows() -> Promise<[Show]> {
         let queryItems = [
             URLQueryItem(name: "field_list", value: Show.fields)
@@ -35,7 +38,13 @@ public class BombAPI {
         }
     }
 
-    public func recentVideos(filter: VideoFilter? = nil, offset: Int = 0) -> Promise<[BombVideo]> {
+    /// Gets a paged list of the 100 most recent videos that are fall within the provided filter. If no filter is provided,
+    /// this returns the 100 most recent videos published to the site to which the authorising user has access.
+    /// - Parameters:
+    ///   - filter: VideoFilter object describing which videos should be returned from this request. Defaults to nil.
+    ///   - offset: If provided, the request skips the first <offset> number of results.
+    /// - Returns: An array of BombVideo objects that meet the filter and offset requirements.
+    public func videos(filter: VideoFilter? = nil, offset: Int = 0) -> Promise<[BombVideo]> {
         var queryItems = [
             URLQueryItem(name: "offset", value: String(offset)),
             URLQueryItem(name: "field_list", value: BombVideo.fields)
