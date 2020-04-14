@@ -9,11 +9,11 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
     }
 
     private let launchDirectly: Bool
-    private let video: BombVideo
+    private let video: VideoViewModel
     var coordinator: NavigationCoordinator?
     var rootController: UIViewController
 
-    init(video: BombVideo, launchDirectly: Bool, presentingController: UIViewController) {
+    init(video: VideoViewModel, launchDirectly: Bool, presentingController: UIViewController) {
         self.launchDirectly = launchDirectly
         self.rootController = presentingController
         self.video = video
@@ -30,7 +30,7 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
         }
     }
 
-    private func promptToResume(video: BombVideo) -> Bool {
+    private func promptToResume(video: VideoViewModel) -> Bool {
         guard launchDirectly == false,
             let resumePoint = video.resumePoint else { return false }
         let alert = UIAlertController(title: "Resume playback",
@@ -54,9 +54,10 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
         return true
     }
 
-    private func play(video: BombVideo, resumeFromPrevious: Bool = false) {
+    private func play(video: VideoViewModel, resumeFromPrevious: Bool = false) {
         let controller = AVPlayerViewController()
         let quality = SettingsBundleHelper().selectedVideoQuality
+        let video = video.video
         let playerItem = AVPlayerItem(url: video.videoUrls.url(for: quality)!)
         playerItem.externalMetadata = video.externalMetadata
         VideoCoordinator.loadImage(from: video.images.small.fixed, onto: playerItem)
@@ -104,7 +105,7 @@ extension VideoCoordinator: AVPlayerViewControllerDelegate {
 
     private func updatePlayedTime(duration: CMTime) {
         let api = BombAPI()
-        _ = api.saveTime(video: video, position: Int(floor(CMTimeGetSeconds(duration)))).ensure {
+        _ = api.saveTime(video: video.video, position: Int(floor(CMTimeGetSeconds(duration)))).ensure {
             self.coordinator?.childDidFinish(self)
         }
     }
@@ -147,7 +148,7 @@ extension VideoPresenting {
         childCoordinators.append(coordinator)
     }
 
-    func playVideo(video: BombVideo, launchDirectly: Bool = false) {
+    func playVideo(video: VideoViewModel, launchDirectly: Bool = false) {
         let coordinator = VideoCoordinator(video: video,
                                            launchDirectly: launchDirectly,
                                            presentingController: navigationController)

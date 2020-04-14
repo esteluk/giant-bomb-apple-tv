@@ -10,8 +10,8 @@ class SingleShowController: UIViewController {
     @IBOutlet private var bottomBackgroundArea: UIVisualEffectView!
     @IBOutlet private var showsCollectionView: UICollectionView!
 
-    private lazy var dataSource: UICollectionViewDiffableDataSource<ShowSection, BombVideo> = {
-        return UICollectionViewDiffableDataSource<ShowSection, BombVideo>(collectionView: self.showsCollectionView)
+    private lazy var dataSource: UICollectionViewDiffableDataSource<ShowSection, VideoViewModel> = {
+        return UICollectionViewDiffableDataSource<ShowSection, VideoViewModel>(collectionView: self.showsCollectionView)
         { (collectionView, indexPath, video) -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
                 preconditionFailure()
@@ -48,7 +48,7 @@ class SingleShowController: UIViewController {
         firstly {
             viewModel.fetchData()
         }.done { results in
-            var snapshot = NSDiffableDataSourceSnapshot<ShowSection, BombVideo>()
+            var snapshot = NSDiffableDataSourceSnapshot<ShowSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
             self.dataSource.apply(snapshot, animatingDifferences: true)
@@ -60,7 +60,7 @@ class SingleShowController: UIViewController {
     }
 
     @IBAction private func playLatestAction(_ sender: Any) {
-        guard let video = show?.latestVideo else { return }
+        guard let video = dataSource.itemIdentifier(for: IndexPath(row: 0, section: 0)) else { return }
         coordinator?.playVideo(video: video)
     }
     
@@ -91,8 +91,8 @@ class SingleShowViewModel {
         self.show = show
     }
 
-    func fetchData() -> Promise<[BombVideo]> {
+    func fetchData() -> Promise<[VideoViewModel]> {
         let filter = VideoFilter.show(show)
-        return api.videos(filter: filter)
+        return api.videos(filter: filter).mapResumeTimes(api: api)
     }
 }

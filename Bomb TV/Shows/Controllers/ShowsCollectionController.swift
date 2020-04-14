@@ -21,8 +21,8 @@ class ShowsCollectionController: UIViewController {
         }
     }()
 
-    private lazy var showDataSource: UICollectionViewDiffableDataSource<ShowSection, BombVideo> = {
-        return UICollectionViewDiffableDataSource<ShowSection, BombVideo>(collectionView: self.showDetailsCollectionView)
+    private lazy var showDataSource: UICollectionViewDiffableDataSource<ShowSection, VideoViewModel> = {
+        return UICollectionViewDiffableDataSource<ShowSection, VideoViewModel>(collectionView: self.showDetailsCollectionView)
         { (collectionView, indexPath, video) -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
                 return nil
@@ -72,7 +72,7 @@ class ShowsCollectionController: UIViewController {
         firstly {
             viewModel.fetchVideos(for: show)
         }.done { results in
-            var snapshot = NSDiffableDataSourceSnapshot<ShowSection, BombVideo>()
+            var snapshot = NSDiffableDataSourceSnapshot<ShowSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
             self.showDataSource.apply(snapshot, animatingDifferences: true)

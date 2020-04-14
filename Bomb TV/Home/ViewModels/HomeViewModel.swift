@@ -11,7 +11,7 @@ class HomeViewModel {
     func fetchData() -> Guarantee<[Result<HomeSection>]>{
         return when(resolved: [
             buildHighlightSection().map { HomeSection.highlight($0) },
-            api.videos().map { HomeSection.videoRow("Latest", $0) },
+            api.videos().mapResumeTimes(api: api).map { HomeSection.videoRow("Latest", $0) },
             api.getShows().filterValues { $0.isActive && $0.isVisibleInNav }.map { shows -> [Show] in
                 return shows.sorted { (lhs, rhs) -> Bool in
                     lhs.position < rhs.position
@@ -22,12 +22,13 @@ class HomeViewModel {
         ])
     }
 
-    private func getQuickLooks() -> Promise<[BombVideo]> {
+    private func getQuickLooks() -> Promise<[VideoViewModel]> {
         let filter = VideoFilter.keyShow(.quickLooks)
         return api.videos(filter: filter)
+            .mapResumeTimes(api: api)
     }
 
-    private func getTenYearsAgoVideos() -> Promise<[BombVideo]> {
+    private func getTenYearsAgoVideos() -> Promise<[VideoViewModel]> {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
         guard let weekDate = calendar.date(from: components),
@@ -37,12 +38,15 @@ class HomeViewModel {
         }
         let filter = VideoFilter.date(start: tenYearsAgo, end: endOfWeek)
         return api.videos(filter: filter)
+            .mapResumeTimes(api: api)
     }
 
     private func buildHighlightSection() -> Promise<[HighlightItem]> {
         return when(fulfilled: [
             getLiveVideoItem(),
-            api.getRecentlyWatched(limit: 5).mapValues { HighlightItem.resumeWatching($0) }
+            api.getRecentlyWatched(limit: 5)
+                .mapResumeTimes(api: api)
+                .mapValues { HighlightItem.resumeWatching($0) }
         ]).map { parts in
             return Array(parts.joined())
         }.get { array in

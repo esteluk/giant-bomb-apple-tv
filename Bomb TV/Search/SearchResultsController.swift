@@ -6,8 +6,8 @@ class SearchResultsController: UIViewController {
     var coordinator: SearchCoordinator?
     private let viewModel = SearchViewModel()
 
-    private lazy var dataSource: UICollectionViewDiffableDataSource<SearchSection, BombVideo> = {
-        return UICollectionViewDiffableDataSource<SearchSection, BombVideo>(collectionView: self.collectionView)
+    private lazy var dataSource: UICollectionViewDiffableDataSource<SearchSection, VideoViewModel> = {
+        return UICollectionViewDiffableDataSource<SearchSection, VideoViewModel>(collectionView: self.collectionView)
         { (collectionView, indexPath, video) -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
                 preconditionFailure()
@@ -68,7 +68,7 @@ extension SearchResultsController: UISearchResultsUpdating {
         firstly {
             self.viewModel.performSearch(query: query)
         }.done { results in
-            var snapshot = NSDiffableDataSourceSnapshot<SearchSection, BombVideo>()
+            var snapshot = NSDiffableDataSourceSnapshot<SearchSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
             self.dataSource.apply(snapshot, animatingDifferences: true)
@@ -95,7 +95,7 @@ class SearchViewModel {
         return indexPath.row == (videos.endIndex - 1)
     }
 
-    func performSearch(query: String) -> Promise<[BombVideo]> {
+    func performSearch(query: String) -> Promise<[VideoViewModel]> {
         guard query != self.query else {
             return Promise(error: SearchError.pendingSearchResult)
         }
@@ -111,12 +111,13 @@ class SearchViewModel {
             $0.results
         }.get {
             self.videos = $0
-        }.ensure {
+        }.mapResumeTimes(api: api)
+        .ensure {
             self.isMakingRequest = false
         }
     }
 
-    func requestMoreResults() -> Promise<[BombVideo]> {
+    func requestMoreResults() -> Promise<[VideoViewModel]> {
         guard isMakingRequest == false,
             let searchResponse = searchResponse,
             let query = query else {
@@ -135,7 +136,8 @@ class SearchViewModel {
             $0.results
         }.get {
             self.videos.append(contentsOf: $0)
-        }.ensure {
+        }.mapResumeTimes(api: api)
+        .ensure {
             self.isMakingRequest = false
         }
     }

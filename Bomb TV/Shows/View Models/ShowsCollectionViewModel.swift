@@ -9,7 +9,7 @@ class ShowsCollectionViewModel {
         return api.getShows().sortedValues()
     }
 
-    func fetchVideos(for show: Show) -> Promise<[BombVideo]> {
+    func fetchVideos(for show: Show) -> Promise<[VideoViewModel]> {
         let waitAtLeast = after(seconds: 0.3)
         let filter = VideoFilter.show(show)
         currentlySelectedShow = show
@@ -21,7 +21,7 @@ class ShowsCollectionViewModel {
                 throw ShowsError.superceded
             }
             return self.api.videos(filter: filter)
-        }
+        }.mapResumeTimes(api: api)
     }
 }
 

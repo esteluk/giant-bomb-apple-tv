@@ -19,6 +19,8 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
         }
     }
 
+    var resumeTimeProvider: ResumeTimeProvider?
+
     var video: HomeScreenItem? {
         didSet {
             guard let video = video else {
@@ -36,7 +38,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
 
             completedImage.isHidden = !(video.video?.isCompleted ?? false)
             progressView.progress = video.progress ?? 0.0
-            durationView.video = video.video
+            durationView.video = video.video?.video
         }
     }
 

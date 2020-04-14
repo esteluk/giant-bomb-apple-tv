@@ -8,7 +8,7 @@ protocol CellInformationProviding {
 
 enum HighlightItem: Hashable, Equatable, CellInformationProviding {
     case liveStream(LiveVideo)
-    case resumeWatching(BombVideo)
+    case resumeWatching(VideoViewModel)
 
     var progress: Float? {
         switch self {
@@ -21,8 +21,8 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
         switch self {
         case .liveStream(let video):
             return video.image
-        case .resumeWatching(let video):
-            return video.images.super
+        case .resumeWatching(let viewModel):
+            return viewModel.video.images.super
         }
     }
 
@@ -30,8 +30,8 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
         switch self {
         case .liveStream(let video):
             return "Live now: \(video.title)"
-        case .resumeWatching(let video):
-            return "Continue watching \(video.name)"
+        case .resumeWatching(let viewModel):
+            return "Continue watching \(viewModel.video.name)"
         }
     }
 
@@ -39,17 +39,17 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
         switch self {
         case .liveStream(let video):
             return video.title
-        case .resumeWatching(let video):
-            return video.name
+        case .resumeWatching(let viewModel):
+            return viewModel.video.name
         }
     }
 
-    var video: BombVideo? {
+    var video: VideoViewModel? {
         switch self {
         case .liveStream:
             return nil
-        case .resumeWatching(let video):
-            return video
+        case .resumeWatching(let viewModel):
+            return viewModel
         }
     }
 }
@@ -57,7 +57,7 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
 enum HomeScreenItem: Hashable, CellInformationProviding {
     case highlight(HighlightItem)
     case show(Show)
-    case video(BombVideo)
+    case video(VideoViewModel)
 
     var previewImage: URL {
         switch self {
@@ -65,15 +65,15 @@ enum HomeScreenItem: Hashable, CellInformationProviding {
             return highlightItem.previewImage
         case .show(let show):
             return show.images.super
-        case .video(let video):
-            return video.images.medium
+        case .video(let viewModel):
+            return viewModel.video.images.medium
         }
     }
 
     var progress: Float? {
         switch self {
         case .highlight(let highlight): return highlight.progress
-        case .video(let video): return video.progress
+        case .video(let viewModel): return viewModel.progress
         default: return nil
         }
     }
@@ -84,12 +84,12 @@ enum HomeScreenItem: Hashable, CellInformationProviding {
             return highlightItem.title
         case .show(let show):
             return show.title
-        case .video(let video):
-            return video.name
+        case .video(let viewModel):
+            return viewModel.video.name
         }
     }
 
-    var video: BombVideo? {
+    var video: VideoViewModel? {
         switch self {
         case .highlight(let highlightItem):
             return highlightItem.video
@@ -105,7 +105,7 @@ enum HomeSection: Hashable, Equatable {
 
     case highlight([HighlightItem])
     case shows([Show])
-    case videoRow(String, [BombVideo])
+    case videoRow(String, [VideoViewModel])
     case inProgress
 
     var title: String {

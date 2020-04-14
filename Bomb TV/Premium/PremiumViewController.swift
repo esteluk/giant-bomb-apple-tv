@@ -7,8 +7,8 @@ class PremiumViewController: UIViewController {
 
     @IBOutlet private var collectionView: UICollectionView!
 
-    private lazy var dataSource: UICollectionViewDiffableDataSource<PremiumSection, BombVideo> = {
-        return UICollectionViewDiffableDataSource<PremiumSection, BombVideo>(collectionView: self.collectionView)
+    private lazy var dataSource: UICollectionViewDiffableDataSource<PremiumSection, VideoViewModel> = {
+        return UICollectionViewDiffableDataSource<PremiumSection, VideoViewModel>(collectionView: self.collectionView)
         { (collectionView, indexPath, video) -> UICollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: VideoCell.reuseIdentifier, for: indexPath) as? VideoCell else {
                 preconditionFailure()
@@ -32,7 +32,7 @@ class PremiumViewController: UIViewController {
         firstly {
             viewModel.fetchData()
         }.done { results in
-            var snapshot = NSDiffableDataSourceSnapshot<PremiumSection, BombVideo>()
+            var snapshot = NSDiffableDataSourceSnapshot<PremiumSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
             self.dataSource.apply(snapshot, animatingDifferences: false)
@@ -61,9 +61,9 @@ extension PremiumViewController: UICollectionViewDelegateFlowLayout {
 class PremiumViewModel {
     private let api = BombAPI()
 
-    func fetchData() -> Promise<[BombVideo]> {
+    func fetchData() -> Promise<[VideoViewModel]> {
         let filter = VideoFilter.premium
-        return api.videos(filter: filter)
+        return api.videos(filter: filter).mapResumeTimes(api: api)
     }
 }
 

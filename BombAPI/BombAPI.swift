@@ -12,7 +12,7 @@ public class BombAPI {
     }
 
     private let baseUrl = URL(string: "https://www.giantbomb.com/api/")!
-    private let cache = LocalCache()
+    private let cache: LocalCache
     private lazy var decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(DateFormatter.defaultBombFormatter)
@@ -20,7 +20,13 @@ public class BombAPI {
     }()
     private let session: URLSession
 
+    init(session: URLSession, cache: LocalCache = LocalCache.shared) {
+        self.cache = cache
+        self.session = session
+    }
+
     public init(session: URLSession = URLSession.shared) {
+        self.cache = LocalCache.shared
         self.session = session
     }
 
@@ -111,8 +117,8 @@ public class BombAPI {
             URLQueryItem(name: "video_id", value: String(video.id)),
             URLQueryItem(name: "time_to_save", value: String(position))
         ]
+        cache.updateResumePoint(TimeInterval(position), for: video)
         let request = buildRequest(for: "video/save-time", queryItems: queryItems)
-
         return session.dataTask(.promise, with: request).validate().asVoid()
     }
 
@@ -134,13 +140,15 @@ public class BombAPI {
             try self.decoder.decode(SavedTimesResponse.self, from: response.data)
         }.map {
             $0.savedTimes
+        }.get { savedTimes in
+            savedTimes.forEach { self.cache.updateResumePoint(point: $0) }
         }.sortedValues()
         .map {
-            $0.prefix(limit*2)
+            $0.prefix(1)
         }.thenMap { savedTime -> Promise<BombVideo> in
             self.video(for: savedTime.videoId)
-        }.filterValues {
-            $0.isResumable
+//        }.filterValues {
+//            $0.isResumable
         }.map {
             Array($0.prefix(limit))
         }
@@ -174,4 +182,31 @@ public class BombAPI {
         components.queryItems?.append(contentsOf: queryItems)
         return URLRequest(url: components.url(relativeTo: baseUrl)!)
     }
+}
+
+extension BombAPI: ResumeTimeProvider {
+    public func resumePoint(for video: BombVideo) -> TimeInterval? {
+        return cache.resumePoint(for: video)
+    }
+    public func isCompleted(video: BombVideo) -> Bool {
+        guard let resumePoint = cache.resumePoint(for: video) else { return false }
+        return resumePoint > video.duration - 10
+    }
+
+    public func isResumable(video: BombVideo) -> Bool {
+        guard let resumePoint = cache.resumePoint(for: video) else { return false }
+        return resumePoint > 0 && resumePoint < video.duration - 10
+    }
+
+    public func progress(for video: BombVideo) -> Float? {
+        guard isResumable(video: video), let resumePoint = cache.resumePoint(for: video) else { return nil }
+        return Float(resumePoint) / Float(video.duration)
+    }
+}
+
+public protocol ResumeTimeProvider {
+    func isCompleted(video: BombVideo) -> Bool
+    func isResumable(video: BombVideo) -> Bool
+    func progress(for video: BombVideo) -> Float?
+    func resumePoint(for video: BombVideo) -> TimeInterval?
 }
