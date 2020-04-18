@@ -8,7 +8,11 @@ class HomeViewModel {
     var defaultHighlightItem: HighlightItem?
     private let api = BombAPI()
 
-    func fetchData() -> Guarantee<[Result<HomeSection>]>{
+    func fetchData() -> Promise<[Result<HomeSection>]>{
+        return api.prefetch().then { self.buildHomePage() }
+    }
+
+    private func buildHomePage() -> Guarantee<[Result<HomeSection>]> {
         return when(resolved: [
             buildHighlightSection().map { HomeSection.highlight($0) },
             api.videos().mapResumeTimes(api: api).map { HomeSection.videoRow("Latest", $0) },

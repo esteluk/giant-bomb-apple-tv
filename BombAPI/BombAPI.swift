@@ -30,6 +30,13 @@ public class BombAPI {
         self.session = session
     }
 
+    public func prefetch() -> Promise<Void> {
+        return when(fulfilled: [
+            videos().asVoid(),
+            getRecentlyWatched().asVoid()
+        ])
+    }
+
     /// Gets an array of all the Show objects that are available within the API. Examples of "Show" objects
     /// are "Quick Looks", "Unprofessional Fridays" or "Mass Alex"
     /// - Returns: A promise for an array of Shows
@@ -51,7 +58,7 @@ public class BombAPI {
     ///   - filter: VideoFilter object describing which videos should be returned from this request. Defaults to nil.
     ///   - offset: If provided, the request skips the first <offset> number of results.
     /// - Returns: An array of BombVideo objects that meet the filter and offset requirements.
-    public func videos(filter: VideoFilter? = nil, offset: Int = 0) -> Promise<[BombVideo]> {
+    public func videos(filter: VideoFilter? = nil, limit: Int? = nil, offset: Int = 0) -> Promise<[BombVideo]> {
         var queryItems = [
             URLQueryItem(name: "offset", value: String(offset)),
             URLQueryItem(name: "field_list", value: BombVideo.fields)
@@ -59,6 +66,10 @@ public class BombAPI {
 
         if let filter = filter {
             queryItems.append(filter.queryItem)
+        }
+
+        if let limit = limit {
+            queryItems.append(URLQueryItem(name: "limit", value: String(limit)))
         }
 
         let request = buildRequest(for: "videos", queryItems: queryItems)
@@ -144,11 +155,11 @@ public class BombAPI {
             savedTimes.forEach { self.cache.updateResumePoint(point: $0) }
         }.sortedValues()
         .map {
-            $0.prefix(1)
+            $0.prefix(5)
         }.thenMap { savedTime -> Promise<BombVideo> in
             self.video(for: savedTime.videoId)
-//        }.filterValues {
-//            $0.isResumable
+        }.filterValues {
+            self.isResumable(video: $0)
         }.map {
             Array($0.prefix(limit))
         }
