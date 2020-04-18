@@ -95,8 +95,29 @@ class ViewController: UIViewController {
         }
     }
 
-    private func createLayout() -> UICollectionViewLayout {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
+        if collectionView.numberOfSections > 0 {
+            updateHighlights()
+        }
+    }
+
+    private func updateHighlights() {
+        viewModel.updateHighlights().done { section in
+            var snapshot = self.dataSource.snapshot()
+            guard case let .highlight(highlights) = section else { return }
+            guard let oldSection = snapshot.sectionIdentifiers.first else { return }
+            snapshot.deleteSections([oldSection])
+            guard let first = snapshot.sectionIdentifiers.first else { return }
+            snapshot.insertSections([section], beforeSection: first)
+            snapshot.appendItems(highlights.map { .highlight($0) }, toSection: section)
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+            self.collectionView.setNeedsFocusUpdate()
+        }.cauterize()
+    }
+
+    private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             let dataSection = self.sections[sectionIndex]
 

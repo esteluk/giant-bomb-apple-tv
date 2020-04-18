@@ -140,11 +140,11 @@ enum HomeSection: Hashable, Equatable {
 
     func hash(into hasher: inout Hasher) {
         switch self {
-        case .videoRow(let title, let videos):
+        case .videoRow(let title, _):
             hasher.combine(title)
-            hasher.combine(videos)
-        case .shows(let shows):
-            hasher.combine(shows)
+        case .shows:
+            hasher.combine(2)
+            hasher.combine(title)
         case .highlight:
             hasher.combine(3)
         case .inProgress:

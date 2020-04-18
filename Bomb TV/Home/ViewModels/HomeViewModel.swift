@@ -12,6 +12,10 @@ class HomeViewModel {
         return api.prefetch().then { self.buildHomePage() }
     }
 
+    func updateHighlights() -> Promise<HomeSection> {
+        return buildHighlightSection().map { HomeSection.highlight($0) }
+    }
+
     private func buildHomePage() -> Guarantee<[Result<HomeSection>]> {
         return when(resolved: [
             buildHighlightSection().map { HomeSection.highlight($0) },
