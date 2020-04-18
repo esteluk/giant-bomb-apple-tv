@@ -93,7 +93,6 @@ class ViewController: UIViewController {
         }.catch { error in
             print(error.localizedDescription)
         }
-
     }
 
     private func createLayout() -> UICollectionViewLayout {

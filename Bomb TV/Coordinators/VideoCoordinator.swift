@@ -69,6 +69,11 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
         controller.delegate = self
         controller.player = AVPlayer(playerItem: playerItem)
 
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(playbackCompleted),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: playerItem)
+
         let secondsTimescale = CMTimeScale(NSEC_PER_SEC)
         let updateInterval = CMTime(seconds: 60, preferredTimescale: secondsTimescale)
 
@@ -92,6 +97,10 @@ class VideoCoordinator: NSObject, DestinationCoordinator {
             artworkData.value = data as NSCopying & NSObjectProtocol
             player.externalMetadata.append(artworkData)
         }
+    }
+
+    @objc private func playbackCompleted() {
+        rootController.dismiss(animated: true, completion: nil)
     }
 }
 
