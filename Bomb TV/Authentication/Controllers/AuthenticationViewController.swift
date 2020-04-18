@@ -7,8 +7,24 @@ class AuthenticationViewController: UIViewController {
     weak var coordinator: RootCoordinator?
     
     @IBOutlet private var backgroundView: ExcitingBackgroundView!
-    @IBOutlet private var codeTextField: UITextField!
     @IBOutlet private var doneButton: UIButton!
+    @IBOutlet private var stack: UIStackView!
+
+    private lazy var codeTextField: UITextField = {
+        let textField = UITextField()
+        textField.delegate = self
+        textField.autocapitalizationType = .allCharacters
+        textField.autocorrectionType = .no
+        textField.enablesReturnKeyAutomatically = true
+        textField.returnKeyType = .done
+        textField.textContentType = .oneTimeCode
+
+        NSLayoutConstraint.activate([
+            textField.heightAnchor.constraint(equalToConstant: 100)
+        ])
+
+        return textField
+    }()
     
     private let viewModel = AuthenticationViewModel()
 
@@ -28,6 +44,7 @@ class AuthenticationViewController: UIViewController {
         super.viewDidLoad()
 
         activity.becomeCurrent()
+        stack.insertArrangedSubview(codeTextField, at: 1)
     }
 
     override func viewDidAppear(_ animated: Bool) {
