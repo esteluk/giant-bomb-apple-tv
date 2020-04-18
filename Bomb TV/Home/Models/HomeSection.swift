@@ -7,11 +7,13 @@ protocol CellInformationProviding {
 }
 
 enum HighlightItem: Hashable, Equatable, CellInformationProviding {
+    case latest(VideoViewModel)
     case liveStream(LiveVideo)
     case resumeWatching(VideoViewModel)
 
     var progress: Float? {
         switch self {
+        case .latest(let video): return video.progress
         case .liveStream: return nil
         case .resumeWatching(let video): return video.progress
         }
@@ -19,6 +21,8 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
 
     var previewImage: URL {
         switch self {
+        case .latest(let viewModel):
+            return viewModel.video.images.super
         case .liveStream(let video):
             return video.image
         case .resumeWatching(let viewModel):
@@ -28,6 +32,8 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
 
     var prompt: String {
         switch self {
+        case .latest(let viewModel):
+            return "Recently added: \(viewModel.video.name)"
         case .liveStream(let video):
             return "Live now: \(video.title)"
         case .resumeWatching(let viewModel):
@@ -37,6 +43,8 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
 
     var title: String {
         switch self {
+        case .latest(let viewModel):
+            return viewModel.video.name
         case .liveStream(let video):
             return video.title
         case .resumeWatching(let viewModel):
@@ -46,6 +54,8 @@ enum HighlightItem: Hashable, Equatable, CellInformationProviding {
 
     var video: VideoViewModel? {
         switch self {
+        case .latest(let viewModel):
+            return viewModel
         case .liveStream:
             return nil
         case .resumeWatching(let viewModel):

@@ -214,6 +214,8 @@ extension ViewController: UICollectionViewDelegate {
         switch item {
         case .highlight(let highlightItem):
             switch highlightItem {
+            case .latest(let viewModel):
+                coordinator?.playVideo(video: viewModel, launchDirectly: true)
             case .liveStream(let liveVideo):
                 coordinator?.play(liveVideo: liveVideo)
             case .resumeWatching(let viewModel):

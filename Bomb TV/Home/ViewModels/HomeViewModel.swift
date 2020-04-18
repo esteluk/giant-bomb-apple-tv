@@ -50,7 +50,10 @@ class HomeViewModel {
             getLiveVideoItem(),
             api.getRecentlyWatched(limit: 5)
                 .mapResumeTimes(api: api)
-                .mapValues { HighlightItem.resumeWatching($0) }
+                .mapValues { HighlightItem.resumeWatching($0) },
+            api.videos(limit: 1)
+                .mapResumeTimes(api: api)
+                .mapValues { HighlightItem.latest($0) }
         ]).map { parts in
             return Array(parts.joined())
         }.get { array in
