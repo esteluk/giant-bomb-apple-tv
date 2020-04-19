@@ -38,7 +38,8 @@ targets:
     entitlements:
       path: Bomb TV/Bomb TV.entitlements
       properties:
-        com.apple.security.application-groups: group.uk.co.nathanwong.giantbomb.tv
+        com.apple.security.application-groups:
+          - group.uk.co.nathanwong.giantbomb.tv
 
     scheme:
       testTargets:
@@ -78,7 +79,8 @@ targets:
     entitlements:
       path: TopShelf/TopShelf.entitlements
       properties:
-        com.apple.security.application-groups: group.uk.co.nathanwong.giantbomb.tv
+        com.apple.security.application-groups:
+          - group.uk.co.nathanwong.giantbomb.tv
 
     settings:
       base:

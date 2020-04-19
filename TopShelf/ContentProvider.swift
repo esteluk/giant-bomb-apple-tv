@@ -6,6 +6,11 @@ class ContentProvider: TVTopShelfContentProvider {
     private let api = BombAPI()
 
     override func loadTopShelfContent(completionHandler: @escaping (TVTopShelfContent?) -> Void) {
+        guard let token = AuthenticationStore().registrationToken else {
+            completionHandler(nil)
+            return
+        }
+        BombAPI.setAPIKey(token)
         api.getRecentlyWatched(limit: 5)
             .done { videos in
                 let section = self.makeContinueWatchingSection(with: videos)
