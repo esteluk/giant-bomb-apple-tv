@@ -142,7 +142,7 @@ public class BombAPI {
         return session.dataTask(.promise, with: request).validate().asVoid()
     }
 
-    public func getRecentlyWatched(limit: Int = 2) -> Promise<[BombVideo]> {
+    public func getRecentlyWatched(limit: Int = 100) -> Promise<[BombVideo]> {
         let request = buildRequest(for: "video/get-all-saved-times")
 
         return firstly {
