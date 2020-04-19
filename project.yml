@@ -35,6 +35,11 @@ targets:
       - sdk: TVUIKit.framework
       - package: Nuke
 
+    entitlements:
+      path: Bomb TV/Bomb TV.entitlements
+      properties:
+        com.apple.security.application-groups: group.uk.co.nathanwong.giantbomb.tv
+
     scheme:
       testTargets:
         - UnitTests
@@ -62,9 +67,18 @@ targets:
     platform: tvOS
     sources: [TopShelf]
 
+    configFiles:
+      Debug: TopShelf/Configs/debug.xcconfig
+      Release: TopShelf/Configs/release.xcconfig
+
     dependencies: 
       - target: BombAPI
       - sdk: TVServices.framework
+
+    entitlements:
+      path: TopShelf/TopShelf.entitlements
+      properties:
+        com.apple.security.application-groups: group.uk.co.nathanwong.giantbomb.tv
 
     settings:
       base:

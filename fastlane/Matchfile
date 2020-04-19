@@ -6,7 +6,8 @@ type("development")
 
 platform("tvos")
 
-# app_identifier(["tools.fastlane.app", "tools.fastlane.app2"])
+app_identifier(["uk.co.nathanwong.giantbomb.tv", "uk.co.nathanwong.giantbomb.tv.TopShelf"])
+
 # username("user@fastlane.tools") # Your Apple Developer Portal username
 
 # For all available options run `fastlane match --help`
