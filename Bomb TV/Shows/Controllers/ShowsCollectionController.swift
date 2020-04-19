@@ -76,6 +76,7 @@ class ShowsCollectionController: UIViewController {
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
             self.showDataSource.apply(snapshot, animatingDifferences: true)
+            self.showDetailsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }.catch { error in
             print(error.localizedDescription)
         }
