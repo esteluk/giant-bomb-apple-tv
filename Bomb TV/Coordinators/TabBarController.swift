@@ -19,6 +19,7 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        coordinator.delegate = self
 
         homeCoordinator.start()
         showsCoordinator.start()
@@ -31,5 +32,11 @@ class TabBarController: UITabBarController {
             premiumCoordinator.navigationController,
             searchCoordinator.navigationController
         ]
+    }
+}
+
+extension TabBarController: RootCoordinatorDelegate {
+    func launchVideo(viewModel: VideoViewModel) {
+        homeCoordinator.playVideo(video: viewModel, launchDirectly: true)
     }
 }

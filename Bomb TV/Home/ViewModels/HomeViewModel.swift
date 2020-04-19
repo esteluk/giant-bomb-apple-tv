@@ -19,13 +19,13 @@ class HomeViewModel {
     private func buildHomePage() -> Guarantee<[Result<HomeSection>]> {
         return when(resolved: [
             buildHighlightSection().map { HomeSection.highlight($0) },
-            api.videos().mapResumeTimes(api: api).map { HomeSection.videoRow("Latest", $0) },
+            api.videos().mapValues { $0.viewModel(api: self.api) }.map { HomeSection.videoRow("Latest", $0) },
             api.getShows().filterValues { $0.isActive && $0.isVisibleInNav }.map { shows -> [Show] in
                 return shows.sorted { (lhs, rhs) -> Bool in
                     lhs.position < rhs.position
                 }
             }.map { HomeSection.shows($0) },
-            api.getRecentlyWatched().mapResumeTimes(api: api).map { HomeSection.videoRow("Continue watching", $0) },
+            api.getRecentlyWatched().mapValues { $0.viewModel(api: self.api) }.map { HomeSection.videoRow("Continue watching", $0) },
             getQuickLooks().map { HomeSection.videoRow("Quick Looks", $0) },
             getTenYearsAgoVideos().map { HomeSection.videoRow("Ten years ago…", $0) }
         ])
@@ -34,7 +34,7 @@ class HomeViewModel {
     private func getQuickLooks() -> Promise<[VideoViewModel]> {
         let filter = VideoFilter.keyShow(.quickLooks)
         return api.videos(filter: filter)
-            .mapResumeTimes(api: api)
+            .mapValues { $0.viewModel(api: self.api) }
     }
 
     private func getTenYearsAgoVideos() -> Promise<[VideoViewModel]> {
@@ -47,17 +47,17 @@ class HomeViewModel {
         }
         let filter = VideoFilter.date(start: tenYearsAgo, end: endOfWeek)
         return api.videos(filter: filter)
-            .mapResumeTimes(api: api)
+            .mapValues { $0.viewModel(api: self.api) }
     }
 
     private func buildHighlightSection() -> Promise<[HighlightItem]> {
         return when(fulfilled: [
             getLiveVideoItem(),
             api.getRecentlyWatched(limit: 5)
-                .mapResumeTimes(api: api)
+                .mapValues { $0.viewModel(api: self.api) }
                 .mapValues { HighlightItem.resumeWatching($0) },
             api.videos(limit: 1)
-                .mapResumeTimes(api: api)
+                .mapValues { $0.viewModel(api: self.api) }
                 .mapValues { HighlightItem.latest($0) }
         ]).map { parts in
             return Array(parts.joined())

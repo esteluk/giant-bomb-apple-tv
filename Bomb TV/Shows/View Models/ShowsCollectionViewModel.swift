@@ -21,7 +21,7 @@ class ShowsCollectionViewModel {
                 throw ShowsError.superceded
             }
             return self.api.videos(filter: filter)
-        }.mapResumeTimes(api: api)
+        }.mapValues { $0.viewModel(api: self.api) }
     }
 }
 

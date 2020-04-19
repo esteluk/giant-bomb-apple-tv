@@ -165,7 +165,7 @@ public class BombAPI {
         }
     }
 
-    private func video(for id: Int) -> Promise<BombVideo> {
+    public func video(for id: Int) -> Promise<BombVideo> {
         if let video = cache.requestVideo(for: id) {
             return Promise.value(video)
         }

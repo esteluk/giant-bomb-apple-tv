@@ -51,6 +51,10 @@ extension BombVideo: Decodable, Hashable {
     var isAvailable: Bool {
         return videoUrls.isUrlAvailable
     }
+
+    public var launchUrl: URL {
+        return URL(string: "giantbomb-tv://video/\(id)")!
+    }
 }
 
 public extension BombVideo {

@@ -77,7 +77,7 @@ class PremiumViewModel {
 
     func fetchData() -> Promise<[VideoViewModel]> {
         let filter = VideoFilter.premium
-        return api.videos(filter: filter).mapResumeTimes(api: api)
+        return api.videos(filter: filter).mapValues { $0.viewModel(api: self.api) }
     }
 }
 

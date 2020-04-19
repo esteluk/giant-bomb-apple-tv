@@ -3,6 +3,7 @@ import UIKit
 
 class RootCoordinator: NavigationCoordinator {
     var childCoordinators = [Coordinator]()
+    weak var delegate: RootCoordinatorDelegate?
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController) {
@@ -26,12 +27,21 @@ class RootCoordinator: NavigationCoordinator {
         navigationController.setViewControllers([tabController], animated: true)
     }
 
+    /// Launch a video from a deeplink
+    /// - Parameter viewModel: Video to launch
+    func launchVideo(viewModel: VideoViewModel) {
+        delegate?.launchVideo(viewModel: viewModel)
+    }
+
     private func startFirstLaunch() {
         let authController = StoryboardScene.Authentication.initialScene.instantiate()
         authController.coordinator = self
         navigationController.setViewControllers([authController], animated: true)
     }
+}
 
+protocol RootCoordinatorDelegate: class {
+    func launchVideo(viewModel: VideoViewModel)
 }
 
 protocol Coordinator: class {

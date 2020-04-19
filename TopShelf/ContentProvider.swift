@@ -36,6 +36,8 @@ extension BombVideo {
         if let resumePoint = resumePoint {
             item.playbackProgress = resumePoint / duration
         }
+        item.displayAction = TVTopShelfAction(url: launchUrl)
+        item.playAction = TVTopShelfAction(url: launchUrl)
         item.setImageURL(images.super, for: .screenScale1x)
         return item
     }

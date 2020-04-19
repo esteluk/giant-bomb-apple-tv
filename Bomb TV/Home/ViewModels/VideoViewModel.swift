@@ -24,13 +24,9 @@ struct VideoViewModel {
 
 extension VideoViewModel: Equatable, Hashable {}
 
-extension Thenable where T == [BombVideo] {
-    func mapResumeTimes(on: DispatchQueue? = conf.Q.map,
-                        flags: DispatchWorkItemFlags? = nil,
-                        api: ResumeTimeProvider) -> Promise<[VideoViewModel]> {
-        return map(on: on, flags: flags) { $0.map { video -> VideoViewModel in
-            let resumePoint = api.resumePoint(for: video)
-            return VideoViewModel(resumePoint: resumePoint, video: video)
-        } }
+extension BombVideo {
+    func viewModel(api: ResumeTimeProvider) -> VideoViewModel {
+        let resumePoint = api.resumePoint(for: self)
+        return VideoViewModel(resumePoint: resumePoint, video: self)
     }
 }

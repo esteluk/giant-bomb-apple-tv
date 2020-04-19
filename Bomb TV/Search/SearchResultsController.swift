@@ -111,7 +111,7 @@ class SearchViewModel {
             $0.results
         }.get {
             self.videos = $0
-        }.mapResumeTimes(api: api)
+        }.mapValues { $0.viewModel(api: self.api) }
         .ensure {
             self.isMakingRequest = false
         }
@@ -136,7 +136,7 @@ class SearchViewModel {
             $0.results
         }.get {
             self.videos.append(contentsOf: $0)
-        }.mapResumeTimes(api: api)
+        }.mapValues { $0.viewModel(api: self.api) }
         .ensure {
             self.isMakingRequest = false
         }
