@@ -3,7 +3,7 @@ import Foundation
 
 public struct BombVideo {
     public let name: String
-    let id: Int
+    public let id: Int
     public let duration: TimeInterval
     public let images: Images
     public let resumePoint: TimeInterval?

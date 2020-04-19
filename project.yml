@@ -29,7 +29,9 @@ targets:
 
     dependencies:
       - target: BombAPI
-        embed: false
+        embed: true
+      - target: TopShelf
+        embed: true
       - sdk: TVUIKit.framework
       - package: Nuke
 
@@ -43,7 +45,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: uk.co.nathanwong.giantbomb.tv
 
   BombAPI:
-    type: framework.static
+    type: framework
     platform: tvOS
     sources: [BombAPI]
     configFiles:
@@ -54,6 +56,19 @@ targets:
         embed: false
       - package: PMKFoundation
         embed: false
+
+  TopShelf:
+    type: app-extension
+    platform: tvOS
+    sources: [TopShelf]
+
+    dependencies: 
+      - target: BombAPI
+      - sdk: TVServices.framework
+
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: uk.co.nathanwong.giantbomb.tv.TopShelf
 
   UnitTests:
     type: bundle.unit-test
