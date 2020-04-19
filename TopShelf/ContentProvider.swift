@@ -33,6 +33,9 @@ extension BombVideo {
         let item = TVTopShelfSectionedItem(identifier: String(self.id))
         item.title = name
         item.imageShape = .hdtv
+        if let resumePoint = resumePoint {
+            item.playbackProgress = resumePoint / duration
+        }
         item.setImageURL(images.super, for: .screenScale1x)
         return item
     }
