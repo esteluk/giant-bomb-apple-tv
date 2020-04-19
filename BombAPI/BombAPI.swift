@@ -154,10 +154,10 @@ public class BombAPI {
         }.get { savedTimes in
             savedTimes.forEach { self.cache.updateResumePoint(point: $0) }
         }.sortedValues()
-        .map {
-            $0.prefix(5)
-        }.thenMap { savedTime -> Promise<BombVideo> in
-            self.video(for: savedTime.videoId)
+        .mapValues { $0.videoId }
+        .then { videoIds -> Promise<[BombVideo]> in
+            let filter = VideoFilter.videoIds(videoIds)
+            return self.videos(filter: filter)
         }.filterValues {
             self.isResumable(video: $0)
         }.map {

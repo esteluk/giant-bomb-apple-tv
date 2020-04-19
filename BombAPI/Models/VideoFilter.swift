@@ -5,6 +5,7 @@ public enum VideoFilter {
     case keyShow(KeyShow)
     case premium
     case show(Show)
+    case videoIds([Int])
 
     var queryItem: URLQueryItem {
         switch self {
@@ -17,6 +18,9 @@ public enum VideoFilter {
             return URLQueryItem(name: "filter", value: "premium:true")
         case .show(let show):
             return URLQueryItem(name: "filter", value: "video_show:\(show.id)")
+        case .videoIds(let ids):
+            let idString = ids.map { String($0) }.joined(separator: "|")
+            return URLQueryItem(name: "filter", value: "id:\(idString)")
         }
     }
 }
