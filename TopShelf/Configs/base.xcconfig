@@ -1,4 +1,3 @@
-CODE_SIGN_IDENTITY = Apple Development
-CODE_SIGN_STYLE = Manual
-DEVELOPMENT_TEAM = 95X8VY6TB2
+#include "Bomb TV/Configs/base.xcconfig"
+
 PROVISIONING_PROFILE_SPECIFIER = match Development uk.co.nathanwong.giantbomb.tv.TopShelf tvos
