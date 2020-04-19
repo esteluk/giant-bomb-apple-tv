@@ -1,0 +1,2 @@
+scheme("Bomb TV")
+sdk("appletvos13.4")

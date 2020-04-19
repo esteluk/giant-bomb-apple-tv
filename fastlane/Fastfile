@@ -9,7 +9,7 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     match(type: "appstore", readonly: true)
-    build_app(scheme: "Bomb TV")
+    build_app
     upload_to_testflight(app_platform: "appletvos")
   end
 end
