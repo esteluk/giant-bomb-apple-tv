@@ -10,8 +10,8 @@ class ShowsCollectionController: UIViewController {
 
     weak var coordinator: ShowsTabCoordinator?
 
-    private lazy var showSelectionDataSource: UITableViewDiffableDataSource<ShowsListSection, Show> = {
-        return UITableViewDiffableDataSource<ShowsListSection, Show>(tableView: self.showSelectionTableView)
+    private lazy var showSelectionDataSource: ShowsTableDiffableDataSource = {
+        return ShowsTableDiffableDataSource(tableView: self.showSelectionTableView)
         { (tableView, indexPath, show) -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(withIdentifier: "ShowListCell", for: indexPath)
             cell.textLabel?.text = show.title
@@ -108,7 +108,20 @@ extension ShowsCollectionController: UITableViewDelegate {
     }
 }
 
+class ShowsTableDiffableDataSource: UITableViewDiffableDataSource<ShowsListSection, Show> {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return snapshot().sectionIdentifiers[section].title
+    }
+}
+
 enum ShowsListSection {
     case active
     case inactive
+
+    var title: String {
+        switch self {
+        case .active: return "Active shows"
+        case .inactive: return "Inactive shows"
+        }
+    }
 }
