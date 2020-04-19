@@ -19,6 +19,17 @@ class PremiumViewController: UIViewController {
         }
     }()
 
+    private let emptyLabel: UILabel = {
+        let label = UILabel()
+        label.isHidden = true
+        label.numberOfLines = 0
+        label.text = "Nothing here? Get access to thousands of hours of premium videos and podcasts.\n\n" +
+            "Subscribe at https://giantbomb.com/premium\n\n"
+        label.textColor = UIColor.secondaryLabel
+        label.textAlignment = .center
+        return label
+    }()
+
     private let viewModel = PremiumViewModel()
 
     override func viewDidLoad() {
@@ -29,6 +40,8 @@ class PremiumViewController: UIViewController {
         collectionView.register(UINib(nibName: "VideoCell", bundle: nil),
                                 forCellWithReuseIdentifier: VideoCell.reuseIdentifier)
 
+        collectionView.backgroundView = emptyLabel
+
         firstly {
             viewModel.fetchData()
         }.done { results in
@@ -37,6 +50,7 @@ class PremiumViewController: UIViewController {
             snapshot.appendItems(results)
             self.dataSource.apply(snapshot, animatingDifferences: false)
             self.collectionView.setNeedsFocusUpdate()
+            self.emptyLabel.isHidden = results.count > 0
         }.catch { error in
             print(error.localizedDescription)
         }
