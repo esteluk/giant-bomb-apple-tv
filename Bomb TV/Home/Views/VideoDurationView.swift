@@ -3,6 +3,13 @@ import UIKit
 
 class VideoDurationView: UIView {
 
+    private static let formatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        return formatter
+    }()
+
     private let durationLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -27,10 +34,13 @@ class VideoDurationView: UIView {
             }
 
             isHidden = false
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.hour, .minute, .second]
-            formatter.unitsStyle = .positional
-            durationLabel.text = formatter.string(from: video.duration)
+            if video.duration >= 3600 {
+                VideoDurationView.formatter.allowedUnits = [.hour, .minute, .second]
+            } else {
+                VideoDurationView.formatter.allowedUnits = [.minute, .second]
+            }
+
+            durationLabel.text = VideoDurationView.formatter.string(from: video.duration)
 
             if video.premium {
                 backgroundColor = UIColor(named: "Premium")
