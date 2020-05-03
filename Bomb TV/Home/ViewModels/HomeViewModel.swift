@@ -53,7 +53,7 @@ class HomeViewModel {
     private func buildHighlightSection() -> Promise<[HighlightItem]> {
         return when(fulfilled: [
             getLiveVideoItem(),
-            api.getRecentlyWatched(limit: 5)
+            api.getRecentlyWatched(limit: 3)
                 .mapValues { $0.viewModel(api: self.api) }
                 .mapValues { HighlightItem.resumeWatching($0) },
             api.videos(limit: 1)
