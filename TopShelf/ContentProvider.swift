@@ -2,7 +2,6 @@ import BombAPI
 import TVServices
 
 class ContentProvider: TVTopShelfContentProvider {
-
     private let api = BombAPI()
 
     override func loadTopShelfContent(completionHandler: @escaping (TVTopShelfContent?) -> Void) {

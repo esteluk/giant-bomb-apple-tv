@@ -9,6 +9,9 @@ class HomeViewModel {
     private let api = BombAPI()
 
     func fetchData() -> Guarantee<[Result<HomeSection>]>{
+        api.recommendations().done { videos in
+            print(videos)
+        }.cauterize()
         return buildHomePage()
     }
 

@@ -143,6 +143,34 @@ public class BombAPI {
     }
 
     public func getRecentlyWatched(limit: Int = 100) -> Promise<[BombVideo]> {
+        return firstly {
+            getSavedTimes()
+        }.mapValues { $0.videoId }
+        .then { videoIds -> Promise<[BombVideo]> in
+            let filter = VideoFilter.videoIds(videoIds)
+            return self.videos(filter: filter)
+        }.filterValues {
+            self.isResumable(video: $0)
+        }.map {
+            Array($0.prefix(limit))
+        }
+    }
+
+    public func recommendations() -> Promise<[BombVideo]> {
+        return firstly {
+            getSavedTimes()
+        }.map { savedTimes in
+            return (savedTimes, savedTimes.map { $0.videoId })
+        }.then { (savedTimes, videoIds) -> Promise<([SavedVideoProgress], [BombVideo])> in
+            let filter = VideoFilter.videoIds(videoIds)
+            return self.videos(filter: filter).map { (savedTimes, $0) }
+        }.then { (savedTimes, videos) -> Guarantee<[BombVideo]> in
+            let recommendations = Recommendations(api: self, savedTimes: savedTimes, videos: videos)
+            return recommendations.generate()
+        }
+    }
+
+    private func getSavedTimes() -> Promise<[SavedVideoProgress]> {
         let request = buildRequest(for: "video/get-all-saved-times")
 
         return firstly {
@@ -154,15 +182,6 @@ public class BombAPI {
         }.get { savedTimes in
             savedTimes.forEach { self.cache.updateResumePoint(point: $0) }
         }.sortedValues()
-        .mapValues { $0.videoId }
-        .then { videoIds -> Promise<[BombVideo]> in
-            let filter = VideoFilter.videoIds(videoIds)
-            return self.videos(filter: filter)
-        }.filterValues {
-            self.isResumable(video: $0)
-        }.map {
-            Array($0.prefix(limit))
-        }
     }
 
     public func video(for id: Int) -> Promise<BombVideo> {
@@ -220,4 +239,94 @@ public protocol ResumeTimeProvider {
     func isResumable(video: BombVideo) -> Bool
     func progress(for video: BombVideo) -> Float?
     func resumePoint(for video: BombVideo) -> TimeInterval?
+}
+
+class Recommendations {
+    private let api: BombAPI
+    private let savedTimes: [SavedVideoProgress]
+    private let videos: [BombVideo]
+
+    private let mostWatchedShows: [Show]
+    private let mostRecentlyWatchedShow: Show?
+
+    init(api: BombAPI, savedTimes: [SavedVideoProgress], videos: [BombVideo]) {
+        let sortedTimes = savedTimes.sorted { $0.videoId < $1.videoId }
+        let sortedVideos = videos.sorted { $0.id < $1.id }
+
+        let zipped = zip(sortedTimes, sortedVideos).filter { return api.isCompleted(video: $1) }
+
+        self.api = api
+        self.savedTimes = zipped.map { $0.0 }
+        self.videos = zipped.map { $0.1 }
+
+        var map = [Show: [BombVideo]]()
+        self.videos.forEach { video in
+            if map[video.show] == nil {
+                map[video.show] = [BombVideo]()
+            }
+            map[video.show]?.append(video)
+        }
+        let sorted = map.sorted { (lhs, rhs) -> Bool in
+            return lhs.value.count < rhs.value.count
+        }
+
+        mostWatchedShows = sorted.map { $0.key }
+        mostRecentlyWatchedShow = zipped.sorted { $0.0 < $1.0 }.first?.1.show
+
+        print("Most watched show: \(mostWatchedShows.first!.title)")
+        print("Most recently watched: \(mostRecentlyWatchedShow!.title)")
+    }
+
+    func generate() -> Guarantee<[BombVideo]> {
+        return when(resolved: [nextMostWatched(), nextRecentlyWatched()]).map { results -> [BombVideo] in
+            results.reduce([]) { (partial, element) -> [BombVideo] in
+                switch element {
+                case .fulfilled(let arr):
+                    return partial + arr
+                case .rejected:
+                    return partial
+                }
+            }
+        }
+    }
+
+    func nextMostWatched() -> Promise<[BombVideo]> {
+        let mostWatched = mostWatchedShows.first!
+        let filter = VideoFilter.show(mostWatched)
+        return api.videos(filter: filter).map { showVideos -> [BombVideo] in
+            var indexes = [Int]()
+            self.videos.filter { $0.show == mostWatched }.forEach { v in
+                guard let index = showVideos.firstIndex(of: v) else { return }
+                indexes.append(index)
+            }
+            indexes.sort()
+            guard let firstIndex = indexes.first,
+                firstIndex > 0 else { return [] }
+            return [showVideos[firstIndex-1]]
+        }.filterValues { video in
+            return self.api.isResumable(video: video) == false
+        }.recover { error -> Guarantee<[BombVideo]> in
+            return .value([])
+        }
+    }
+
+    func nextRecentlyWatched() -> Promise<[BombVideo]> {
+        guard let mostRecent = mostRecentlyWatchedShow else { return .value([]) }
+        let filter = VideoFilter.show(mostRecent)
+        return api.videos(filter: filter).map { showVideos -> [BombVideo] in
+            var indexes = [Int]()
+            self.videos.filter { $0.show == mostRecent }.forEach { v in
+                guard let index = showVideos.firstIndex(of: v) else { return }
+                indexes.append(index)
+            }
+            indexes.sort()
+            guard let firstIndex = indexes.first,
+                firstIndex > 0 else { return [] }
+            return [showVideos[firstIndex-1]]
+        }.filterValues { video in
+            return self.api.isResumable(video: video) == false
+        }.recover { error -> Guarantee<[BombVideo]> in
+            return .value([])
+        }
+    }
 }
