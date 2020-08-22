@@ -23,9 +23,9 @@ class HighlightSectionBackground: UICollectionReusableView {
                 return ImageRequest(
                     url: url,
                     processors: [
-                        ImageProcessor.Resize(size: upsize, crop: true, upscale: true),
-                        ImageProcessor.GaussianBlur(),
-                        ImageProcessor.CoreImageFilter(name: "CIExposureAdjust", parameters: [kCIInputEVKey: NSNumber(-2.0)], identifier: "exposure")
+                        ImageProcessors.Resize(size: upsize, crop: true, upscale: true),
+                        ImageProcessors.GaussianBlur(),
+                        ImageProcessors.CoreImageFilter(name: "CIExposureAdjust", parameters: [kCIInputEVKey: NSNumber(-2.0)], identifier: "exposure")
                     ]
                 )
             }

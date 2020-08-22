@@ -10,10 +10,10 @@ options:
 packages:
   Nuke:
     url: https://github.com/kean/Nuke.git
-    from: 8.4.0
+    from: 9.1.1
   PromiseKit:
     url: https://github.com/mxcl/PromiseKit
-    from: 6.13.0
+    from: 6.13.2
   PMKFoundation:
     url: https://github.com/PromiseKit/Foundation.git
     from: 3.3.4
