@@ -1,4 +1,9 @@
 name: Bomb TV
+
+configFiles:
+  Debug: Configs/debug.xcconfig
+  Release: Configs/release.xcconfig
+
 options:
   bundleIdPrefix: uk.co.nathanwong.giantbomb
 
