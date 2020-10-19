@@ -1,11 +1,15 @@
 import Foundation
 import os.log
 
-class LocalCache: CachedData, CachedResumePointData {
+class LocalCache {
     private var data = [Int: BombVideo]()
     private var savedTimeData = [Int: TimeInterval]()
+    private var showData = [Int: Show]()
 
     static let shared = LocalCache()
+}
+
+extension LocalCache: CachedData {
 
     func requestVideo(for id: Int) -> BombVideo? {
         guard let video = data[id] else {
@@ -19,7 +23,9 @@ class LocalCache: CachedData, CachedResumePointData {
         let id = video.id
         data[id] = video
     }
+}
 
+extension LocalCache: CachedResumePointData {
     func resumePoint(for video: BombVideo) -> TimeInterval? {
         guard let time = savedTimeData[video.id] else {
             return video.resumePoint
@@ -36,6 +42,21 @@ class LocalCache: CachedData, CachedResumePointData {
     }
 }
 
+extension LocalCache: CachedShowData {
+    func requestShow(for id: Int) -> Show? {
+        guard let show = showData[id] else {
+            return nil
+        }
+
+        return show
+    }
+
+    func storeShow(_ show: Show) {
+        let id = show.id
+        showData[id] = show
+    }
+}
+
 protocol CachedData {
     func requestVideo(for id: Int) -> BombVideo?
     func storeVideo(_ video: BombVideo)
@@ -45,4 +66,9 @@ protocol CachedResumePointData {
     func resumePoint(for video: BombVideo) -> TimeInterval?
     func updateResumePoint(point: SavedVideoProgress)
     func updateResumePoint(_ resumePoint: TimeInterval, for video: BombVideo)
+}
+
+protocol CachedShowData {
+    func requestShow(for id: Int) -> Show?
+    func storeShow(_ show: Show)
 }

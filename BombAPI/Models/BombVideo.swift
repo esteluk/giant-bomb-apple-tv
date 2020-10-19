@@ -9,6 +9,7 @@ public struct BombVideo {
     public let resumePoint: TimeInterval?
     public let premium: Bool
     public let publishedOn: Date
+    public let show: Show
     public let videoDescription: String
     public let videoUrls: VideoUrls
 }
@@ -22,6 +23,7 @@ extension BombVideo: Decodable, Hashable {
         case premium
         case publishedOn = "publish_date"
         case resumePoint = "saved_time"
+        case show = "video_show"
         case videoDescription = "deck"
         case lowUrl = "low_url"
         case medUrl = "med_url"
@@ -44,6 +46,7 @@ extension BombVideo: Decodable, Hashable {
 
         premium = try container.decode(Bool.self, forKey: .premium)
         publishedOn = try container.decode(Date.self, forKey: .publishedOn)
+        show = try container.decode(Show.self, forKey: .show)
         videoDescription = try container.decode(String.self, forKey: .videoDescription)
         videoUrls = try VideoUrls(from: decoder)
     }

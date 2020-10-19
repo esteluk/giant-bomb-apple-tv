@@ -26,6 +26,13 @@ public struct Show: Decodable, Hashable {
     public var latestVideo: BombVideo? {
         return latestVideos?.first
     }
+
+    /// Hardcodes the only "non-sequential" shows to be:
+    /// * Quick Looks, Podcasts, PlayDate, E3 vs GB, Reviews, Game Tapes, Demo Derby, Breakfast + Ben, Lockdown 2020,
+    public var isSequentialContent: Bool {
+        return [3, 5, 10, 12, 18, 20, 21, 28, 40, 45, 47, 49, 74, 86].contains(id)
+    }
+
 }
 
 extension Show: Comparable {

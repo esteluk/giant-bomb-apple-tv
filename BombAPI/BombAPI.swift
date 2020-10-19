@@ -49,6 +49,10 @@ public class BombAPI {
             session.dataTask(.promise, with: request).validate()
         }.map { response -> [Show] in
             try self.decoder.decode(WrappedResponse.self, from: response.data).results
+        }.get { shows in
+            shows.forEach { show in
+                self.cache.storeShow(show)
+            }
         }
     }
 
@@ -167,7 +171,7 @@ public class BombAPI {
 
     public func video(for id: Int) -> Promise<BombVideo> {
         if let video = cache.requestVideo(for: id) {
-            return Promise.value(video)
+            return .value(video)
         }
 
         return requestVideo(for: id)
@@ -199,6 +203,7 @@ extension BombAPI: ResumeTimeProvider {
     public func resumePoint(for video: BombVideo) -> TimeInterval? {
         return cache.resumePoint(for: video)
     }
+
     public func isCompleted(video: BombVideo) -> Bool {
         guard let resumePoint = cache.resumePoint(for: video) else { return false }
         return resumePoint > video.duration - 10
@@ -215,9 +220,19 @@ extension BombAPI: ResumeTimeProvider {
     }
 }
 
+extension BombAPI: ShowProvider {
+    public func show(with id: Int) -> Show? {
+        return cache.requestShow(for: id)
+    }
+}
+
 public protocol ResumeTimeProvider {
     func isCompleted(video: BombVideo) -> Bool
     func isResumable(video: BombVideo) -> Bool
     func progress(for video: BombVideo) -> Float?
     func resumePoint(for video: BombVideo) -> TimeInterval?
+}
+
+public protocol ShowProvider {
+    func show(with id: Int) -> Show?
 }

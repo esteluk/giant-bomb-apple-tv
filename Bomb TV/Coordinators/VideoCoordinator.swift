@@ -185,13 +185,3 @@ class SettingsBundleHelper {
         return  quality
     }
 }
-
-extension VideoUrls {
-    func url(for quality: SettingsBundleHelper.VideoQualityOptions) -> URL? {
-        switch quality {
-        case .low: return lowQuality
-        case .high: return mediumQuality
-        case .hd: return highQuality
-        }
-    }
-}

@@ -25,7 +25,7 @@ struct VideoViewModel {
 extension VideoViewModel: Equatable, Hashable {}
 
 extension BombVideo {
-    func viewModel(api: ResumeTimeProvider) -> VideoViewModel {
+    func viewModel(api: ResumeTimeProvider & ShowProvider) -> VideoViewModel {
         let resumePoint = api.resumePoint(for: self)
         return VideoViewModel(resumePoint: resumePoint, video: self)
     }
