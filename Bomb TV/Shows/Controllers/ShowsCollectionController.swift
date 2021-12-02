@@ -49,11 +49,11 @@ class ShowsCollectionController: UIViewController {
             viewModel.fetchShowList()
         }.map { results -> Show? in
             var snapshot = NSDiffableDataSourceSnapshot<ShowsListSection, Show>()
-            let primary = results.filter { $0.isVisibleInNav && $0.isActive }
+            let primary = results.filter { $0.isPromoted }
             snapshot.appendSections([.active])
             snapshot.appendItems(primary)
 
-            let inactive = results.filter { !($0.isVisibleInNav && $0.isActive) }
+            let inactive = results.filter { !$0.isPromoted }
             snapshot.appendSections([.inactive])
             snapshot.appendItems(inactive)
 

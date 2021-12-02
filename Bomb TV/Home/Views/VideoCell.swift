@@ -116,7 +116,7 @@ class VideoCell: UICollectionViewCell, PosterImageLoading {
     }
 }
 
-protocol PosterImageLoading: class {
+protocol PosterImageLoading: AnyObject {
     var imageTask: ImageTask? { get set }
 }
 

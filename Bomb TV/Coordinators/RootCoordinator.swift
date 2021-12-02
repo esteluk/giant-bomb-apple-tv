@@ -40,11 +40,11 @@ class RootCoordinator: NavigationCoordinator {
     }
 }
 
-protocol RootCoordinatorDelegate: class {
+protocol RootCoordinatorDelegate: AnyObject {
     func launchVideo(viewModel: VideoViewModel)
 }
 
-protocol Coordinator: class {
+protocol Coordinator: AnyObject {
     func start()
 }
 
