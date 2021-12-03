@@ -45,11 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func playVideoWithId(id: Int) {
         let api = BombAPI()
-        api.video(for: id).map { $0.viewModel(api: api) }.done { viewModel in
+        Task {
+            let video = try await api.video(for: id)
+            let viewModel = video.viewModel(api: api)
             self.coordinator?.launchVideo(viewModel: viewModel)
-        }.catch { error in
-            print(error.localizedDescription)
         }
+
     }
 
 }

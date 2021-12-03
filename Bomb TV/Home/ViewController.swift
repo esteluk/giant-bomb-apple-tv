@@ -69,29 +69,27 @@ class ViewController: UIViewController {
         collectionView.contentInset = .zero
         collectionView.contentInsetAdjustmentBehavior = .never
 
-        viewModel.fetchData().done { results in
+        Task {
+            let results = try await viewModel.fetchData()
             var snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeScreenItem>()
             for result in results {
-                guard case let .fulfilled(value) = result else { continue }
-                switch value {
+                switch result {
                 case .highlight(let highlights):
-                    snapshot.appendSections([value])
+                    snapshot.appendSections([result])
                     snapshot.appendItems(highlights.map { .highlight($0) })
                 case .videoRow(_, let videos):
-                    snapshot.appendSections([value])
+                    snapshot.appendSections([result])
                     snapshot.appendItems(videos.map { .video($0) })
                 case .shows(let shows):
-                    snapshot.appendSections([value])
+                    snapshot.appendSections([result])
                     snapshot.appendItems(shows.map { .show($0) })
                 default: continue
                 }
-                self.sections.append(value)
+                sections.append(result)
             }
 
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-            self.collectionView.setNeedsFocusUpdate()
-        }.catch { error in
-            print(error.localizedDescription)
+            await dataSource.apply(snapshot, animatingDifferences: true)
+            collectionView.setNeedsFocusUpdate()
         }
     }
 
@@ -104,17 +102,18 @@ class ViewController: UIViewController {
     }
 
     private func updateHighlights() {
-        viewModel.updateHighlights().done { section in
-            var snapshot = self.dataSource.snapshot()
+        Task {
+            let section = try await viewModel.updateHighlights()
+            var snapshot = dataSource.snapshot()
             guard case let .highlight(highlights) = section else { return }
             guard let oldSection = snapshot.sectionIdentifiers.first else { return }
             snapshot.deleteSections([oldSection])
             guard let first = snapshot.sectionIdentifiers.first else { return }
             snapshot.insertSections([section], beforeSection: first)
             snapshot.appendItems(highlights.map { .highlight($0) }, toSection: section)
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-            self.collectionView.setNeedsFocusUpdate()
-        }.cauterize()
+            await dataSource.apply(snapshot, animatingDifferences: true)
+            collectionView.setNeedsFocusUpdate()
+        }
     }
 
     private func createLayout() -> UICollectionViewLayout {

@@ -1,6 +1,5 @@
 import BombAPI
 import Foundation
-import PromiseKit
 
 struct VideoViewModel {
     let resumePoint: TimeInterval?

@@ -1,5 +1,4 @@
 import BombAPI
-import PromiseKit
 import UIKit
 
 class SearchResultsController: UIViewController {
@@ -38,14 +37,12 @@ extension SearchResultsController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard viewModel.isLastIndexPath(indexPath) else { return }
-        firstly {
-            self.viewModel.requestMoreResults()
-        }.done { results in
+
+        Task {
+            let results = try await viewModel.requestMoreResults()
             var snapshot = self.dataSource.snapshot()
             snapshot.appendItems(results)
-            self.dataSource.apply(snapshot)
-        }.catch { error in
-            print(error.localizedDescription)
+            await self.dataSource.apply(snapshot)
         }
     }
 }
@@ -65,16 +62,13 @@ extension SearchResultsController: UISearchResultsUpdating {
             return
         }
 
-        firstly {
-            self.viewModel.performSearch(query: query)
-        }.done { results in
+        Task {
+            let results = try await viewModel.performSearch(query: query)
             var snapshot = NSDiffableDataSourceSnapshot<SearchSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-            self.collectionView.setNeedsFocusUpdate()
-        }.catch { error in
-            print(error.localizedDescription)
+            await dataSource.apply(snapshot, animatingDifferences: true)
+            collectionView.setNeedsFocusUpdate()
         }
     }
 }
@@ -95,51 +89,46 @@ class SearchViewModel {
         return indexPath.row == (videos.endIndex - 1)
     }
 
-    func performSearch(query: String) -> Promise<[VideoViewModel]> {
+    func performSearch(query: String) async throws -> [VideoViewModel] {
+        defer {
+            // TODO
+            self.isMakingRequest = false
+        }
         guard query != self.query else {
-            return Promise(error: SearchError.pendingSearchResult)
+            throw SearchError.pendingSearchResult
         }
 
         self.page = 1
         self.query = query
         videos = []
         isMakingRequest = true
-        return api.search(query: query).get { response in
-            guard query == self.query else { throw SearchError.supercededResult }
-            self.searchResponse = response
-        }.map {
-            $0.results
-        }.get {
-            self.videos = $0
-        }.mapValues { $0.viewModel(api: self.api) }
-        .ensure {
-            self.isMakingRequest = false
-        }
+
+        let response = try await api.search(query: query)
+        guard query == self.query else { throw SearchError.supercededResult }
+        self.searchResponse = response
+        self.videos = response.results
+
+        return videos.map { $0.viewModel(api: api) }
     }
 
-    func requestMoreResults() -> Promise<[VideoViewModel]> {
+    func requestMoreResults() async throws -> [VideoViewModel] {
+        // TODO: is making request
         guard isMakingRequest == false,
             let searchResponse = searchResponse,
             let query = query else {
-            return Promise(error: SearchError.pendingSearchResult)
+            throw SearchError.pendingSearchResult
         }
         guard videos.count < searchResponse.numberOfTotalResults else {
-            return Promise(error: SearchError.noMoreResults)
+            throw SearchError.noMoreResults
         }
         isMakingRequest = true
         page += 1
-        return firstly {
-            api.search(query: query, page: page)
-        }.get { response in
-            self.searchResponse = response
-        }.map {
-            $0.results
-        }.get {
-            self.videos.append(contentsOf: $0)
-        }.mapValues { $0.viewModel(api: self.api) }
-        .ensure {
-            self.isMakingRequest = false
-        }
+
+        let response = try await api.search(query: query, page: page)
+        self.searchResponse = response
+        let results = response.results
+        self.videos.append(contentsOf: results)
+        return results.map { $0.viewModel(api: api) }
     }
 }
 

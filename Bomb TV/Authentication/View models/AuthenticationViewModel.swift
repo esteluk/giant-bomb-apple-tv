@@ -1,6 +1,5 @@
 import BombAPI
 import Foundation
-import PromiseKit
 
 class AuthenticationViewModel {
 
@@ -8,19 +7,17 @@ class AuthenticationViewModel {
         static let appName = "bombtv"
     }
 
-    func getRegistrationToken(code: String?) -> Promise<Void> {
-        firstly { () -> Promise<AuthenticationResponse> in
-            try validate(code: code)
-            return BombAPI().getAuthenticationToken(appName: Constants.appName, code: code!)
-        }.done { response in
-            guard response.isSuccessful,
-                let token = response.token else {
-                throw AuthenticationError.unknownError
-            }
-            let store = AuthenticationStore()
-            store.save(response: response)
-            BombAPI.setAPIKey(token)
+    func getRegistrationToken(code: String?) async throws {
+        try validate(code: code)
+        let response = try await BombAPI().getAuthenticationToken(appName: Constants.appName, code: code!)
+        guard response.isSuccessful,
+              let token = response.token else {
+                  throw AuthenticationError.unknownError
         }
+
+        let store = AuthenticationStore()
+        store.save(response: response)
+        BombAPI.setAPIKey(token)
     }
 
     func validate(code: String?) throws {

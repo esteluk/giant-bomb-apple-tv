@@ -1,6 +1,5 @@
 import BombAPI
 import Nuke
-import PromiseKit
 import UIKit
 
 class SingleShowController: UIViewController {
@@ -45,17 +44,14 @@ class SingleShowController: UIViewController {
         descriptionLabel.text = show.showDescription
         Nuke.loadImage(with: show.images.super, into: showImageView)
 
-        firstly {
-            viewModel.fetchData()
-        }.done { results in
+        Task {
+            let videos = try await viewModel.fetchData()
             var snapshot = NSDiffableDataSourceSnapshot<ShowSection, VideoViewModel>()
             snapshot.appendSections([.videos])
-            snapshot.appendItems(results)
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-            self.bottomBackgroundArea.isHidden = false
-            self.showsCollectionView.setNeedsFocusUpdate()
-        }.catch { error in
-            print(error.localizedDescription)
+            snapshot.appendItems(videos)
+            await dataSource.apply(snapshot, animatingDifferences: true)
+            bottomBackgroundArea.isHidden = false
+            showsCollectionView.setNeedsFocusUpdate()
         }
     }
 
@@ -91,8 +87,9 @@ class SingleShowViewModel {
         self.show = show
     }
 
-    func fetchData() -> Promise<[VideoViewModel]> {
+    func fetchData() async throws -> [VideoViewModel] {
         let filter = VideoFilter.show(show)
-        return api.videos(filter: filter).mapValues { $0.viewModel(api: self.api) }
+        return try await api.videos(filter: filter)
+            .map { $0.viewModel(api: api) }
     }
 }

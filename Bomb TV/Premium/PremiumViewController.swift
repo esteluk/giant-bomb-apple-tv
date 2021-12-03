@@ -1,5 +1,4 @@
 import BombAPI
-import PromiseKit
 import UIKit
 
 class PremiumViewController: UIViewController {
@@ -42,17 +41,15 @@ class PremiumViewController: UIViewController {
 
         collectionView.backgroundView = emptyLabel
 
-        firstly {
-            viewModel.fetchData()
-        }.done { results in
+        Task {
+            let results = try await viewModel.fetchData()
+
             var snapshot = NSDiffableDataSourceSnapshot<PremiumSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
-            self.dataSource.apply(snapshot, animatingDifferences: false)
-            self.collectionView.setNeedsFocusUpdate()
-            self.emptyLabel.isHidden = results.count > 0
-        }.catch { error in
-            print(error.localizedDescription)
+            await dataSource.apply(snapshot, animatingDifferences: false)
+            collectionView.setNeedsFocusUpdate()
+            emptyLabel.isHidden = results.count > 0
         }
     }
 }
@@ -75,9 +72,10 @@ extension PremiumViewController: UICollectionViewDelegateFlowLayout {
 class PremiumViewModel {
     private let api = BombAPI()
 
-    func fetchData() -> Promise<[VideoViewModel]> {
+    func fetchData() async throws -> [VideoViewModel] {
         let filter = VideoFilter.premium
-        return api.videos(filter: filter).mapValues { $0.viewModel(api: self.api) }
+        return try await api.videos(filter: filter)
+            .map { $0.viewModel(api: self.api) }
     }
 }
 

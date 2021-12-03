@@ -1,81 +1,86 @@
 import AVFoundation
 import BombAPI
 import Foundation
-import PromiseKit
 
 class HomeViewModel {
 
     var defaultHighlightItem: HighlightItem?
     private let api = BombAPI()
 
-    func fetchData() -> Guarantee<[Result<HomeSection>]>{
-        return buildHomePage()
+    func fetchData() async throws -> [HomeSection] {
+        return try await buildHomePage()
     }
 
-    func updateHighlights() -> Promise<HomeSection> {
-        return buildHighlightSection().map { HomeSection.highlight($0) }
+    func updateHighlights() async throws -> HomeSection {
+        let section = try await buildHighlightSection()
+        return HomeSection.highlight(section)
     }
 
-    private func buildHomePage() -> Guarantee<[Result<HomeSection>]> {
-        return when(resolved: [
-            buildHighlightSection().map { HomeSection.highlight($0) },
-            api.videos().mapValues { $0.viewModel(api: self.api) }.map { HomeSection.videoRow("Latest", $0) },
-            api.getShows().filterValues { $0.isPromoted }.map { shows -> [Show] in
-                return shows.sorted { (lhs, rhs) -> Bool in
-                    lhs.position < rhs.position
-                }
-            }.map { HomeSection.shows($0) },
-            api.getRecentlyWatched().mapValues { $0.viewModel(api: self.api) }.map { HomeSection.videoRow("Continue watching", $0) },
-            getQuickLooks().map { HomeSection.videoRow("Quick Looks", $0) },
-            getTenYearsAgoVideos().map { HomeSection.videoRow("Ten years ago…", $0) }
-        ])
+    private func buildHomePage() async throws -> [HomeSection] {
+
+        async let highlight = try await buildHighlightSection()
+        async let videos = try await api.videos()
+            .map { $0.viewModel(api: api) }
+        async let shows = try await api.getShows()
+            .filter { $0.isPromoted }
+            .sorted { $0.position < $1.position }
+
+        async let recentlyWatched = try await api.getRecentlyWatched()
+            .map { $0.viewModel(api: api) }
+
+        async let quickLooks = try await getQuickLooks()
+
+        async let tenYears = try await getTenYearsAgoVideos()
+
+        return try await [
+            HomeSection.highlight(highlight),
+            HomeSection.videoRow("Latest", videos),
+            HomeSection.shows(shows),
+            HomeSection.videoRow("Continue watching", recentlyWatched),
+            HomeSection.videoRow("Quick Looks", quickLooks),
+            HomeSection.videoRow("Ten years ago…", tenYears)
+        ]
     }
 
-    private func getQuickLooks() -> Promise<[VideoViewModel]> {
+    private func getQuickLooks() async throws -> [VideoViewModel] {
         let filter = VideoFilter.keyShow(.quickLooks)
-        return api.videos(filter: filter)
-            .mapValues { $0.viewModel(api: self.api) }
+        return try await api.videos(filter: filter)
+            .map { $0.viewModel(api: api) }
     }
 
-    private func getTenYearsAgoVideos() -> Promise<[VideoViewModel]> {
+    private func getTenYearsAgoVideos() async throws -> [VideoViewModel] {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())
         guard let weekDate = calendar.date(from: components),
             let tenYearsAgo = calendar.date(byAdding: .year, value: -10, to: weekDate),
             let endOfWeek = calendar.date(byAdding: .day, value: 6, to: tenYearsAgo) else {
-                return Promise(error: HomeViewModelError.invalidDate)
+                throw HomeViewModelError.invalidDate
         }
         let filter = VideoFilter.date(start: tenYearsAgo, end: endOfWeek)
-        return api.videos(filter: filter)
-            .mapValues { $0.viewModel(api: self.api) }
+        return try await api.videos(filter: filter)
+            .map { $0.viewModel(api: api) }
     }
 
-    private func buildHighlightSection() -> Promise<[HighlightItem]> {
-        return when(fulfilled: [
-            getLiveVideoItem(),
-            api.getRecentlyWatched(limit: 3)
-                .mapValues { $0.viewModel(api: self.api) }
-                .mapValues { HighlightItem.resumeWatching($0) },
-            api.videos(limit: 1)
-                .mapValues { $0.viewModel(api: self.api) }
-                .mapValues { HighlightItem.latest($0) }
-        ]).map { parts in
-            return Array(parts.joined())
-        }.get { array in
-            self.defaultHighlightItem = array.first
-        }
+    private func buildHighlightSection() async throws -> [HighlightItem] {
+        async let liveVideo = await getLiveVideoItems()
+        async let recentlyWatched = try await api.getRecentlyWatched()
+            .map { $0.viewModel(api: api) }
+            .map { HighlightItem.resumeWatching($0) }
+        async let videos = try await api.videos(limit: 1)
+            .map { $0.viewModel(api: api) }
+            .map { HighlightItem.resumeWatching($0) }
+
+        let images = try await [liveVideo, recentlyWatched, videos].joined()
+        defaultHighlightItem = images.first
+        return Array(images)
     }
 
-    private func getLiveVideoItem() -> Promise<[HighlightItem]> {
-        return firstly {
-            api.liveVideo()
-        }.map { video in
-            [HighlightItem.liveStream(video)]
-        }.recover { error -> Promise<[HighlightItem]> in
-            if case BombAPIError.noLiveVideos = error {
-                return .value([])
-            }
-            throw error
+    private func getLiveVideoItems() async -> [HighlightItem] {
+        do {
+            let video = try await api.liveVideo()
+            return [HighlightItem.liveStream(video)]
+        } catch {
+            return []
         }
     }
 }

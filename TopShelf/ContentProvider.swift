@@ -5,20 +5,19 @@ class ContentProvider: TVTopShelfContentProvider {
 
     private let api = BombAPI()
 
-    override func loadTopShelfContent(completionHandler: @escaping (TVTopShelfContent?) -> Void) {
+    override func loadTopShelfContent() async -> TVTopShelfContent? {
         guard let token = AuthenticationStore().registrationToken else {
-            completionHandler(nil)
-            return
+            return nil
         }
+
         BombAPI.setAPIKey(token)
-        api.getRecentlyWatched(limit: 5)
-            .done { videos in
-                let section = self.makeContinueWatchingSection(with: videos)
-                let content = TVTopShelfSectionedContent(sections: [section])
-                completionHandler(content)
-            }.catch { _ in
-                completionHandler(nil)
-            }
+        do {
+            let recentlyWatched = try await api.getRecentlyWatched()
+            let section = makeContinueWatchingSection(with: recentlyWatched)
+            return TVTopShelfSectionedContent(sections: [section])
+        } catch {
+            return nil
+        }
     }
 
     private func makeContinueWatchingSection(with videos: [BombVideo]) -> TVTopShelfItemCollection<TVTopShelfSectionedItem> {

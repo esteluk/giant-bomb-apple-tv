@@ -1,5 +1,4 @@
 import BombAPI
-import PromiseKit
 import UIKit
 
 class ShowsCollectionController: UIViewController {
@@ -45,9 +44,9 @@ class ShowsCollectionController: UIViewController {
         showDetailsCollectionView.dataSource = showDataSource
         showDetailsCollectionView.delegate = self
 
-        firstly {
-            viewModel.fetchShowList()
-        }.map { results -> Show? in
+        Task {
+            let results = try await viewModel.fetchShowList()
+
             var snapshot = NSDiffableDataSourceSnapshot<ShowsListSection, Show>()
             let primary = results.filter { $0.isPromoted }
             snapshot.appendSections([.active])
@@ -57,28 +56,24 @@ class ShowsCollectionController: UIViewController {
             snapshot.appendSections([.inactive])
             snapshot.appendItems(inactive)
 
-            self.showSelectionDataSource.apply(snapshot, animatingDifferences: true)
-            self.showSelectionTableView.setNeedsFocusUpdate()
-            return primary.first
-        }.done { show in
-            guard let show = show else { return }
-            self.loadVideos(for: show)
-        }.catch { error in
-            print(error.localizedDescription)
+            await showSelectionDataSource.apply(snapshot, animatingDifferences: true)
+            showSelectionTableView.setNeedsFocusUpdate()
+
+            if let show = primary.first {
+                loadVideos(for: show)
+            }
         }
     }
 
     private func loadVideos(for show: Show) {
-        firstly {
-            viewModel.fetchVideos(for: show)
-        }.done { results in
+        Task {
+            let results = try await viewModel.fetchVideos(for: show)
+
             var snapshot = NSDiffableDataSourceSnapshot<ShowSection, VideoViewModel>()
             snapshot.appendSections([.videos])
             snapshot.appendItems(results)
-            self.showDataSource.apply(snapshot, animatingDifferences: true)
-            self.showDetailsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        }.catch { error in
-            print(error.localizedDescription)
+             await showDataSource.apply(snapshot, animatingDifferences: true)
+            showDetailsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
 }

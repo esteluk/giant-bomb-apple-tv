@@ -114,8 +114,9 @@ extension VideoCoordinator: AVPlayerViewControllerDelegate {
 
     private func updatePlayedTime(duration: CMTime) {
         let api = BombAPI()
-        _ = api.saveTime(video: video.video, position: Int(floor(CMTimeGetSeconds(duration)))).ensure {
-            self.coordinator?.childDidFinish(self)
+        Task {
+            try? await api.saveTime(video: video.video, position: Int(floor(CMTimeGetSeconds(duration))))
+            coordinator?.childDidFinish(self)
         }
     }
 }

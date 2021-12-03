@@ -11,18 +11,12 @@ packages:
   Nuke:
     url: https://github.com/kean/Nuke.git
     from: 9.1.1
-  PromiseKit:
-    url: https://github.com/mxcl/PromiseKit
-    from: 6.13.2
-  PMKFoundation:
-    url: https://github.com/PromiseKit/Foundation.git
-    from: 3.3.4
 
 targets:
   Bomb TV:
     type: application
     platform: tvOS
-    deploymentTarget: 13.0
+    deploymentTarget: 15.0
     sources: [Bomb TV]
 
     attributes:
@@ -62,11 +56,6 @@ targets:
     configFiles:
       Debug: BombAPI/Configs/debug.xcconfig
       Release: BombAPI/Configs/release.xcconfig
-    dependencies:
-      - package: PromiseKit
-        embed: false
-      - package: PMKFoundation
-        embed: false
 
   TopShelf:
     type: app-extension

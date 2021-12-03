@@ -1,27 +1,25 @@
 import BombAPI
-import PromiseKit
+import Foundation
 
 class ShowsCollectionViewModel {
     private let api = BombAPI()
     private var currentlySelectedShow: Show?
 
-    func fetchShowList() -> Promise<[Show]> {
-        return api.getShows().sortedValues()
+    func fetchShowList() async throws -> [Show] {
+        return try await api.getShows().sorted()
     }
 
-    func fetchVideos(for show: Show) -> Promise<[VideoViewModel]> {
-        let waitAtLeast = after(seconds: 0.3)
+    func fetchVideos(for show: Show) async throws -> [VideoViewModel] {
+        await Task.sleep(UInt64(0.3 * Double(NSEC_PER_SEC)))
         let filter = VideoFilter.show(show)
         currentlySelectedShow = show
 
-        return firstly {
-            waitAtLeast
-        }.then { () -> Promise<[BombVideo]> in
-            guard show == self.currentlySelectedShow else {
-                throw ShowsError.superceded
-            }
-            return self.api.videos(filter: filter)
-        }.mapValues { $0.viewModel(api: self.api) }
+        guard show == self.currentlySelectedShow else {
+            throw ShowsError.superceded
+        }
+
+        return try await api.videos(filter: filter)
+            .map { $0.viewModel(api: api) }
     }
 }
 

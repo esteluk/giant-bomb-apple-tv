@@ -1,5 +1,4 @@
 import BombAPI
-import PromiseKit
 import UIKit
 
 class AuthenticationViewController: UIViewController {
@@ -58,14 +57,14 @@ class AuthenticationViewController: UIViewController {
     }
 
     @IBAction private func doneAction(_ sender: Any) {
-        firstly {
-            viewModel.getRegistrationToken(code: codeTextField.text)
-        }.ensure {
-            self.activity.invalidate()
-        }.done {
-            self.coordinator?.successfulLogin()
-        }.catch { error in  
-            self.showAlert(for: error)
+        Task {
+            do {
+                _ = try await viewModel.getRegistrationToken(code: codeTextField.text)
+                activity.invalidate()
+                coordinator?.successfulLogin()
+            } catch {
+                showAlert(for: error)
+            }
         }
     }
 

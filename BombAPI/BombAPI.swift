@@ -1,6 +1,5 @@
+
 import Foundation
-import PromiseKit
-import PMKFoundation
 
 public enum BombAPIError: Error {
     case noLiveVideos
@@ -30,30 +29,28 @@ public class BombAPI {
         self.session = session
     }
 
-    public func prefetch() -> Promise<Void> {
-        return when(fulfilled: [
-            videos().asVoid(),
-            getRecentlyWatched().asVoid()
-        ])
+    public func prefetch() async throws {
+        async let videos = try await videos()
+        async let recentlyWatched = try await getRecentlyWatched()
+        _ = try await [videos, recentlyWatched]
+        return
     }
 
     /// Gets an array of all the Show objects that are available within the API. Examples of "Show" objects
     /// are "Quick Looks", "Unprofessional Fridays" or "Mass Alex"
     /// - Returns: A promise for an array of Shows
-    public func getShows() -> Promise<[Show]> {
+    public func getShows() async throws -> [Show] {
         let queryItems = [
             URLQueryItem(name: "field_list", value: Show.fields)
         ]
         let request = buildRequest(for: "video_shows", queryItems: queryItems)
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response -> [Show] in
-            try self.decoder.decode(WrappedResponse.self, from: response.data).results
-        }.get { shows in
-            shows.forEach { show in
-                self.cache.storeShow(show)
-            }
+
+        let (data, _) = try await session.data(for: request, delegate: nil)
+        let shows = try decoder.decode(WrappedResponse<[Show]>.self, from: data).results
+        shows.forEach {
+            cache.storeShow($0)
         }
+        return shows
     }
 
     /// Gets a paged list of the 100 most recent videos that are fall within the provided filter. If no filter is provided,
@@ -62,7 +59,7 @@ public class BombAPI {
     ///   - filter: VideoFilter object describing which videos should be returned from this request. Defaults to nil.
     ///   - offset: If provided, the request skips the first <offset> number of results.
     /// - Returns: An array of BombVideo objects that meet the filter and offset requirements.
-    public func videos(filter: VideoFilter? = nil, limit: Int? = nil, offset: Int = 0) -> Promise<[BombVideo]> {
+    public func videos(filter: VideoFilter? = nil, limit: Int? = nil, offset: Int = 0) async throws -> [BombVideo] {
         var queryItems = [
             URLQueryItem(name: "offset", value: String(offset)),
             URLQueryItem(name: "field_list", value: BombVideo.fields)
@@ -77,18 +74,17 @@ public class BombAPI {
         }
 
         let request = buildRequest(for: "videos", queryItems: queryItems)
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response -> [BombVideo] in
-            try self.decoder.decode(WrappedResponse.self, from: response.data).results
-        }.get { videos in
-            videos.forEach { self.cache.storeVideo($0) }
-        }.filterValues{
+
+        let (data, _) = try await session.data(for: request, delegate: nil)
+        return try self.decoder.decode(WrappedResponse<[BombVideo]>.self, from: data).results.map { video in
+            self.cache.storeVideo(video)
+            return video
+        }.filter {
             $0.isAvailable
         }
     }
 
-    public func search(query: String, page: Int = 1) -> Promise<WrappedResponse<[BombVideo]>> {
+    public func search(query: String, page: Int = 1) async throws -> WrappedResponse<[BombVideo]> {
         let queryItems = [
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "query", value: query),
@@ -96,96 +92,81 @@ public class BombAPI {
         ]
 
         let request = buildRequest(for: "search", queryItems: queryItems)
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response in
-            try self.decoder.decode(WrappedResponse.self, from: response.data)
-        }
+
+        let (data, _) = try await session.data(for: request, delegate: nil)
+        return try self.decoder.decode(WrappedResponse.self, from: data)
     }
 
-    public func liveVideo() -> Promise<LiveVideo> {
+    public func liveVideo() async throws -> LiveVideo {
         let request = buildRequest(for: "video/current-live")
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response -> LiveVideo in
-            let response = try self.decoder.decode(LiveVideoResponse.self, from: response.data)
-            guard let video = response.video else {
-                throw BombAPIError.noLiveVideos
-            }
-            return video
+
+        let (data, _) = try await session.data(for: request, delegate: nil)
+        let response = try self.decoder.decode(LiveVideoResponse.self, from: data)
+        guard let video = response.video else {
+            throw BombAPIError.noLiveVideos
         }
+        return video
     }
 
-    public func getAuthenticationToken(appName: String, code: String) -> Promise<AuthenticationResponse> {
+    public func getAuthenticationToken(appName: String, code: String) async throws -> AuthenticationResponse {
         let request = "https://giantbomb.com/app/\(appName)/get-result?regCode=\(code)&format=json"
         let url = URL(string: request)!
-        return firstly {
-            session.dataTask(.promise, with: url).validate()
-        }.map { response -> AuthenticationResponse in
-            try self.decoder.decode(AuthenticationResponse.self, from: response.data)
-        }
+
+        let (data, _) = try await session.data(from: url, delegate: nil)
+        return try self.decoder.decode(AuthenticationResponse.self, from: data)
     }
 
-    @discardableResult
-    public func saveTime(video: BombVideo, position: Int) -> Promise<Void> {
+    public func saveTime(video: BombVideo, position: Int) async throws {
         let queryItems = [
             URLQueryItem(name: "video_id", value: String(video.id)),
             URLQueryItem(name: "time_to_save", value: String(position))
         ]
         cache.updateResumePoint(TimeInterval(position), for: video)
         let request = buildRequest(for: "video/save-time", queryItems: queryItems)
-        return session.dataTask(.promise, with: request).validate().asVoid()
+
+        _ = try await session.data(for: request, delegate: nil)
+        return
     }
 
-    @discardableResult
-    public func markWatched(video: BombVideo) -> Promise<Void> {
+    public func markWatched(video: BombVideo) async throws {
         let queryItems = [
             URLQueryItem(name: "video_id", value: String(video.id))
         ]
         let request = buildRequest(for: "video/mark-watched", queryItems: queryItems)
-        return session.dataTask(.promise, with: request).validate().asVoid()
+        _ = try await session.data(for: request, delegate: nil)
+        return
     }
 
-    public func getRecentlyWatched(limit: Int = 100) -> Promise<[BombVideo]> {
+    public func getRecentlyWatched(limit: Int = 100) async throws -> [BombVideo] {
         let request = buildRequest(for: "video/get-all-saved-times")
 
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response -> SavedTimesResponse in
-            try self.decoder.decode(SavedTimesResponse.self, from: response.data)
-        }.map {
-            $0.savedTimes
-        }.get { savedTimes in
-            savedTimes.forEach { self.cache.updateResumePoint(point: $0) }
-        }.sortedValues()
-        .mapValues { $0.videoId }
-        .then { videoIds -> Promise<[BombVideo]> in
-            let filter = VideoFilter.videoIds(videoIds)
-            return self.videos(filter: filter)
-        }.filterValues {
-            self.isResumable(video: $0)
-        }.map {
-            Array($0.prefix(limit))
-        }
+        let (data, _) = try await session.data(for: request, delegate: nil)
+        let savedTimes = try decoder.decode(SavedTimesResponse.self, from: data).savedTimes.sorted()
+        savedTimes.forEach { self.cache.updateResumePoint(point: $0) }
+
+        let videoIds = savedTimes.map { $0.videoId }
+        let videos = try await videos(filter: VideoFilter.videoIds(videoIds))
+        let prefix = videos
+            .filter { isResumable(video: $0) }
+            .prefix(limit)
+        return Array(prefix)
     }
 
-    public func video(for id: Int) -> Promise<BombVideo> {
+    public func video(for id: Int) async throws -> BombVideo {
         if let video = cache.requestVideo(for: id) {
-            return .value(video)
+            return video
         }
 
-        return requestVideo(for: id)
+        return try await requestVideo(for: id)
     }
 
-    private func requestVideo(for id: Int) -> Promise<BombVideo> {
+    private func requestVideo(for id: Int) async throws -> BombVideo {
         let request = buildRequest(for: "video/\(String(id))")
-        return firstly {
-            session.dataTask(.promise, with: request).validate()
-        }.map { response in
-            try self.decoder.decode(WrappedResponse.self, from: response.data).results
-        }.get { video in
-            self.cache.storeVideo(video)
-        }
+
+        let (data, _) = try await session.data(for: request, delegate: nil)
+        let video = try decoder.decode(WrappedResponse<BombVideo>.self, from: data).results
+        self.cache.storeVideo(video)
+        return video
     }
 
     private func buildRequest(for resource: String, queryItems: [URLQueryItem] = []) -> URLRequest {
