@@ -10,7 +10,7 @@ options:
 packages:
   Nuke:
     url: https://github.com/kean/Nuke.git
-    from: 9.1.1
+    from: 10.5.2
 
 targets:
   Bomb TV:
