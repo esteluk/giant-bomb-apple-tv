@@ -1,7 +1,7 @@
 import BombAPI
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     weak var coordinator: HomeCoordinator?
     private weak var highlightBackground: HighlightSectionBackground?
@@ -195,7 +195,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDelegate {
+extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplaySupplementaryView view: UICollectionReusableView,
                         forElementKind elementKind: String,

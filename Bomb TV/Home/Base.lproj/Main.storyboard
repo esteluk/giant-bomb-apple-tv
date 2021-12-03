@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="16096" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="19455" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="appleTV" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,7 +10,7 @@
         <!--Watch Now-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="Home" title="Watch Now" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Home" title="Watch Now" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="HomeViewController" customModule="Bomb_TV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -26,6 +26,7 @@
                                 <cells/>
                             </collectionView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="wu6-TO-1qx"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="ehQ-yM-zZF" secondAttribute="bottom" id="6hO-wJ-62S"/>
@@ -33,7 +34,6 @@
                             <constraint firstItem="ehQ-yM-zZF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="gMJ-7h-M6N"/>
                             <constraint firstItem="ehQ-yM-zZF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="k1U-Js-H4e"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="wu6-TO-1qx"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Watch now" id="XrD-Pa-ajp"/>
                     <connections>
@@ -61,7 +61,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                             </imageView>
                             <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yR4-gS-hcg">
-                                <rect key="frame" x="1000" y="60" width="830" height="1020"/>
+                                <rect key="frame" x="1000" y="60" width="840" height="1020"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="fEr-1P-K3Y">
                                     <size key="itemSize" width="50" height="50"/>
@@ -72,18 +72,18 @@
                                 <cells/>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" translatesAutoresizingMaskIntoConstraints="NO" id="J0S-Z4-SpR">
-                                <rect key="frame" x="90" y="60" width="830" height="1020"/>
+                                <rect key="frame" x="80" y="60" width="840" height="1020"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ShowListCell" textLabel="elA-cr-FlH" detailTextLabel="xPq-Eb-BB5" rowHeight="100" style="IBUITableViewCellStyleSubtitle" id="Baw-rv-Ac2">
-                                        <rect key="frame" x="0.0" y="66" width="830" height="100"/>
+                                        <rect key="frame" x="0.0" y="66" width="840" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Baw-rv-Ac2" id="wkP-pT-P5H">
-                                            <rect key="frame" x="0.0" y="0.0" width="830" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="840" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="elA-cr-FlH">
-                                                    <rect key="frame" x="20" y="4" width="71" height="46"/>
+                                                    <rect key="frame" x="20" y="4" width="70" height="46"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="38"/>
                                                     <nil key="textColor"/>
@@ -102,6 +102,7 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="91C-n6-3hA"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="86t-sw-uIq" secondAttribute="bottom" id="2bH-Xe-xcD"/>
                             <constraint firstItem="J0S-Z4-SpR" firstAttribute="bottom" secondItem="q4h-xa-JKP" secondAttribute="bottom" id="7tf-xq-jzs"/>
@@ -116,7 +117,6 @@
                             <constraint firstItem="86t-sw-uIq" firstAttribute="top" secondItem="q4h-xa-JKP" secondAttribute="top" id="qHH-Xm-tvH"/>
                             <constraint firstItem="J0S-Z4-SpR" firstAttribute="leading" secondItem="91C-n6-3hA" secondAttribute="leading" id="tcb-od-64K"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="91C-n6-3hA"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Shows" id="T6p-rA-myz"/>
                     <connections>
@@ -144,7 +144,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q15-Zw-wGY">
-                                <rect key="frame" x="90" y="0.0" width="1740" height="1080"/>
+                                <rect key="frame" x="80" y="0.0" width="1760" height="1080"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="xBm-jf-Ard">
                                     <size key="itemSize" width="50" height="50"/>
@@ -155,13 +155,13 @@
                                 <cells/>
                             </collectionView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="m3y-ni-a1d"/>
                         <constraints>
                             <constraint firstItem="q15-Zw-wGY" firstAttribute="top" secondItem="VcV-Zg-ftF" secondAttribute="top" id="hp4-do-IiD"/>
                             <constraint firstItem="q15-Zw-wGY" firstAttribute="leading" secondItem="m3y-ni-a1d" secondAttribute="leading" id="sbp-8g-Dby"/>
                             <constraint firstItem="m3y-ni-a1d" firstAttribute="trailing" secondItem="q15-Zw-wGY" secondAttribute="trailing" id="u5j-Pk-Bor"/>
                             <constraint firstAttribute="bottom" secondItem="q15-Zw-wGY" secondAttribute="bottom" id="yxa-kE-Sd5"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="m3y-ni-a1d"/>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="q15-Zw-wGY" id="Gkd-oP-Rwk"/>

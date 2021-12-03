@@ -16,6 +16,7 @@ class HomeViewModel {
         return HomeSection.highlight(section)
     }
 
+    // TODO: Handle scenario where one row fails
     private func buildHomePage() async throws -> [HomeSection] {
 
         async let highlight = try await buildHighlightSection()
